@@ -9,7 +9,6 @@ import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/components/toast_card.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
@@ -81,7 +80,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
 
   Future<void> submitweeklyaudittouser() async {
     var headers = {'Content-Type': 'application/json'};
-    print(_usernameController.text);
+    // print(_usernameController.text);
     try {
       var url = Uri.parse(ApiEndPoints.baseUrl +
           ApiEndPoints.authEndpoints.assignweeklytaskper);
@@ -124,49 +123,70 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
 
       if (response.statusCode == 200) {
         try {
-          setState(() {
-            DelightToastBar(
-              position: DelightSnackbarPosition.top,
-              autoDismiss: true,
-              animationDuration: const Duration(milliseconds: 100),
-              snackbarDuration: const Duration(milliseconds: 800),
-              builder: (context) => ToastCard(
-                color: Colors.green,
-                leading: const Icon(
-                  Icons.done,
-                  size: 28,
+          // setState(() {
+          DelightToastBar(
+            position: DelightSnackbarPosition.top,
+            autoDismiss: true,
+            animationDuration: const Duration(milliseconds: 100),
+            snackbarDuration: const Duration(milliseconds: 800),
+            builder: (context) => ToastCard(
+              color: Colors.green,
+              leading: const Icon(
+                Icons.done,
+                size: 28,
+                color: Colors.white,
+              ),
+              title: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "தணிக்கை வெற்றிகரமாக ஒதுக்கப்பட்டது"
+                    : "Audit successfully assigned",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
                   color: Colors.white,
                 ),
-                title: Text(
-                  Provider.of<LanguageProvider>(context).isTamil
-                      ? "தணிக்கை வெற்றிகரமாக ஒதுக்கப்பட்டது"
-                      : "Audit successfully assigned",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
-                    color: Colors.white,
-                  ),
-                ),
               ),
-            ).show(context);
-          });
+            ),
+          ).show(context);
+          // });
 
-          // print(response.body);
-          // var responseBody = jsonDecode(response.body);
-          // print('Response body decoded: $responseBody');
+          Get.offAll(const AdminNavPage());
         } catch (e) {
           print('Error decoding response body: $e');
         }
       } else {
-        try {
-          // var errorResponse = jsonDecode(response.body);
-          // print('Error response: $errorResponse');
-        } catch (e) {
+        try {} catch (e) {
           print('Error decoding error response: $e');
         }
       }
     } catch (error) {
       print('Request error: $error');
+    }
+  }
+
+  Future<void> weeklytaskassignednotif() async {
+    var headers = {'Content-Type': 'application/json'};
+    try {
+      var url = Uri.parse(ApiEndPoints.baseUrl +
+          ApiEndPoints.authEndpoints.sendNotificationToUser);
+
+      var body = json.encode({"message": "New Task assigned."});
+
+      var response = await http.post(url, body: body, headers: headers);
+      if (response.statusCode == 200) {
+        print("all good");
+      }
+    } catch (e) {
+      Get.back();
+      showDialog(
+          context: Get.context!,
+          builder: (context) {
+            return SimpleDialog(
+              title: const Text('Opps!'),
+              contentPadding: const EdgeInsets.all(20),
+              children: [Text(e.toString())],
+            );
+          });
     }
   }
 
@@ -402,48 +422,50 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                   return Text('Error: ${snapshot.error}');
                                 } else {
                                   return Expanded(
-                                    child: ListView(
-                                      // physics:
-                                      // const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      padding: EdgeInsets.zero,
-                                      children: snapshot.data!.map((areaUser) {
-                                        bool isSelected = _selectedAreas
-                                            .contains(areaUser.areaSpecific);
-                                        return Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 8.0),
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                _onAreaSelected(!isSelected,
-                                                    areaUser.areaSpecific!);
-                                              });
-                                            },
-                                            child: UserContainer(
-                                              color: isSelected
-                                                  ? const Color.fromRGBO(
-                                                      229, 184, 91, 1)
-                                                  : Colors.white,
-                                              inside: Text(
-                                                Provider.of<LanguageProvider>(
-                                                            context)
-                                                        .isTamil
-                                                    ? areaUser
-                                                        .areaSpecificTamil!
-                                                    : areaUser.areaSpecific!,
-                                                style: GoogleFonts.manrope(
-                                                  color: isSelected
-                                                      ? Colors.white
-                                                      : Colors.black,
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.bold,
+                                    child: Scrollbar(
+                                      // trackVisibility: false,
+                                      child: ListView(
+                                        shrinkWrap: true,
+                                        padding: EdgeInsets.zero,
+                                        children:
+                                            snapshot.data!.map((areaUser) {
+                                          bool isSelected = _selectedAreas
+                                              .contains(areaUser.areaSpecific);
+                                          return Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 8.0),
+                                            child: GestureDetector(
+                                              onTap: () {
+                                                setState(() {
+                                                  _onAreaSelected(!isSelected,
+                                                      areaUser.areaSpecific!);
+                                                });
+                                              },
+                                              child: UserContainer(
+                                                color: isSelected
+                                                    ? const Color.fromRGBO(
+                                                        229, 184, 91, 1)
+                                                    : Colors.white,
+                                                inside: Text(
+                                                  Provider.of<LanguageProvider>(
+                                                              context)
+                                                          .isTamil
+                                                      ? areaUser
+                                                          .areaSpecificTamil!
+                                                      : areaUser.areaSpecific!,
+                                                  style: GoogleFonts.manrope(
+                                                    color: isSelected
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        );
-                                      }).toList(),
+                                          );
+                                        }).toList(),
+                                      ),
                                     ),
                                   );
                                 }
@@ -641,8 +663,6 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                                           ),
                                                           onPressed: () {
                                                             submitweeklyaudittouser();
-                                                            Get.offAll(
-                                                                const AdminNavPage());
                                                           },
                                                         ),
                                                       ],

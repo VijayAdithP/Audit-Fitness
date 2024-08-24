@@ -126,8 +126,8 @@ class _ViewingAdminPagesState extends State<ViewingAdminPages> {
                   style: GoogleFonts.manrope(
                     color: Colors.black,
                     fontSize: Provider.of<LanguageProvider>(context).isTamil
-                        ? 30
-                        : 35,
+                        ? 25
+                        : 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

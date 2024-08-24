@@ -8,12 +8,10 @@ import 'package:auditfitnesstest/screens/auth_screen.dart';
 import 'package:auditfitnesstest/screens/widgets/Admin-widgets/Weekly%20Audit/weekly_audit_dialog.dart';
 import 'package:auditfitnesstest/screens/widgets/Admin-widgets/audit-id-cards.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class AdminNavPage extends StatefulWidget {
@@ -24,6 +22,38 @@ class AdminNavPage extends StatefulWidget {
 }
 
 class _AdminNavPageState extends State<AdminNavPage> {
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addObserver(this); // Add this class as an observer
+  // }
+
+  // @override
+  // void dispose() {
+  //   WidgetsBinding.instance
+  //       .removeObserver(this); // Remove this class as an observer
+  //   super.dispose();
+  // }
+
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   if (state == AppLifecycleState.detached ||
+  //       state == AppLifecycleState.inactive) {
+  //     _clearCache(); // Clear cache when app is going to be closed
+  //   }
+  // }
+
+  // Future<void> _clearCache() async {
+  //   try {
+  //     final cacheDir = await getTemporaryDirectory();
+  //     if (cacheDir.existsSync()) {
+  //       cacheDir.deleteSync(recursive: true);
+  //     }
+  //   } catch (e) {
+  //     print('Error clearing cache: $e');
+  //   }
+  // }
+
   final screens = [
     const AdminPage(),
     const AreaAndQuestionsPage(),
@@ -208,19 +238,19 @@ class _Drawer_State extends State<Drawer_> {
                   );
                 },
               ),
-              const Divider(),
-              ListTile(
-                title: Text(
-                  Provider.of<LanguageProvider>(context).isTamil
-                      ? "மாதாந்திர தணிக்கை"
-                      : 'Monthly Audit',
-                  style: GoogleFonts.manrope(
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black,
-                  ),
-                ),
-                onTap: () async {},
-              ),
+              // const Divider(),
+              // ListTile(
+              //   title: Text(
+              //     Provider.of<LanguageProvider>(context).isTamil
+              //         ? "மாதாந்திர தணிக்கை"
+              //         : 'Monthly Audit',
+              //     style: GoogleFonts.manrope(
+              //       fontWeight: FontWeight.w700,
+              //       color: Colors.black,
+              //     ),
+              //   ),
+              //   onTap: () async {},
+              // ),
             ],
           ),
           const Divider(),
@@ -264,10 +294,6 @@ class _Drawer_State extends State<Drawer_> {
               ),
             ),
             onTap: () async {
-              final SharedPreferences prefs =
-                  await SharedPreferences.getInstance();
-              await prefs.clear();
-              // box.erase();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -646,7 +672,7 @@ class _AdminPageState extends State<AdminPage> {
                       : "MANAGE YOUR TASKS",
                   style: GoogleFonts.manrope(
                     color: Colors.black,
-                    fontSize: 35,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -675,30 +701,30 @@ class _AdminPageState extends State<AdminPage> {
                             });
                       },
                     ),
-                    AuditCards(
-                      // shadow: Colors.blue[300],
-                      background: Colors.white,
-                      text2: Provider.of<LanguageProvider>(context).isTamil
-                          ? "தற்போது கிடைக்கவில்லை"
-                          : "Not Avilable at the moment",
-                      text1: Provider.of<LanguageProvider>(context).isTamil
-                          ? "தணிக்கை ஐடியை உருவாக்கவும்"
-                          : "Monthly Audit Id",
-                      cardtitle: Provider.of<LanguageProvider>(context).isTamil
-                          ? "மாதாந்திர தணிக்கை"
-                          : "Monthly Audit",
-                      navpage: () {
-                        // showDialog(
-                        //     context: context,
-                        //     builder: (context) {
-                        //       return StatefulBuilder(
-                        //         builder: (BuildContext context, setState) {
-                        //           return const MonthlyAuditDialog();
-                        //         },
-                        //       );
-                        //     });
-                      },
-                    ),
+                    // AuditCards(
+                    //   // shadow: Colors.blue[300],
+                    //   background: Colors.white,
+                    //   text2: Provider.of<LanguageProvider>(context).isTamil
+                    //       ? "தற்போது கிடைக்கவில்லை"
+                    //       : "Not Avilable at the moment",
+                    //   text1: Provider.of<LanguageProvider>(context).isTamil
+                    //       ? "தணிக்கை ஐடியை உருவாக்கவும்"
+                    //       : "Monthly Audit Id",
+                    //   cardtitle: Provider.of<LanguageProvider>(context).isTamil
+                    //       ? "மாதாந்திர தணிக்கை"
+                    //       : "Monthly Audit",
+                    //   navpage: () {
+                    //     // showDialog(
+                    //     //     context: context,
+                    //     //     builder: (context) {
+                    //     //       return StatefulBuilder(
+                    //     //         builder: (BuildContext context, setState) {
+                    //     //           return const MonthlyAuditDialog();
+                    //     //         },
+                    //     //       );
+                    //     //     });
+                    //   },
+                    // ),
                     AuditCards(
                       // shadow: Colors.blue[300],
                       background: Colors.white,
@@ -719,7 +745,7 @@ class _AdminPageState extends State<AdminPage> {
                       // shadow: Colors.blue[300],
                       background: Colors.white,
                       text2: Provider.of<LanguageProvider>(context).isTamil
-                          ? "சேர்க்க தட்டவும்"
+                          ? "பார்க்க தட்டவும்"
                           : "Tap to view",
                       text1: Provider.of<LanguageProvider>(context).isTamil
                           ? "வளாக தணிக்கை அறிக்கைகள்"

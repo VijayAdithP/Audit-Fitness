@@ -112,7 +112,7 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
                   children: [
                     Container(
                       padding: const EdgeInsets.only(
-                        // top: 50.0,
+                        top: 10.0,
                         left: 15.0,
                         right: 15.0,
                         bottom: 10.0,
@@ -133,8 +133,74 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
                                   size: 30,
                                 ),
                               ),
-                              const Icon(Icons.info,
-                                  size: 25, color: Colors.black)
+                              GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return SimpleDialog(
+                                          backgroundColor: const Color.fromRGBO(
+                                              46, 46, 46, 1),
+                                          contentPadding:
+                                              const EdgeInsets.all(20),
+                                          title: Column(
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  Provider.of<LanguageProvider>(
+                                                              context)
+                                                          .isTamil
+                                                      ? "தகவல்"
+                                                      : "INFO",
+                                                  style: const TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.blueAccent,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  textAlign: TextAlign.center,
+                                                  Provider.of<LanguageProvider>(
+                                                              context)
+                                                          .isTamil
+                                                      ? "வாராந்திர தணிக்கை நிலுவையில் உள்ளது"
+                                                      : "Pending weekly audits",
+                                                  style: const TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          children: [
+                                            Text(
+                                              Provider.of<LanguageProvider>(
+                                                          context)
+                                                      .isTamil
+                                                  ? "உங்களிடம் நிலுவையில் உள்ள தணிக்கைகள் இதோ, நிர்ணயிக்கப்பட்ட காலக்கெடுவிற்கு முன் அவற்றை முடிக்கவும்"
+                                                  : "Here are the pending audits you have, Complete them before the set deadline",
+                                              style: const TextStyle(
+                                                fontSize: 17,
+                                                // fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
+                                child: const Icon(Icons.info,
+                                    size: 25, color: Colors.black),
+                              )
                             ],
                           ),
                           const SizedBox(
@@ -143,11 +209,11 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
                           Text(
                             overflow: TextOverflow.visible,
                             Provider.of<LanguageProvider>(context).isTamil
-                                ? "நிர்வாக டாஷ்போர்டு"
+                                ? "வாராந்திர தணிக்கைகள்"
                                 : "PENDING WEEKLY AUDIT",
                             style: GoogleFonts.manrope(
                               color: Colors.black,
-                              fontSize: 35,
+                              fontSize: 30,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -170,91 +236,117 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
                           ),
                           child: RefreshIndicator(
                             onRefresh: _refreshTasks,
-                            child: ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount: weeklyTasks.length,
-                              itemBuilder: (context, index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            WeeklyUserAuditSubmmitPage(
-                                          auditAuditRange: getWeekDateRange(
-                                              weeklyTasks[index].weekNumber!,
-                                              weeklyTasks[index].year!),
-                                          auditId:
-                                              weeklyTasks[index].weeklyTaskId,
-                                          auditarea:
-                                              weeklyTasks[index].selectedArea,
-                                          auditdata: weeklyTasks[index]
-                                              .assignedAt
-                                              .toString(),
-                                          auditmonth: weeklyTasks[index].month,
-                                          auditweeknumber: weeklyTasks[index]
-                                              .weekNumber
-                                              .toString(),
-                                          audityear: weeklyTasks[index]
-                                              .year
-                                              .toString(),
+                            child: weeklyTasks.isEmpty
+                                ? Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        Provider.of<LanguageProvider>(context)
+                                                .isTamil
+                                            ? "தற்போது \nகாலியாக உள்ளது"
+                                            : "Currently empty",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          color: Colors.grey[700],
+                                          fontSize: 30,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                      ),
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      height: 120,
-                                      decoration: const BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: const BorderRadius.all(
-                                          Radius.circular(30),
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: const Color.fromRGBO(
-                                                158, 158, 158, 1),
-                                            spreadRadius: -5,
-                                            blurRadius: 5,
-                                            offset: const Offset(0, 4),
-                                          ),
-                                        ],
-                                      ),
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            weeklyTasks[index].weeklyTaskId ??
-                                                'No Task ID',
-                                            style: GoogleFonts.manrope(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 25,
-                                            ),
-                                          ),
-                                          // const SizedBox(height: 10),
-                                          Text(
-                                            getWeekDateRange(
-                                                weeklyTasks[index].weekNumber!,
-                                                weeklyTasks[index].year!),
-                                            style: GoogleFonts.manrope(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 15,
-                                              color: Colors.grey[700],
-                                            ),
-                                          ),
-                                          const Expanded(
-                                            child: SizedBox(height: 10),
-                                          ),
-                                        ],
                                       ),
                                     ),
+                                  )
+                                : ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    itemCount: weeklyTasks.length,
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  WeeklyUserAuditSubmmitPage(
+                                                auditAuditRange:
+                                                    getWeekDateRange(
+                                                        weeklyTasks[index]
+                                                            .weekNumber!,
+                                                        weeklyTasks[index]
+                                                            .year!),
+                                                auditId: weeklyTasks[index]
+                                                    .weeklyTaskId,
+                                                auditarea: weeklyTasks[index]
+                                                    .selectedArea,
+                                                auditdata: weeklyTasks[index]
+                                                    .assignedAt
+                                                    .toString(),
+                                                auditmonth:
+                                                    weeklyTasks[index].month,
+                                                auditweeknumber:
+                                                    weeklyTasks[index]
+                                                        .weekNumber
+                                                        .toString(),
+                                                audityear: weeklyTasks[index]
+                                                    .year
+                                                    .toString(),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            height: 120,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(30),
+                                              ),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: const Color.fromRGBO(
+                                                      158, 158, 158, 1),
+                                                  spreadRadius: -5,
+                                                  blurRadius: 5,
+                                                  offset: const Offset(0, 4),
+                                                ),
+                                              ],
+                                            ),
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  weeklyTasks[index]
+                                                          .weeklyTaskId ??
+                                                      'No Task ID',
+                                                  style: GoogleFonts.manrope(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 25,
+                                                  ),
+                                                ),
+                                                // const SizedBox(height: 10),
+                                                Text(
+                                                  getWeekDateRange(
+                                                      weeklyTasks[index]
+                                                          .weekNumber!,
+                                                      weeklyTasks[index].year!),
+                                                  style: GoogleFonts.manrope(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 15,
+                                                    color: Colors.grey[700],
+                                                  ),
+                                                ),
+                                                const Expanded(
+                                                  child: SizedBox(height: 10),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   ),
-                                );
-                              },
-                            ),
                           ),
                         ),
                       ),

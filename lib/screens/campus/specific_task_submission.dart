@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:auditfitnesstest/models/campus%20info/reportby_specific_area.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
+import 'package:auditfitnesstest/screens/campus/campuspage.dart';
 import 'package:auditfitnesstest/screens/widgets/User-Widgets/user_container.dart';
 import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -8,6 +9,8 @@ import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/components/toast_card.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -79,9 +82,11 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
       });
 
       var response = await http.post(url, body: body, headers: headers);
+      // setState(() {
 
+      // });
       if (response.statusCode == 200) {
-      setState(() {
+        // print(response.body);
         DelightToastBar(
           position: DelightSnackbarPosition.top,
           autoDismiss: true,
@@ -106,11 +111,10 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
             ),
           ),
         ).show(context);
-      });
-      // print(response.body);
-      Navigator.pop(context);
-      }
-      else {
+        // Get.offAll(const CampusMainPage());
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+      } else {
         throw jsonDecode(response.body)["Message"] ?? "Invalid Login";
       }
     } catch (error) {
@@ -323,9 +327,9 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
   String selectedStatus = 'In Progress';
   @override
   Widget build(BuildContext context) {
-    double containerWidth = MediaQuery.of(context).size.width - 30;
-    double optionWidth = containerWidth / options.length;
-    double optionTamilWidth = containerWidth / optionsTamil.length;
+    // double containerWidth = MediaQuery.of(context).size.width - 30;
+    // double optionWidth = containerWidth / options.length;
+    // double optionTamilWidth = containerWidth / optionsTamil.length;
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.black,

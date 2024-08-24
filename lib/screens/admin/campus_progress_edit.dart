@@ -89,6 +89,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
   }
 
   String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
   Future<void> createcampustask() async {
     // print(widget.reportObservation);
     var headers = {'Content-Type': 'application/json'};
@@ -133,6 +134,31 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
         throw jsonDecode(response.body)["Message"] ?? "Invalid Login";
       }
     } catch (error) {}
+  }
+
+  Future<void> weeklytaskassignednotif() async {
+    var headers = {'Content-Type': 'application/json'};
+    try {
+      var url = Uri.parse(ApiEndPoints.baseUrl +
+          ApiEndPoints.authEndpoints.sendNotificationToUser);
+
+      var body = json.encode({"message": "New Task assigned."});
+
+      var response = await http.post(url, body: body, headers: headers);
+      if (response.statusCode == 200) {
+        print("all good");
+      }
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return SimpleDialog(
+              title: const Text('Opps!'),
+              contentPadding: const EdgeInsets.all(20),
+              children: [Text(e.toString())],
+            );
+          });
+    }
   }
 
   @override

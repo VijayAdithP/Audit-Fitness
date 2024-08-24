@@ -17,7 +17,7 @@ class _AreaAndQuestionsPageState extends State<AreaAndQuestionsPage> {
   @override
   Widget build(BuildContext context) {
     final box = GetStorage();
-    String? FCMtoken = box.read('FCMtoken');
+    String FCMtoken = box.read('FCMtoken');
     return Container(
       color: const Color.fromRGBO(229, 229, 228, 1),
       child: SafeArea(
@@ -94,7 +94,7 @@ class _AreaAndQuestionsPageState extends State<AreaAndQuestionsPage> {
                                     Provider.of<LanguageProvider>(context)
                                             .isTamil
                                         ? "குறிப்பிட்ட பகுதிகள் மற்றும் குறிப்பிட்ட பகுதிகளுக்கான பிரத்யேக கேள்விகளைச் சேர்க்க, கீழே உள்ள கார்டுகளைத் தட்டவும்"
-                                        : "To add specific areas and dedicated question for those specific areas tap on the cards below\n FCMTOKEN: $FCMtoken",
+                                        : "To add specific areas and dedicated question for those specific areas tap on the cards below",
                                     style: const TextStyle(
                                       fontSize: 17,
                                       // fontWeight: FontWeight.bold,
@@ -126,8 +126,8 @@ class _AreaAndQuestionsPageState extends State<AreaAndQuestionsPage> {
                   style: GoogleFonts.manrope(
                     color: Colors.black,
                     fontSize: Provider.of<LanguageProvider>(context).isTamil
-                        ? 30
-                        : 35,
+                        ? 25
+                        : 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

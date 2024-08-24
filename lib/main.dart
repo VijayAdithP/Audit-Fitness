@@ -32,7 +32,6 @@ import 'package:auditfitnesstest/firebase_options.dart';
 import 'package:auditfitnesstest/screens/auth_screen.dart';
 import 'package:auditfitnesstest/screens/main_page.dart';
 import 'package:auditfitnesstest/service/notification/firebase_api.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -43,15 +42,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
-
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
-  //await Firebase.initializeApp();
-
-  print("Handling a background message: ${message.messageId}");
-}
 
 Future<void> main() async {
   final box = GetStorage();

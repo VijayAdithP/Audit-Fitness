@@ -193,6 +193,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
         ).show(context);
         // Handle successful response
         // print(response.body);
+        Get.off(() => const AdminNavPage());
       } else {
         // Handle error response
         print('Failed to submit data');
@@ -785,8 +786,6 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                                         ),
                                                         onPressed: () {
                                                           _submitData();
-                                                          Get.off(() =>
-                                                              const AdminNavPage());
                                                         },
                                                       ),
                                                     ],

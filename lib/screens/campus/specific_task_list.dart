@@ -19,6 +19,7 @@ class SpecificTaskList extends StatefulWidget {
 class _SpecificTaskListState extends State<SpecificTaskList> {
   List<SpecificTask> tasks = [];
   bool isLoading = true;
+  int _currIndex = 0;
 
   @override
   void initState() {
@@ -40,7 +41,8 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
       throw Exception('Failed to load tasks');
     }
   }
-    Future<void> _refreshSpecificTasks() async {
+
+  Future<void> _refreshSpecificTasks() async {
     // Simulate a network request or perform your actual data fetching logic here
     await Future.delayed(const Duration(seconds: 1));
 
@@ -73,7 +75,7 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
                   children: [
                     Container(
                       padding: const EdgeInsets.only(
-                        // top: 70.0,
+                        // top: 10.0,
                         left: 15.0,
                         right: 15.0,
                         bottom: 10.0,
@@ -94,9 +96,119 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
                                   size: 30,
                                 ),
                               ),
-                              const Icon(
-                                Icons.info,
-                                size: 25,
+                              Row(
+                                children: [
+                                  IconButton(
+                                    icon: AnimatedSwitcher(
+                                        duration: const Duration(seconds: 1),
+                                        transitionBuilder: (child, anim) =>
+                                            RotationTransition(
+                                              turns:
+                                                  child.key == ValueKey('icon1')
+                                                      ? Tween<double>(
+                                                              begin: 1, end: -1)
+                                                          .animate(anim)
+                                                      : Tween<double>(
+                                                              begin: -1, end: 1)
+                                                          .animate(anim),
+                                              child: FadeTransition(
+                                                  opacity: anim, child: child),
+                                            ),
+                                        child: _currIndex == 0
+                                            ? Icon(Icons.sync,
+                                                color: Colors.black,
+                                                key: const ValueKey('icon1'))
+                                            : Icon(
+                                                Icons.sync,
+                                                color: Colors.black,
+                                                key: const ValueKey('icon2'),
+                                              )),
+                                    onPressed: () {
+                                      _refreshSpecificTasks();
+                                      setState(() {
+                                        _currIndex = _currIndex == 0 ? 1 : 0;
+                                      });
+                                    },
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return SimpleDialog(
+                                              backgroundColor:
+                                                  const Color.fromRGBO(
+                                                      46, 46, 46, 1),
+                                              contentPadding:
+                                                  const EdgeInsets.all(20),
+                                              title: Column(
+                                                children: [
+                                                  Align(
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      Provider.of<LanguageProvider>(
+                                                                  context)
+                                                              .isTamil
+                                                          ? "தகவல்"
+                                                          : "INFO",
+                                                      style: const TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            Colors.blueAccent,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Align(
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      Provider.of<LanguageProvider>(
+                                                                  context)
+                                                              .isTamil
+                                                          ? "நிலுவையில் உள்ள தணிக்கைகள்"
+                                                          : "Pending audits",
+                                                      style: const TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              children: [
+                                                Text(
+                                                  Provider.of<LanguageProvider>(
+                                                              context)
+                                                          .isTamil
+                                                      ? "காலக்கெடு தேதிக்கு முன் முடிக்க வேண்டிய அனைத்து வளாகப் பணிகளும் இங்கே உள்ளன."
+                                                      : "Here are all the Campus task that are needed to be completed before the deadline date.",
+                                                  style: const TextStyle(
+                                                    fontSize: 17,
+                                                    // fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
+                                            );
+                                          });
+                                    },
+                                    child: const Icon(
+                                      Icons.info,
+                                      size: 25,
+                                    ),
+                                  ),
+                                ],
                               )
                             ],
                           ),
@@ -112,8 +224,8 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
                               color: Colors.black,
                               fontSize:
                                   Provider.of<LanguageProvider>(context).isTamil
-                                      ? 27
-                                      : 35,
+                                      ? 23
+                                      : 30,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -178,13 +290,13 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
                                             color: Colors.black54,
                                           ),
                                           const SizedBox(
-                                            width: 20,
+                                            width: 10,
                                           ),
                                           Text(
                                             Provider.of<LanguageProvider>(
                                                         context)
                                                     .isTamil
-                                                ? "பணி ஐடி மூலம் தேடவும்"
+                                                ? "பணி ஐடியை தேடவும்"
                                                 : 'Search by task id',
                                             style: const TextStyle(
                                               fontSize: 18,
@@ -200,122 +312,158 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
                               ),
                               Expanded(
                                 child: RefreshIndicator(
-                                  onRefresh:  _refreshSpecificTasks,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    itemCount: tasks.length,
-                                    itemBuilder: (context, index) {
-                                      final task = tasks[index];
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SpecificTaskSubmission(
-                                                specificArea: task.specificArea!,
-                                                month: task.month!,
-                                                specificTaskId:
-                                                    task.specificTaskId!,
-                                                weeknumber: task.weekNumber!,
-                                                year: task.year!,
+                                  onRefresh: _refreshSpecificTasks,
+                                  child: tasks.isEmpty
+                                      ? Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              Provider.of<LanguageProvider>(
+                                                          context)
+                                                      .isTamil
+                                                  ? "தற்போது \nகாலியாக உள்ளது"
+                                                  : "Currently empty",
+                                              style: TextStyle(
+                                                color: Colors.grey[700],
+                                                fontSize: 30,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                          );
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            height: 180,
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                Radius.circular(30),
-                                              ),
-                                            ),
-                                            padding: const EdgeInsets.all(16.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  task.specificArea!,
-                                                  style: GoogleFonts.manrope(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 25,
+                                          ],
+                                        )
+                                      : ListView.builder(
+                                          padding: EdgeInsets.zero,
+                                          itemCount: tasks.length,
+                                          itemBuilder: (context, index) {
+                                            final task = tasks[index];
+                                            return GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        SpecificTaskSubmission(
+                                                      specificArea:
+                                                          task.specificArea!,
+                                                      month: task.month!,
+                                                      specificTaskId:
+                                                          task.specificTaskId!,
+                                                      weeknumber:
+                                                          task.weekNumber!,
+                                                      year: task.year!,
+                                                    ),
                                                   ),
-                                                ),
-                                                Text(
-                                                  task.actionTaken!,
-                                                  style: GoogleFonts.manrope(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: 15,
-                                                    color: Colors.grey[700],
+                                                );
+                                              },
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  height: 180,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                      Radius.circular(30),
+                                                    ),
                                                   ),
-                                                ),
-                                                const Expanded(
-                                                  child: SizedBox(height: 10),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Container(
-                                                        // width:
-                                                        //     Provider.of<LanguageProvider>(
-                                                        //                 context)
-                                                        //             .isTamil
-                                                        //         ? 130
-                                                        //         : 100,
-                                                        decoration: BoxDecoration(
-                                                          color: Colors.grey[300],
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .all(
-                                                            Radius.circular(20),
-                                                          ),
+                                                  padding: const EdgeInsets.all(
+                                                      16.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        task.specificArea!,
+                                                        style:
+                                                            GoogleFonts.manrope(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 25,
                                                         ),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Center(
-                                                            child: Text(
-                                                              Provider.of<LanguageProvider>(
-                                                                          context)
-                                                                      .isTamil
-                                                                  ? "பணி ஐடி: ${task.specificTaskId!.toString()}"
-                                                                  : 'Task Id: ${task.specificTaskId!.toString()}',
-                                                              style:
-                                                                  const TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                // fontSize: Provider.of<
-                                                                //                 LanguageProvider>(
-                                                                //             context)
-                                                                //         .isTamil
-                                                                //     ? 15
-                                                                //     : 14,
+                                                      ),
+                                                      Text(
+                                                        task.actionTaken!,
+                                                        style:
+                                                            GoogleFonts.manrope(
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontSize: 15,
+                                                          color:
+                                                              Colors.grey[700],
+                                                        ),
+                                                      ),
+                                                      const Expanded(
+                                                        child: SizedBox(
+                                                            height: 10),
+                                                      ),
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Container(
+                                                              // width:
+                                                              //     Provider.of<LanguageProvider>(
+                                                              //                 context)
+                                                              //             .isTamil
+                                                              //         ? 130
+                                                              //         : 100,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .grey[300],
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                        .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          20),
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ),
-                                                        )
-                                                        // const Icon(
-                                                        //   Icons.add,
-                                                        //   size: 30,
-                                                        // ),
-                                                        ),
-                                                  ],
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    Provider.of<LanguageProvider>(context)
+                                                                            .isTamil
+                                                                        ? "பணி ஐடி: ${task.specificTaskId!.toString()}"
+                                                                        : 'Task Id: ${task.specificTaskId!.toString()}',
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      // fontSize: Provider.of<
+                                                                      //                 LanguageProvider>(
+                                                                      //             context)
+                                                                      //         .isTamil
+                                                                      //     ? 15
+                                                                      //     : 14,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              )
+                                                              // const Icon(
+                                                              //   Icons.add,
+                                                              //   size: 30,
+                                                              // ),
+                                                              ),
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                              ],
-                                            ),
-                                          ),
+                                              ),
+                                            );
+                                          },
                                         ),
-                                      );
-                                    },
-                                  ),
                                 ),
                               ),
                             ],
@@ -422,12 +570,15 @@ class _CampusTaskSearchState extends State<CampusTaskSearch> {
                         expands: true,
                         controller: _searchController,
                         decoration: InputDecoration(
-                          icon: GestureDetector(
+                          prefixIcon: GestureDetector(
                             onTap: () {
                               Navigator.of(context).pop();
                             },
                             child: const Padding(
-                              padding: const EdgeInsets.only(left: 20.0),
+                              padding: const EdgeInsets.only(
+                                left: 20.0,
+                                right: 10,
+                              ),
                               child: const Icon(
                                 Icons.arrow_back,
                                 size: 25,
@@ -435,6 +586,19 @@ class _CampusTaskSearchState extends State<CampusTaskSearch> {
                               ),
                             ),
                           ),
+                          // icon: GestureDetector(
+                          //   onTap: () {
+                          //     Navigator.of(context).pop();
+                          //   },
+                          //   child: const Padding(
+                          //     padding: const EdgeInsets.only(left: 20.0),
+                          //     child: const Icon(
+                          //       Icons.arrow_back,
+                          //       size: 25,
+                          //       color: Colors.black54,
+                          //     ),
+                          //   ),
+                          // ),
                           filled: true,
                           fillColor: Colors.white,
                           enabledBorder: const OutlineInputBorder(
@@ -456,7 +620,7 @@ class _CampusTaskSearchState extends State<CampusTaskSearch> {
                           border: InputBorder.none,
                           hintText:
                               Provider.of<LanguageProvider>(context).isTamil
-                                  ? "பணி ஐடி மூலம் தேடவும்"
+                                  ? "பணி ஐடியை தேடவும்"
                                   : "Search by taskId",
                           hintStyle: const TextStyle(
                             fontSize: 18,
@@ -476,7 +640,9 @@ class _CampusTaskSearchState extends State<CampusTaskSearch> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "No Result",
+                          Provider.of<LanguageProvider>(context).isTamil
+                              ? "முடிவு இல்லை"
+                              : "No Result",
                           style: TextStyle(
                             color: Colors.grey[700],
                             fontSize: 30,

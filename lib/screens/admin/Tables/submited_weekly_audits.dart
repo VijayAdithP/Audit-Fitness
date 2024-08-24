@@ -200,7 +200,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
       ));
 
       if (response.statusCode == 200) {
-        print(response.body);
+        // print(response.body);
         // final data = (jsonDecode(response.body) as List)
         //     .map((json) => NewWeeklyReport.fromJson(json))
         //     .toList();
@@ -370,7 +370,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
         final file = File('$path/$fileName');
 
         await file.writeAsBytes(pdfBytes);
-        print('PDF saved at $path/$fileName');
+        // print('PDF saved at $path/$fileName');
 
         // Confirm the file is saved successfully
         if (await file.exists()) {
@@ -398,7 +398,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
               ),
             ),
           ).show(context);
-          print('File successfully saved.');
+          // print('File successfully saved.');
           return file.path;
         } else {
           print('File not found after save operation.');
@@ -1473,7 +1473,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                       ),
                     ),
                     GridColumn(
-                       width: 120.0,
+                      width: 120.0,
                       columnName: 'Images',
                       label: Container(
                         padding: const EdgeInsets.all(16.0),
@@ -1565,37 +1565,15 @@ class ReportDataSource extends DataGridSource {
       cells: [
         for (var cell in row.getCells())
           Container(
-            // height: 100,
             padding: cell.columnName == 'Images' && cell.value != "No images"
                 ? const EdgeInsets.symmetric(vertical: 0, horizontal: 5)
                 : const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
             alignment: Alignment.centerLeft,
-            child: cell.columnName == 'Images' && cell.value != "No images"
-                ? ConstrainedBox(
-                    constraints: BoxConstraints(
-                      maxWidth: 120.0, // Set a maximum width for the button
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        int mainAreaIndex =
-                            rowIndex ~/ reports.first.specificAreas!.length;
-                        int specificAreaIndex =
-                            rowIndex % reports.first.specificAreas!.length;
-                        onShowImageDialog(
-                          context,
-                          cell.value,
-                          reports[mainAreaIndex].mainArea ?? 'Unknown',
-                          reports[mainAreaIndex].taskId ?? 'Unknown',
-                          mainAreaIndex,
-                          specificAreaIndex,
-                          reports,
-                        );
-                      },
-                      child: const Text(
-                        'View Images',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                    ),
+            child: cell.columnName == 'Images'
+                ? _buildImagesCell(
+                    cell.value,
+                    rowIndex,
+                    row,
                   )
                 : Text(
                     cell.value.toString(),
@@ -1605,10 +1583,135 @@ class ReportDataSource extends DataGridSource {
       ],
     );
   }
+
+  Widget _buildImagesCell(String imagesValue, int rowIndex, DataGridRow row) {
+    // Get the 'Remarks' value for the current row
+    String remarksValue =
+        row.getCells().firstWhere((cell) => cell.columnName == 'Remarks').value;
+
+    // Check if the remarks contain "bad", ignoring case and whitespace
+    bool containsBad = remarksValue
+        .split(',')
+        .map((item) => item.trim().toLowerCase())
+        .contains('bad');
+
+    // Define the button text and the logic for which button to display
+    String buttonText;
+
+    // Handle cells with data (Images available)
+    if (imagesValue != "No images") {
+      buttonText = 'View Images';
+    }
+    // Handle cells without data but with "bad" in remarks
+    else if (containsBad) {
+      buttonText = 'Create Id';
+    }
+    // Handle cells without data and no "bad" in remarks
+    else {
+      buttonText = 'No images';
+    }
+
+    // Print statements for debugging
+    print('Images Value: $imagesValue');
+    print('Contains "bad": $containsBad');
+    print('Button Text: $buttonText');
+
+    // If a button should be shown
+    if (buttonText == 'View Images') {
+      // Calculate indices
+      int mainAreaIndex = rowIndex ~/ reports.first.specificAreas!.length;
+      int specificAreaIndex = rowIndex % reports.first.specificAreas!.length;
+
+      return ConstrainedBox(
+        constraints: const BoxConstraints(
+          maxWidth: 120.0, // Set a maximum width for the button
+        ),
+        child: TextButton(
+          onPressed: () {
+            onShowImageDialog(
+              context,
+              imagesValue,
+              reports[mainAreaIndex].mainArea ?? 'Unknown',
+              reports[mainAreaIndex].taskId ?? 'Unknown',
+              mainAreaIndex,
+              specificAreaIndex,
+              reports,
+            );
+          },
+          child: Text(
+            buttonText,
+            style: const TextStyle(
+              color: Colors.blue,
+              // fontSize: 16,
+            ),
+          ),
+        ),
+      );
+    } else if (containsBad) {
+      // Calculate indices
+      int mainAreaIndex = rowIndex ~/ reports.first.specificAreas!.length;
+      int specificAreaIndex = rowIndex % reports.first.specificAreas!.length;
+
+      return GestureDetector(
+        onTap: () {
+          onShowImageDialog(
+            context,
+            imagesValue,
+            reports[mainAreaIndex].mainArea ?? 'Unknown',
+            reports[mainAreaIndex].taskId ?? 'Unknown',
+            mainAreaIndex,
+            specificAreaIndex,
+            reports,
+          );
+        },
+        child: Container(
+          child: Text(
+            "Create Id",
+            style: const TextStyle(
+              color: Colors.blue,
+              // fontSize: 16,
+            ),
+          ),
+        ),
+      );
+
+      // ConstrainedBox(
+      //   constraints: const BoxConstraints(
+      //     maxWidth: 120.0, // Set a maximum width for the button
+      //   ),
+      //   child: TextButton(
+      //     onPressed: () {
+      //       onShowImageDialog(
+      //         context,
+      //         imagesValue,
+      //         reports[mainAreaIndex].mainArea ?? 'Unknown',
+      //         reports[mainAreaIndex].taskId ?? 'Unknown',
+      //         mainAreaIndex,
+      //         specificAreaIndex,
+      //         reports,
+      //       );
+      //     },
+      //     child: Text(
+      //       buttonText,
+      //       style: const TextStyle(
+      //         color: Colors.blue,
+      //         // fontSize: 16,
+      //       ),
+      //     ),
+      //   ),
+      // );
+    } else {
+      // Plain text for "No images" without "bad" in remarks
+      return Text(
+        buttonText,
+        style: const TextStyle(
+          // fontSize: 16, // Adjust the font size
+          color: Colors.black, // Ensure plain text color is visible
+        ),
+      );
+    }
+  }
 }
-
-
-
       // body: SingleChildScrollView(
       //   scrollDirection: Axis.vertical,
       //   child: Stack(

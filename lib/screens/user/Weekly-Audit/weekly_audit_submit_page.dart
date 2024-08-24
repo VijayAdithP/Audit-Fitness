@@ -146,7 +146,7 @@ class _WeeklyUserAuditSubmmitPageState
             mainAreaData = SpecificUserMainAreaModel.fromJson(responseBody[0]);
             MainAreaVar = mainAreaData!.mainArea!;
           });
-          print(mainAreaData!.mainArea);
+          // print(mainAreaData!.mainArea);
         } else {
           throw Exception('Empty response');
         }
@@ -215,30 +215,37 @@ class _WeeklyUserAuditSubmmitPageState
       var response = await request.send();
 
       if (response.statusCode == 200) {
-        DelightToastBar(
-          position: DelightSnackbarPosition.top,
-          autoDismiss: true,
-          animationDuration: const Duration(milliseconds: 100),
-          snackbarDuration: const Duration(milliseconds: 800),
-          builder: (context) => ToastCard(
-            color: Colors.green,
-            leading: const Icon(
-              Icons.done,
-              size: 28,
-              color: Colors.white,
-            ),
-            title: Text(
-              Provider.of<LanguageProvider>(context).isTamil
-                  ? "தணிக்கை வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
-                  : "Audit successfully submitted",
-              style: const TextStyle(
-                fontWeight: FontWeight.w700,
-                fontSize: 14,
+        setState(() {
+          DelightToastBar(
+            position: DelightSnackbarPosition.top,
+            autoDismiss: true,
+            animationDuration: const Duration(milliseconds: 100),
+            snackbarDuration: const Duration(milliseconds: 800),
+            builder: (context) => ToastCard(
+              color: Colors.green,
+              leading: const Icon(
+                Icons.done,
+                size: 28,
                 color: Colors.white,
               ),
+              title: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "தணிக்கை வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
+                    : "Audit successfully submitted",
+                style: const TextStyle(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14,
+                  color: Colors.white,
+                ),
+              ),
             ),
-          ),
-        ).show(context);
+          ).show(context);
+        });
+        // Get.offAll(() => const UserHomePage());
+        // Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
       } else {
         throw Exception('Failed to submit audit');
       }
@@ -270,10 +277,10 @@ class _WeeklyUserAuditSubmmitPageState
               children: [
                 Container(
                   padding: const EdgeInsets.only(
-                    // top: 50.0,
+                    // top: 10.0,
                     left: 15.0,
                     right: 15.0,
-                    bottom: 20.0,
+                    bottom: 10.0,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,11 +306,14 @@ class _WeeklyUserAuditSubmmitPageState
                             Text(
                               overflow: TextOverflow.visible,
                               Provider.of<LanguageProvider>(context).isTamil
-                                  ? "நிர்வாக டாஷ்போர்டு"
+                                  ? "தணிக்கை விவரங்கள்"
                                   : "WEEKLY AUDITS",
                               style: GoogleFonts.manrope(
                                 color: Colors.black,
-                                fontSize: 20,
+                                fontSize: Provider.of<LanguageProvider>(context)
+                                        .isTamil
+                                    ? 17
+                                    : 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -348,7 +358,7 @@ class _WeeklyUserAuditSubmmitPageState
                                     : "Auditor",
                                 style: GoogleFonts.manrope(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 23,
+                                  fontSize: 20,
                                 ),
                               ),
                               const SizedBox(height: 5),
@@ -368,7 +378,7 @@ class _WeeklyUserAuditSubmmitPageState
                                     : "PhoneNumber",
                                 style: GoogleFonts.manrope(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 23,
+                                  fontSize: 20,
                                 ),
                               ),
                               const SizedBox(height: 5),
@@ -388,7 +398,7 @@ class _WeeklyUserAuditSubmmitPageState
                                     : "Audit Id",
                                 style: GoogleFonts.manrope(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 23,
+                                  fontSize: 20,
                                 ),
                               ),
                               const SizedBox(height: 5),
@@ -408,7 +418,7 @@ class _WeeklyUserAuditSubmmitPageState
                                     : "Date",
                                 style: GoogleFonts.manrope(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 23,
+                                  fontSize: 20,
                                 ),
                               ),
                               const SizedBox(height: 5),
@@ -428,7 +438,7 @@ class _WeeklyUserAuditSubmmitPageState
                                     : "Main Area Name",
                                 style: GoogleFonts.manrope(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 23,
+                                  fontSize: 20,
                                 ),
                               ),
                               const SizedBox(height: 5),
@@ -448,7 +458,7 @@ class _WeeklyUserAuditSubmmitPageState
                                     : "Area Name",
                                 style: GoogleFonts.manrope(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 23,
+                                  fontSize: 20,
                                 ),
                               ),
                               const SizedBox(height: 5),
@@ -481,7 +491,7 @@ class _WeeklyUserAuditSubmmitPageState
                                             : question.question!,
                                         style: GoogleFonts.manrope(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 23,
+                                          fontSize: 20,
                                         ),
                                       ),
                                       const SizedBox(height: 5),
@@ -779,7 +789,7 @@ class _WeeklyUserAuditSubmmitPageState
                                     : "Any Suggestion?",
                                 style: GoogleFonts.manrope(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 23,
+                                  fontSize: 20,
                                 ),
                               ),
                               const SizedBox(height: 10),
@@ -999,8 +1009,6 @@ class _WeeklyUserAuditSubmmitPageState
                                                             ),
                                                             onPressed: () {
                                                               auditsubmituser();
-                                                              Get.off(() =>
-                                                                  const UserHomePage());
                                                             },
                                                           ),
                                                         ],

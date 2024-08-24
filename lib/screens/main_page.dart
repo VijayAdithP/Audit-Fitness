@@ -27,9 +27,9 @@ class MainpageState extends State<Mainpage> {
     } else if (role == 'admin') {
       return const AdminNavPage();
     } else if (role == 'user') {
-      return const UserHomePage();
+      return const Userpage();
     } else if (role == 'executer') {
-      return const CampusPage();
+      return const CampusMainPage();
     } else {
       return const AuthScreen();
     }

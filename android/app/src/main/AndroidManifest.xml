@@ -13,9 +13,12 @@
     <!-- <uses-permission android:name="android.permission.USE_EXACT_ALARM" /> -->
     <application
         android:requestLegacyExternalStorage="true"
-        android:label="auditfitnesstest"
+        android:label="BIT Audit"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
+                <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/bit" />
         <!-- <receiver android:enabled="true" android:exported="true" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
         <receiver android:enabled="true" android:exported="true" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
             <intent-filter>
@@ -61,6 +64,8 @@
               android:name="com.google.firebase.messaging.default_notification_channel_id"
               android:value="high_importance_channel"
               />
+
+
         <meta-data
     android:name="firebase_messaging_auto_init_enabled"
     android:value="false" />

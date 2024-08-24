@@ -10,7 +10,7 @@ import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class WeeklyAuditDialog extends StatefulWidget {
@@ -22,7 +22,7 @@ class WeeklyAuditDialog extends StatefulWidget {
 
 class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
   final box = GetStorage();
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   final TextEditingController _weeklyauditIdController =
       TextEditingController();
@@ -83,9 +83,9 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
       var response = await http.post(url, body: body, headers: headers);
 
       if (response.statusCode == 200) {
-        final SharedPreferences? prefs = await _prefs;
+        // final SharedPreferences? prefs = await _prefs;
         String weeklyauditId = _weeklyauditIdController.text;
-        await prefs?.setString('weeklyauditId', weeklyauditId);
+        // await prefs?.setString('weeklyauditId', weeklyauditId);
         DelightToastBar(
           position: DelightSnackbarPosition.top,
           autoDismiss: true,

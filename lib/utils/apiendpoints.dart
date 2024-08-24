@@ -1,5 +1,5 @@
 class ApiEndPoints {
-  static const String baseUrl = 'http://10.10.173.90:8001';
+  static const String baseUrl = 'http://10.10.17.105:8001';
   static AuthEndPoints authEndpoints = AuthEndPoints();
 }
 
@@ -21,6 +21,7 @@ class AuthEndPoints {
 
   final String createweeklyauditId = '/tasks';
   final String showallweeklyauditId = '/tasks';
+  final String sendNotificationToUser = '/send-user-Notification';
 
   final String enterAreaQuestions = '/area_questions';
   final String mainareas = '/main_area';
@@ -37,4 +38,6 @@ class AuthEndPoints {
   final String createspecifictaskid = '/specific-task';
 
   final String campusStatusUpdate = '/update-status';
+
+  final String userFCMtoken = '/store-token';
 }

@@ -23,7 +23,7 @@ class FirebaseApi {
   bool _isPermissionRequested = false;
 
   Future initLocalNotification() async {
-    const android = AndroidInitializationSettings('@drawable/ic_launcher');
+    const android = AndroidInitializationSettings('@drawable/bit');
     const settings = InitializationSettings(android: android);
     FirebaseMessaging.onMessage.listen((message) {
       final notification = message.notification;
@@ -37,7 +37,7 @@ class FirebaseApi {
             _androidChannel.id,
             _androidChannel.name,
             channelDescription: _androidChannel.description,
-            icon: '@drawable/ic_launcher',
+            icon: '@drawable/bit',
           ),
         ),
       );

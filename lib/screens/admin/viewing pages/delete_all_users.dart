@@ -37,6 +37,33 @@ class _DeleteAllUsersState extends State<DeleteAllUsers> {
       body: jsonEncode(user.toJson()),
     );
 
+    if (response.statusCode == 200) {
+      DelightToastBar(
+        position: DelightSnackbarPosition.top,
+        autoDismiss: true,
+        animationDuration: const Duration(milliseconds: 100),
+        snackbarDuration: const Duration(milliseconds: 800),
+        builder: (context) => ToastCard(
+          color: Colors.green,
+          leading: const Icon(
+            Icons.done,
+            size: 28,
+            color: Colors.white,
+          ),
+          title: Text(
+            Provider.of<LanguageProvider>(context).isTamil
+                ? "பணி ஐடி ஏற்கனவே உள்ளது"
+                : "PDF successfully downloaded",
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ).show(context);
+    }
+
     if (response.statusCode != 200) {
       throw Exception('Failed to update user');
     }
