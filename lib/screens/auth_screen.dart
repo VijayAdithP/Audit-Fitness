@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Text(
                         Provider.of<LanguageProvider>(context).isTamil
                             ? "வருக"
-                            : "Welcom",
+                            : "Welcome",
                         style: GoogleFonts.manrope(
                           textStyle: const TextStyle(
                             fontSize: 30,

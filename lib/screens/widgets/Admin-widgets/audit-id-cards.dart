@@ -28,7 +28,7 @@ class AuditCards extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          height: 150,
+          // height: MediaQuery.of(context).size.height / 2,
           decoration: BoxDecoration(
             color: background,
             boxShadow: [
@@ -62,24 +62,27 @@ class AuditCards extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              Expanded(child: Container()),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    width: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(20),
+              // Expanded(child: Container()),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      width: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                      child: Icon(
+                        icon,
+                        size: 30,
                       ),
                     ),
-                    child: Icon(
-                      icon,
-                      size: 30,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               )
             ],
           ),

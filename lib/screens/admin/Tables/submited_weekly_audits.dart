@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:auditfitnesstest/models/admin%20specific/weekly%20models/new_weekly_report.dart';
-import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/admin/campus_progress_edit.dart';
 import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -10,13 +9,13 @@ import 'package:delightful_toast/toast/components/toast_card.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -64,7 +63,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
   bool isimagethere = false;
   int totalObservations = 0;
   int totalRemarks = 0;
-  // late ReportDataSource _reportDataSource;
+  final box = GetStorage();
 
   @override
   void initState() {
@@ -191,35 +190,27 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
   bool isLoading = true;
 
   Future<void> fetchData() async {
-    // print(selectedWeek);
-    // print(month);
-    // print(year);
     try {
       final response = await http.get(Uri.parse(
         '${ApiEndPoints.baseUrl}${ApiEndPoints.authEndpoints.getweeklyreports}/$selectedWeek/$month/$year',
       ));
 
       if (response.statusCode == 200) {
-        // print(response.body);
-        // final data = (jsonDecode(response.body) as List)
-        //     .map((json) => NewWeeklyReport.fromJson(json))
-        //     .toList();
+        if (mounted) {
+          setState(() {
+            reports = (jsonDecode(response.body) as List)
+                .map((json) => NewWeeklyReport.fromJson(json))
+                .toList();
+            auditsDataJson = reports.map((report) => report.toJson()).toList();
+            // Calculating the total valid observations
+            totalObservations = reports.fold(
+                0, (sum, report) => sum + report.totalValidObservationCount);
 
-        setState(() {
-          reports = (jsonDecode(response.body) as List)
-              .map((json) => NewWeeklyReport.fromJson(json))
-              .toList();
-          auditsDataJson = reports.map((report) => report.toJson()).toList();
-          // Calculating the total valid observations
-          totalObservations = reports.fold(
-              0, (sum, report) => sum + report.totalValidObservationCount);
-
-          totalRemarks =
-              reports.fold(0, (sum, report) => sum + report.totalRemarksCount);
-          // print(totalRemarks);
-          isLoading = false;
-        });
-        // print(reports);
+            totalRemarks = reports.fold(
+                0, (sum, report) => sum + report.totalRemarksCount);
+            isLoading = false;
+          });
+        }
       } else {
         print('Failed to load data');
       }
@@ -263,6 +254,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
   }
 
   Future<void> fetchPDF() async {
+    bool isTamil = box.read('isTamil');
     try {
       if (!await _requestStoragePermission()) {
         print('Storage permission denied');
@@ -298,7 +290,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
               color: Colors.white,
             ),
             title: Text(
-              Provider.of<LanguageProvider>(context).isTamil
+              isTamil
                   ? "பணி ஐடி ஏற்கனவே உள்ளது"
                   : "PDF successfully downloaded",
               style: const TextStyle(
@@ -324,7 +316,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                 color: Colors.white,
               ),
               title: Text(
-                Provider.of<LanguageProvider>(context).isTamil
+                isTamil
                     ? "பணி ஐடி ஏற்கனவே உள்ளது"
                     : "PDF successfully downloaded",
                 style: const TextStyle(
@@ -363,6 +355,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
   }
 
   Future<String?> _savePDF(Uint8List pdfBytes, String fileName) async {
+    bool isTamil = box.read('isTamil');
     try {
       final directory = await getExternalStorageDirectory();
       if (directory != null) {
@@ -387,7 +380,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                 color: Colors.white,
               ),
               title: Text(
-                Provider.of<LanguageProvider>(context).isTamil
+                isTamil
                     ? "பணி ஐடி ஏற்கனவே உள்ளது"
                     : "PDF successfully downloaded",
                 style: const TextStyle(
@@ -417,661 +410,6 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
       print('Error opening PDF: ${result.message}');
     }
   }
-
-  // Widget _buildHeaderCell(String text, double width) {
-  //   return Container(
-  //     width: width,
-  //     height: 150,
-  //     decoration: BoxDecoration(
-  //       boxShadow: [
-  //         BoxShadow(
-  //           offset: Offset.fromDirection(12.6, 5.0),
-  //           color: Colors.grey[500]!,
-  //           blurRadius: 6,
-  //         ),
-  //       ],
-  //       border: const Border(
-  //         bottom: BorderSide(),
-  //       ),
-  //       color: Colors.grey[200],
-  //     ),
-  //     child: Padding(
-  //       padding: const EdgeInsets.only(
-  //         left: 15.0,
-  //       ),
-  //       child: Align(
-  //         alignment: Alignment.centerLeft,
-  //         child: Text(
-  //           text,
-  //           style: TextStyle(
-  //             fontSize:
-  //                 Provider.of<LanguageProvider>(context).isTamil ? 17 : 20,
-  //             fontWeight: FontWeight.bold,
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // Widget _buildDataCell(String text, double width, double height) {
-  //   return Container(
-  //     width: width,
-  //     height: height,
-  //     decoration: BoxDecoration(
-  //       boxShadow: [
-  //         BoxShadow(
-  //           offset: Offset.fromDirection(6.5, 5.0),
-  //           color: Colors.grey[500]!,
-  //           blurRadius: 6,
-  //         ),
-  //       ],
-  //       border: const Border(
-  //         bottom: BorderSide(),
-  //       ),
-  //       color: Colors.grey[200],
-  //     ),
-  //     child: Padding(
-  //       padding: const EdgeInsets.all(8.0),
-  //       child: Center(
-  //         child: Text(
-  //           text,
-  //           style: const TextStyle(
-  //             fontSize: 18,
-  //             fontWeight: FontWeight.bold,
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // List<String?> parseRemarkData(String? remarks) {
-  //   if (remarks == null) return [];
-
-  //   // Split the remarks string by commas and trim each entry
-  //   List<String?> remarkList = remarks.split(',').map((s) => s.trim()).toList();
-
-  //   // Remove entries that are empty or "No data"
-  //   remarkList.removeWhere((remark) =>
-  //       remark == null || remark.isEmpty || remark.toLowerCase() == 'no data');
-
-  //   return remarkList;
-  // }
-
-  // Widget _buildNestedDataCell(
-  //   List<String?> data,
-  //   double width,
-  //   double height,
-  //   bool isImageColumn,
-  //   bool isDateColumn,
-  //   bool isRemarkColumn,
-  //   List<String?>? imageData,
-  //   int mainAreaIndex,
-  //   String mainArea,
-  //   String taskid,
-  //   List<NewWeeklyReport> reports,
-  // ) {
-  //   return Container(
-  //     width: width,
-  //     height: height,
-  //     decoration: BoxDecoration(
-  //       border: const Border(
-  //         bottom: BorderSide(),
-  //       ),
-  //       color: Colors.grey[200],
-  //     ),
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: data.asMap().entries.map((entry) {
-  //         int index = entry.key;
-  //         String? item = entry.value;
-
-  //         if (isDateColumn && item != null) {
-  //           try {
-  //             DateTime parsedDate = DateTime.parse(item);
-  //             item = DateFormat('yyyy-MM-dd').format(parsedDate);
-  //           } catch (e) {
-  //             item = item;
-  //           }
-  //         }
-  //         return Container(
-  //           width: width,
-  //           decoration: BoxDecoration(
-  //             border: Border(
-  //               top: index == 0 ? BorderSide.none : const BorderSide(),
-  //             ),
-  //           ),
-  //           child: Padding(
-  //             padding: const EdgeInsets.all(15.0),
-  //             child: isImageColumn
-  //                 ? (item == null)
-  //                     ? GestureDetector(
-  //                         onTap: () {
-  //                           String specificArea = reports[mainAreaIndex]
-  //                                   .specificAreas?[index]
-  //                                   .specificArea ??
-  //                               'No data';
-  //                           String reportObservation = reports[mainAreaIndex]
-  //                                   .specificAreas?[index]
-  //                                   .reportObservation ??
-  //                               'No data';
-  //                           String auditdate = reports[mainAreaIndex]
-  //                                   .specificAreas?[index]
-  //                                   .auditDate ??
-  //                               'No data';
-  //                           if (specificArea == 'no data') {
-  //                             Navigator.push(
-  //                               context,
-  //                               MaterialPageRoute(
-  //                                 builder: (context) => CampusProgressEdit(
-  //                                   taskid: taskid,
-  //                                   mainArea: mainArea,
-  //                                   specificArea: specificArea,
-  //                                   reportObservation: reportObservation,
-  //                                   auditDate: auditdate,
-  //                                   month: month,
-  //                                   weeknumber: selectedWeek,
-  //                                   year: year,
-  //                                 ),
-  //                               ),
-  //                             );
-  //                           }
-  //                         },
-  //                         child: Text(
-  //                           Provider.of<LanguageProvider>(context).isTamil
-  //                               ? "படம் இல்லை"
-  //                               : 'No Image',
-  //                           style: TextStyle(
-  //                             // color: Colors.deepPurple,
-  //                             fontSize:
-  //                                 Provider.of<LanguageProvider>(context).isTamil
-  //                                     ? 16.5
-  //                                     : 18,
-  //                             fontWeight: FontWeight.bold,
-  //                           ),
-  //                         ),
-  //                       )
-  //                     : GestureDetector(
-  //                         onTap: () => _showImageDialog(
-  //                           context,
-  //                           item ?? '',
-  //                           mainArea, // Pass mainArea
-  //                           taskid,
-  //                           mainAreaIndex,
-  //                           index, // Pass the specific area index
-  //                           reports,
-  //                         ),
-  //                         child: Text(
-  //                           Provider.of<LanguageProvider>(context).isTamil
-  //                               ? "படங்களை பார்க்கவும்"
-  //                               : 'View Images',
-  //                           style: TextStyle(
-  //                             color: Colors.deepPurple,
-  //                             fontSize:
-  //                                 Provider.of<LanguageProvider>(context).isTamil
-  //                                     ? 16.5
-  //                                     : 18,
-  //                             fontWeight: FontWeight.bold,
-  //                           ),
-  //                         ),
-  //                       )
-  //                 : Text(
-  //                     item ?? "no data",
-  //                     style: const TextStyle(
-  //                       fontSize: 18,
-  //                       fontWeight: FontWeight.bold,
-  //                     ),
-  //                   ),
-  //           ),
-  //         );
-  //       }).toList(),
-  //     ),
-  //   );
-  // }
-
-  // void _showImageDialog(
-  //   BuildContext context,
-  //   String imageUrls,
-  //   String mainArea,
-  //   String taskid,
-  //   int mainAreaIndex,
-  //   int specificAreaIndex,
-  //   List<NewWeeklyReport> reports,
-  // ) {
-  //   final String baseUrl = '${ApiEndPoints.baseUrl}/';
-  //   List<String> urls = imageUrls.split(',').map((url) {
-  //     String formattedUrl =
-  //         baseUrl + url.trim().replaceAll('\\', '/').replaceAll(' ', '%20');
-  //     return formattedUrl;
-  //   }).toList();
-
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return Dialog(
-  //         backgroundColor: Colors.white,
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(40.0),
-  //         ),
-  //         child: ClipRRect(
-  //           borderRadius: BorderRadius.circular(40.0),
-  //           child: Padding(
-  //             padding: const EdgeInsets.all(3),
-  //             child: Container(
-  //               decoration: const BoxDecoration(
-  //                 color: Colors.white,
-  //                 borderRadius: BorderRadius.all(Radius.circular(37)),
-  //               ),
-  //               child: Padding(
-  //                 padding: const EdgeInsets.symmetric(
-  //                     horizontal: 20.0, vertical: 10),
-  //                 child: Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   mainAxisSize: MainAxisSize.min,
-  //                   children: [
-  //                     const Text(
-  //                       "Images",
-  //                       style: TextStyle(
-  //                         fontWeight: FontWeight.bold,
-  //                         fontSize: 17,
-  //                       ),
-  //                     ),
-  //                     SingleChildScrollView(
-  //                       scrollDirection: Axis.horizontal,
-  //                       child: Row(
-  //                         mainAxisAlignment: MainAxisAlignment.center,
-  //                         children: urls.map((url) {
-  //                           return Padding(
-  //                             padding: const EdgeInsets.all(8.0),
-  //                             child: GestureDetector(
-  //                               onTap: () {
-  //                                 showDialog(
-  //                                   context: context,
-  //                                   builder: (_) => imageDialog(url, context),
-  //                                 );
-  //                               },
-  //                               child: Container(
-  //                                 height: 200,
-  //                                 width: 200,
-  //                                 decoration: BoxDecoration(
-  //                                   border: Border.all(
-  //                                     width: 2,
-  //                                     color: Colors.white,
-  //                                   ),
-  //                                   borderRadius: BorderRadius.circular(10),
-  //                                 ),
-  //                                 child: ClipRRect(
-  //                                   borderRadius: BorderRadius.circular(10),
-  //                                   child: CachedNetworkImage(
-  //                                     imageUrl: url,
-  //                                     fit: BoxFit.fill,
-  //                                     placeholder: (context, url) =>
-  //                                         const Center(
-  //                                       child: CircularProgressIndicator(),
-  //                                     ),
-  //                                     errorWidget: (context, url, error) =>
-  //                                         const Icon(
-  //                                       Icons.error,
-  //                                       color: Colors.red,
-  //                                       size: 50,
-  //                                     ),
-  //                                   ),
-  //                                 ),
-  //                               ),
-  //                             ),
-  //                           );
-  //                         }).toList(),
-  //                       ),
-  //                     ),
-  //                     SizedBox(
-  //                       height: 50,
-  //                       width: 300,
-  //                       child: ElevatedButton(
-  //                         onPressed: () {
-  //                           String specificArea = reports[mainAreaIndex]
-  //                                   .specificAreas?[specificAreaIndex]
-  //                                   .specificArea ??
-  //                               'No data';
-  //                           String reportObservation = reports[mainAreaIndex]
-  //                                   .specificAreas?[specificAreaIndex]
-  //                                   .reportObservation ??
-  //                               'No data';
-  //                           String auditdate = reports[mainAreaIndex]
-  //                                   .specificAreas?[specificAreaIndex]
-  //                                   .auditDate ??
-  //                               'No data';
-  //     print(specificArea);
-  //     print(reportObservation);
-  //     print(auditdate);
-  // Navigator.push(
-  //   context,
-  //   MaterialPageRoute(
-  //     builder: (context) => CampusProgressEdit(
-  //       taskid: taskid,
-  //       mainArea: mainArea,
-  //       specificArea: specificArea,
-  //       reportObservation: reportObservation,
-  //       auditDate: auditdate,
-  //       month: month,
-  //       weeknumber: selectedWeek,
-  //       year: year,
-  //     ),
-  //   ),
-  // );
-  //                           // Here, navigate to another page or handle accordingly
-  //                           // Navigator.pop(context); // Close the dialog
-  //                         },
-  //                         style: ElevatedButton.styleFrom(
-  //                           shape: RoundedRectangleBorder(
-  //                             borderRadius: BorderRadius.circular(20.0),
-  //                           ),
-  //                           padding: const EdgeInsets.symmetric(
-  //                               horizontal: 50, vertical: 15),
-  //                           backgroundColor: Colors.black,
-  //                         ),
-  //                         child: const Text(
-  //                           'CREATE CAMPUS ID',
-  //                           style: TextStyle(
-  //                             fontSize: 14,
-  //                             color: Colors.white,
-  //                           ),
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
-  // Widget imageDialog(String url, BuildContext context) {
-  //   return Dialog(
-  //     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-  //     child: Column(
-  //       mainAxisSize: MainAxisSize.min,
-  //       children: [
-  //         CachedNetworkImage(
-  //           imageUrl: url,
-  //           fit: BoxFit.contain,
-  //           placeholder: (context, url) => const Center(
-  //             child: CircularProgressIndicator(),
-  //           ),
-  //           errorWidget: (context, url, error) => const Icon(
-  //             Icons.error,
-  //             color: Colors.red,
-  //             size: 50,
-  //           ),
-  //         ),
-  //         TextButton(
-  //           onPressed: () => Navigator.pop(context),
-  //           child: const Text('Close'),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  // void _showImageDialog(
-  //   BuildContext context,
-  //   String imageUrls,
-  //   String mainArea,
-  //   String taskid,
-  //   int mainAreaIndex,
-  //   int specificAreaIndex,
-  //   List<NewWeeklyReport> reports,
-  // ) {
-  //   final String baseUrl = '${ApiEndPoints.baseUrl}/';
-  //   List<String> urls = imageUrls.split(',').map((url) {
-  //     String formattedUrl =
-  //         baseUrl + url.trim().replaceAll('\\', '/').replaceAll(' ', '%20');
-  //     print('Formatted URL: $formattedUrl');
-  //     return formattedUrl;
-  //   }).toList();
-
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return Dialog(
-  //         backgroundColor: Colors.white,
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(40.0),
-  //         ),
-  //         child: ClipRRect(
-  //           borderRadius: BorderRadius.circular(40.0),
-  //           child: Padding(
-  //             padding: const EdgeInsets.only(
-  //               top: 3,
-  //               left: 3,
-  //               right: 3,
-  //               bottom: 3,
-  //             ),
-  //             child: Container(
-  //               decoration: const BoxDecoration(
-  //                 color: Colors.white,
-  //                 borderRadius: BorderRadius.only(
-  //                   bottomLeft: Radius.circular(37),
-  //                   bottomRight: Radius.circular(37),
-  //                   topLeft: Radius.circular(37),
-  //                   topRight: Radius.circular(37),
-  //                 ),
-  //               ),
-  //               child: Padding(
-  //                 padding: const EdgeInsets.symmetric(
-  //                     horizontal: 20.0, vertical: 10),
-  //                 child: Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   mainAxisSize: MainAxisSize.min,
-  //                   children: [
-  //                     Text(
-  //                       Provider.of<LanguageProvider>(context).isTamil
-  //                           ? "படம்"
-  //                           : "Image",
-  //                       style: const TextStyle(
-  //                         fontWeight: FontWeight.bold,
-  //                         fontSize: 17,
-  //                       ),
-  //                     ),
-  //                     SingleChildScrollView(
-  //                       scrollDirection: Axis.horizontal,
-  //                       child: Row(
-  //                         mainAxisAlignment: MainAxisAlignment.center,
-  //                         children: urls.map((url) {
-  //                           return Padding(
-  //                               padding: const EdgeInsets.all(8.0),
-  //                               child: GestureDetector(
-  //                                 onTap: () async {
-  //                                   if (isimagethere) {
-  //                                     await showDialog(
-  //                                       context: context,
-  //                                       builder: (_) =>
-  //                                           imageDialog(url, context),
-  //                                     );
-  //                                   }
-  //                                 },
-  //                                 child: Container(
-  //                                   height: 200,
-  //                                   width: 200,
-  //                                   decoration: BoxDecoration(
-  //                                     border: Border.all(
-  //                                       width: 2,
-  //                                       color: Colors.white,
-  //                                     ),
-  //                                     borderRadius: BorderRadius.circular(10),
-  //                                   ),
-  //                                   child: Stack(
-  //                                     fit: StackFit.expand,
-  //                                     children: [
-  //                                       ClipRRect(
-  //                                         borderRadius:
-  //                                             BorderRadius.circular(10),
-  //                                         child: CachedNetworkImage(
-  //                                           imageUrl: url,
-  //                                           fit: BoxFit.fill,
-  //                                           placeholder: (context, url) =>
-  //                                               const Center(
-  //                                             child:
-  //                                                 CircularProgressIndicator(),
-  //                                           ),
-  //                                           errorWidget: (context, url, error) {
-  //                                             WidgetsBinding.instance
-  //                                                 .addPostFrameCallback((_) {
-  //                                               setState(() {
-  //                                                 isimagethere = false;
-  //                                               });
-  //                                             });
-  //                                             return const Center(
-  //                                               child: Icon(
-  //                                                 Icons.error,
-  //                                                 color: Colors.red,
-  //                                                 size: 50,
-  //                                               ),
-  //                                             );
-  //                                           },
-  //                                           imageBuilder:
-  //                                               (context, imageProvider) {
-  //                                             WidgetsBinding.instance
-  //                                                 .addPostFrameCallback((_) {
-  //                                               setState(() {
-  //                                                 isimagethere = true;
-  //                                               });
-  //                                             });
-  //                                             return Image(
-  //                                               image: imageProvider,
-  //                                               fit: BoxFit.fill,
-  //                                             );
-  //                                           },
-  //                                         ),
-  //                                       ),
-  //                                       Center(
-  //                                         child: Text(
-  //                                           isimagethere
-  //                                               ? Provider.of<LanguageProvider>(
-  //                                                           context)
-  //                                                       .isTamil
-  //                                                   ? "தட்டவும்!"
-  //                                                   : "Tap!"
-  //                                               : '',
-  //                                           style: TextStyle(
-  //                                             fontSize: 17,
-  //                                             fontWeight: FontWeight.bold,
-  //                                             color: Colors.grey[300],
-  //                                           ),
-  //                                         ),
-  //                                       ),
-  //                                     ],
-  //                                   ),
-  //                                 ),
-  //                               ));
-  //                         }).toList(),
-  //                       ),
-  //                     ),
-  //                     SizedBox(
-  //                       height: 50,
-  //                       width: 300,
-  //                       child: ElevatedButton(
-  //                         onPressed: () {
-  //                           String specificArea = reports[mainAreaIndex]
-  //                                   .specificAreas?[specificAreaIndex]
-  //                                   .specificArea ??
-  //                               'No data';
-  //                           String reportObservation = reports[mainAreaIndex]
-  //                                   .specificAreas?[specificAreaIndex]
-  //                                   .reportObservation ??
-  //                               'No data';
-  //                           String auditdate = reports[mainAreaIndex]
-  //                                   .specificAreas?[specificAreaIndex]
-  //                                   .auditDate ??
-  //                               'No data';
-  //                           Navigator.push(
-  //                             context,
-  //                             MaterialPageRoute(
-  //                               builder: (context) => CampusProgressEdit(
-  //                                 taskid: taskid,
-  //                                 mainArea: mainArea,
-  //                                 specificArea: specificArea,
-  //                                 reportObservation: reportObservation,
-  //                                 auditDate: auditdate,
-  //                                 month: month,
-  //                                 weeknumber: selectedWeek,
-  //                                 year: year,
-  //                               ),
-  //                             ),
-  //                           );
-  //                         },
-  //                         style: ElevatedButton.styleFrom(
-  //                           shape: RoundedRectangleBorder(
-  //                             borderRadius: BorderRadius.circular(20.0),
-  //                           ),
-  //                           padding: const EdgeInsets.symmetric(
-  //                               horizontal: 50, vertical: 15),
-  //                           backgroundColor: Colors.black,
-  //                         ),
-  //                         child: Text(
-  //                           Provider.of<LanguageProvider>(context).isTamil
-  //                               ? "உருவாக்கு"
-  //                               : 'CREATE CAMPUS ID',
-  //                           style: const TextStyle(
-  //                             fontSize: 14,
-  //                             color: Colors.white,
-  //                           ),
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ),
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
-  // Widget imageDialog(path, context) {
-  //   return InteractiveViewer(
-  //     child: Stack(
-  //       children: [
-  //         Dialog(
-  //           elevation: 0,
-  //           child: Builder(
-  //             builder: (context) {
-  //               var width = MediaQuery.of(context).size.width;
-  //               return SizedBox(
-  //                 width: width,
-  //                 height: 500,
-  //                 child: InteractiveViewer(
-  //                   child: Image.network(
-  //                     '$path',
-  //                     fit: BoxFit.fill,
-  //                   ),
-  //                 ),
-  //               );
-  //             },
-  //           ),
-  //         ),
-  //         Positioned(
-  //           top: 0,
-  //           right: 0,
-  //           child: GestureDetector(
-  //             onTap: () => Navigator.of(context).pop(),
-  //             child: const Icon(
-  //               Icons.cancel_outlined,
-  //               color: Colors.white,
-  //               size: 40,
-  //             ),
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
 
   void _showImageDialog(
     BuildContext context,
@@ -1287,8 +625,8 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
 
   @override
   Widget build(BuildContext context) {
+    bool isTamil = box.read('isTamil');
     return Scaffold(
-        // backgroundColor: Colors.grey[200],
         appBar: AppBar(
           actions: [
             PopupMenuButton<String>(
@@ -1326,13 +664,10 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
           ),
           backgroundColor: Colors.black,
           title: Text(
-            Provider.of<LanguageProvider>(context).isTamil
-                ? "வாராந்திர அறிக்கைகள்"
-                : "Weekly Reports",
+            isTamil ? "வாராந்திர அறிக்கைகள்" : "Weekly Reports",
             style: GoogleFonts.manrope(
               color: Colors.white,
-              fontSize:
-                  Provider.of<LanguageProvider>(context).isTamil ? 20 : 27,
+              fontSize: isTamil ? 17 : 25,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -1349,8 +684,6 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
               )
             : SfDataGridTheme(
                 data: SfDataGridThemeData(
-                  // gridLineColor: Colors.black.withOpacity(0.3),
-                  // headerHoverColor: Colors.white.withOpacity(0.3),
                   headerColor: const Color.fromRGBO(46, 46, 46, 1),
                 ),
                 child: SfDataGrid(
@@ -1359,7 +692,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                     reports: reports,
                     onShowImageDialog: _showImageDialog,
                   ),
-                  columnWidthMode: ColumnWidthMode.auto,
+                  columnWidthMode: ColumnWidthMode.fitByCellValue,
                   headerRowHeight: 100.0, // Set the header row height to 150.0
                   gridLinesVisibility: GridLinesVisibility.vertical,
                   headerGridLinesVisibility: GridLinesVisibility.vertical,
@@ -1473,7 +806,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                       ),
                     ),
                     GridColumn(
-                      width: 120.0,
+                      width: 150.0,
                       columnName: 'Images',
                       label: Container(
                         padding: const EdgeInsets.all(16.0),
@@ -1674,218 +1007,14 @@ class ReportDataSource extends DataGridSource {
           ),
         ),
       );
-
-      // ConstrainedBox(
-      //   constraints: const BoxConstraints(
-      //     maxWidth: 120.0, // Set a maximum width for the button
-      //   ),
-      //   child: TextButton(
-      //     onPressed: () {
-      //       onShowImageDialog(
-      //         context,
-      //         imagesValue,
-      //         reports[mainAreaIndex].mainArea ?? 'Unknown',
-      //         reports[mainAreaIndex].taskId ?? 'Unknown',
-      //         mainAreaIndex,
-      //         specificAreaIndex,
-      //         reports,
-      //       );
-      //     },
-      //     child: Text(
-      //       buttonText,
-      //       style: const TextStyle(
-      //         color: Colors.blue,
-      //         // fontSize: 16,
-      //       ),
-      //     ),
-      //   ),
-      // );
     } else {
       // Plain text for "No images" without "bad" in remarks
       return Text(
         buttonText,
         style: const TextStyle(
-          // fontSize: 16, // Adjust the font size
           color: Colors.black, // Ensure plain text color is visible
         ),
       );
     }
   }
 }
-      // body: SingleChildScrollView(
-      //   scrollDirection: Axis.vertical,
-      //   child: Stack(
-      //     children: [
-      //       SingleChildScrollView(
-      //         scrollDirection: Axis.horizontal,
-      //         child: Padding(
-      //           padding: const EdgeInsets.only(
-      //             left: 130.0,
-      //           ),
-      //           child: Column(
-      //             children: [
-      //               Row(
-      //                 children: [
-      //                   _buildHeaderCell(
-      //                       Provider.of<LanguageProvider>(context).isTamil
-      //                           ? "குறிப்பிட்ட பகுதிகள்"
-      //                           : "Specific Areas",
-      //                       200),
-      //                   _buildHeaderCell(
-      //                       Provider.of<LanguageProvider>(context).isTamil
-      //                           ? "தணிக்கை தேதிகள்"
-      //                           : "Audit Dates",
-      //                       160),
-      //                   _buildHeaderCell(
-      //                       Provider.of<LanguageProvider>(context).isTamil
-      //                           ? "அவதானிப்பு அறிக்கை"
-      //                           : "Report Observation",
-      //                       450),
-      //                   _buildHeaderCell(
-      //                       Provider.of<LanguageProvider>(context).isTamil
-      //                           ? "கருத்துக்கள்"
-      //                           : "Remarks",
-      //                       300),
-      //                   _buildHeaderCell(
-      //                       Provider.of<LanguageProvider>(context).isTamil
-      //                           ? "படங்கள்"
-      //                           : "Images",
-      //                       Provider.of<LanguageProvider>(context).isTamil
-      //                           ? 240
-      //                           : 220),
-      //                 ],
-      //               ),
-      //               ...List.generate(reports.length, (index) {
-      //                 return Row(
-      //                   crossAxisAlignment: CrossAxisAlignment.start,
-      //                   children: [
-      //                     _buildNestedDataCell(
-      //                         reports[index]
-      //                                 .specificAreas
-      //                                 ?.map((area) =>
-      //                                     area.specificArea ?? 'No data')
-      //                                 .toList() ??
-      //                             ['No data'],
-      //                         200,
-      //                         200,
-      //                         false,
-      //                         false,
-      //                         false,
-      //                         null,
-      //                         index, // Pass the index here
-      //                         reports[index].mainArea ??
-      //                             'No data', // Pass mainArea
-      //                         reports[index].taskId ??
-      //                             'No data', // Pass mainArea
-      //                         reports),
-      //                     _buildNestedDataCell(
-      //                         reports[index]
-      //                                 .specificAreas
-      //                                 ?.map((area) =>
-      //                                     area.auditDate ?? 'No data')
-      //                                 .toList() ??
-      //                             ['No data'],
-      //                         160,
-      //                         200,
-      //                         false,
-      //                         true,
-      //                         false,
-      //                         null,
-      //                         index, // Pass the index here
-      //                         reports[index].mainArea ??
-      //                             'No data', // Pass mainArea
-      //                         reports[index].taskId ?? 'No data',
-      //                         reports),
-      //                     _buildNestedDataCell(
-      //                         reports[index]
-      //                                 .specificAreas
-      //                                 ?.map((area) =>
-      //                                     area.reportObservation ?? 'No data')
-      //                                 .toList() ??
-      //                             ['No data'],
-      //                         450,
-      //                         200,
-      //                         false,
-      //                         false,
-      //                         false,
-      //                         null,
-      //                         index, // Pass the index here
-      //                         reports[index].mainArea ??
-      //                             'No data', // Pass mainArea
-      //                         reports[index].taskId ?? 'No data',
-      //                         reports),
-      //                     _buildNestedDataCell(
-      //                         reports[index]
-      //                                 .specificAreas
-      //                                 ?.map((area) => area.remarks)
-      //                                 .toList() ??
-      //                             ['No data'],
-      //                         300,
-      //                         200,
-      //                         false,
-      //                         false,
-      //                         true,
-      //                         null,
-      //                         index, // Pass the index here
-      //                         reports[index].mainArea ??
-      //                             'No data', // Pass mainArea
-      //                         reports[index].taskId ?? 'No data',
-      //                         reports),
-      //                     _buildNestedDataCell(
-      //                         reports[index]
-      //                                 .specificAreas
-      //                                 ?.map((area) => area.images)
-      //                                 .toList() ??
-      //                             ['No data'],
-      //                         Provider.of<LanguageProvider>(context).isTamil
-      //                             ? 240
-      //                             : 220,
-      //                         200,
-      //                         true,
-      //                         false,
-      //                         false,
-      //                         reports[index]
-      //                                 .specificAreas
-      //                                 ?.map((area) => area.images)
-      //                                 .toList() ??
-      //                             ['No data'],
-      //                         index, // Pass the index here
-      //                         reports[index].mainArea ??
-      //                             'No data', // Pass mainArea
-      //                         reports[index].taskId ?? 'No data',
-      //                         reports),
-      //                   ],
-      //                 );
-      //               }),
-      //             ],
-      //           ),
-      //         ),
-      //       ),
-      //       Positioned(
-      //         // left: 10,
-      //         top: 0,
-      //         bottom: 0,
-      //         child: Container(
-      //           width: 130,
-      //           color: Colors.grey[200],
-      //           child: Padding(
-      //             padding: const EdgeInsets.only(right: 0.0),
-      //             child: Column(
-      //               children: [
-      //                 _buildHeaderCell(
-      //                     Provider.of<LanguageProvider>(context).isTamil
-      //                         ? "தணிக்கை பகுதி"
-      //                         : "Audit Area",
-      //                     200),
-      //                 ...List.generate(reports.length, (index) {
-      //                   return _buildDataCell(
-      //                       reports[index].mainArea ?? 'No data', 150, 200);
-      //                 }),
-      //               ],
-      //             ),
-      //           ),
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // ),

@@ -3,7 +3,11 @@ import 'package:auditfitnesstest/models/user%20data/all_users_model.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/widgets/User-Widgets/bad_condition_user.dart';
 import 'package:auditfitnesstest/utils/apiendpoints.dart';
+import 'package:delightful_toast/delight_toast.dart';
+import 'package:delightful_toast/toast/components/toast_card.dart';
+import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -22,9 +26,11 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
 
     if (response.statusCode == 200) {
       List<dynamic> jsonData = json.decode(response.body);
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
       return jsonData.map((json) => AllUsersModel.fromJson(json)).toList();
     } else {
       throw Exception('Failed to load users');
@@ -33,6 +39,7 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
 
   bool isLoading = true;
   late Future<List<AllUsersModel>> futureUsers;
+  int _currIndex = 0;
 
   @override
   void initState() {
@@ -44,7 +51,8 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
     await Future.delayed(Duration(seconds: 1));
 
     try {
-      await fetchUsers();
+      futureUsers = fetchUsers();
+      setState(() {});
     } catch (e) {
       print('Error fetching tasks: $e');
     }
@@ -61,7 +69,6 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
             children: [
               Container(
                 padding: const EdgeInsets.only(
-                  // top: 50.0,
                   left: 15.0,
                   right: 15.0,
                   bottom: 10.0,
@@ -82,73 +89,111 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
                             size: 30,
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return SimpleDialog(
-                                    backgroundColor:
-                                        const Color.fromRGBO(46, 46, 46, 1),
-                                    contentPadding: const EdgeInsets.all(20),
-                                    title: Column(
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            Provider.of<LanguageProvider>(
-                                                        context)
-                                                    .isTamil
-                                                ? "தகவல்"
-                                                : "INFO",
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.blueAccent,
+                        Row(
+                          children: [
+                            IconButton(
+                              icon: AnimatedSwitcher(
+                                  duration: const Duration(seconds: 1),
+                                  transitionBuilder: (child, anim) =>
+                                      RotationTransition(
+                                        turns: child.key == ValueKey('icon1')
+                                            ? Tween<double>(begin: 1, end: -1)
+                                                .animate(anim)
+                                            : Tween<double>(begin: -1, end: 1)
+                                                .animate(anim),
+                                        child: FadeTransition(
+                                            opacity: anim, child: child),
+                                      ),
+                                  child: _currIndex == 0
+                                      ? Icon(Icons.sync,
+                                          color: Colors.black,
+                                          key: const ValueKey('icon1'))
+                                      : Icon(
+                                          Icons.sync,
+                                          color: Colors.black,
+                                          key: const ValueKey('icon2'),
+                                        )),
+                              onPressed: () {
+                                _onrefresh2();
+                                setState(() {
+                                  _currIndex = _currIndex == 0 ? 1 : 0;
+                                });
+                              },
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return SimpleDialog(
+                                        backgroundColor:
+                                            const Color.fromRGBO(46, 46, 46, 1),
+                                        contentPadding:
+                                            const EdgeInsets.all(20),
+                                        title: Column(
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                Provider.of<LanguageProvider>(
+                                                            context)
+                                                        .isTamil
+                                                    ? "தகவல்"
+                                                    : "INFO",
+                                                style: const TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.blueAccent,
+                                                ),
+                                              ),
                                             ),
-                                          ),
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                textAlign: TextAlign.center,
+                                                Provider.of<LanguageProvider>(
+                                                            context)
+                                                        .isTamil
+                                                    ? "அனைத்து பயனர்களும்"
+                                                    : "All users",
+                                                style: const TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            textAlign: TextAlign.center,
+                                        children: [
+                                          Text(
                                             Provider.of<LanguageProvider>(
                                                         context)
                                                     .isTamil
-                                                ? "அனைத்து பயனர்களும்"
-                                                : "All users",
+                                                ? "அனைத்து பயனர்களும் இங்கு பட்டியலிடப்பட்டுள்ளனர், குறிப்பிட்ட பயனர் விவரங்களைத் திருத்த, தேடல் பட்டியில் தட்டவும்"
+                                                : "All user are listed here grouped by their roles, To edit specific user details tap on the search bar",
                                             style: const TextStyle(
                                               fontSize: 17,
-                                              fontWeight: FontWeight.bold,
+                                              // fontWeight: FontWeight.bold,
                                               color: Colors.white,
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    children: [
-                                      Text(
-                                        Provider.of<LanguageProvider>(context)
-                                                .isTamil
-                                            ? "அனைத்து பயனர்களும் இங்கு பட்டியலிடப்பட்டுள்ளனர், குறிப்பிட்ட பயனர் விவரங்களைத் திருத்த, தேடல் பட்டியில் தட்டவும்"
-                                            : "All user are listed here grouped by their roles, To edit specific user details tap on the search bar",
-                                        style: const TextStyle(
-                                          fontSize: 17,
-                                          // fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                });
-                          },
-                          child: const Icon(
-                            Icons.info,
-                            size: 25,
-                          ),
+                                        ],
+                                      );
+                                    });
+                              },
+                              child: const Icon(
+                                Icons.info,
+                                size: 25,
+                              ),
+                            ),
+                          ],
                         )
                       ],
                     ),
@@ -282,26 +327,29 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
                                     child: Column(
                                       children: [
                                         _buildRoleTile(
-                                            Provider.of<LanguageProvider>(
-                                                        context)
-                                                    .isTamil
-                                                ? "பயனர்கள்"
-                                                : 'Users',
-                                            userRoles2),
+                                          Provider.of<LanguageProvider>(context)
+                                                  .isTamil
+                                              ? "பயனர்கள்"
+                                              : 'Users',
+                                          userRoles2,
+                                          true,
+                                        ),
                                         _buildRoleTile(
                                             Provider.of<LanguageProvider>(
                                                         context)
                                                     .isTamil
                                                 ? "நிர்வாகிகள்"
                                                 : 'Admins',
-                                            userRoles1),
+                                            userRoles1,
+                                            false),
                                         _buildRoleTile(
                                             Provider.of<LanguageProvider>(
                                                         context)
                                                     .isTamil
                                                 ? "வளாகம்"
                                                 : 'Campus',
-                                            userRoles3),
+                                            userRoles3,
+                                            false),
                                       ],
                                     ),
                                   );
@@ -322,7 +370,8 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
     );
   }
 
-  Widget _buildRoleTile(String title, List<AllUsersModel> users) {
+  Widget _buildRoleTile(
+      String title, List<AllUsersModel> users, bool isexpanded) {
     return Card(
       color: Colors.white,
       elevation: 0,
@@ -332,6 +381,7 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
       ),
       clipBehavior: Clip.antiAlias,
       child: ExpansionTile(
+        initiallyExpanded: isexpanded,
         shape: const Border(),
         controlAffinity: ListTileControlAffinity.trailing,
         backgroundColor: Colors.white,
@@ -477,10 +527,12 @@ class _UserSearchPageState extends State<UserSearchPage> {
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
-      setState(() {
-        _allUsers = data.map((json) => AllUsersModel.fromJson(json)).toList();
-        _filteredUsers = _allUsers;
-      });
+      if (mounted) {
+        setState(() {
+          _allUsers = data.map((json) => AllUsersModel.fromJson(json)).toList();
+          _filteredUsers = _allUsers;
+        });
+      }
     } else {
       // Handle the error here
       throw Exception('Failed to load users');
@@ -677,7 +729,8 @@ class _UserSearchPageState extends State<UserSearchPage> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                user.username!.capitalize(),
+                                                GetStringUtils(user.username!)
+                                                    .capitalize(),
                                                 style: const TextStyle(
                                                   fontSize: 24,
                                                   fontWeight: FontWeight.bold,
@@ -731,9 +784,15 @@ class _UserSearchPageState extends State<UserSearchPage> {
   }
 }
 
+extension GetStringUtils on String {
+  String capitalize() {
+    return this[0].toUpperCase() + substring(1);
+  }
+}
+
 extension StringExtension on String {
   String capitalize() {
-    return "${this[0].toUpperCase()}${this.substring(1).toLowerCase()}";
+    return toUpperCase();
   }
 }
 
@@ -767,38 +826,170 @@ class _UserEditPageState extends State<UserEditPage> {
   }
 
   Future<void> updateUser(AllUsersModel user) async {
-    final response = await http.put(
-      Uri.parse(
-          '${ApiEndPoints.baseUrl}${ApiEndPoints.authEndpoints.userdata}/${user.id}'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(user.toJson()),
-    );
-    setState(() {});
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
+    bool isTamil = box.read('isTamil');
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to update user');
+    try {
+      final response = await http.put(
+        Uri.parse(
+            '${ApiEndPoints.baseUrl}${ApiEndPoints.authEndpoints.userdata}/${user.id}'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(user.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        if (mounted) {
+          setState(() {
+            useractiondis = true;
+            DelightToastBar(
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              animationDuration: const Duration(milliseconds: 100),
+              snackbarDuration: const Duration(milliseconds: 800),
+              builder: (context) => ToastCard(
+                color: Colors.green,
+                leading: const Icon(
+                  Icons.done,
+                  size: 28,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  isTamil
+                      ? "பயனர் வெற்றிகரமாக புதுப்பிக்கப்பட்டார்"
+                      : "User successfully updated",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ).show(context);
+          });
+        }
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+      }
+
+      if (response.statusCode != 200) {
+        if (mounted) {
+          setState(() {
+            DelightToastBar(
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              animationDuration: const Duration(milliseconds: 700),
+              snackbarDuration: const Duration(seconds: 2),
+              builder: (context) => ToastCard(
+                color: Colors.red,
+                leading: const Icon(
+                  Icons.notification_important_outlined,
+                  size: 28,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  isTamil
+                      ? "பயனரைப் புதுப்பிப்பதில் பிழை"
+                      : "Error updating user",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ).show(context);
+            useractiondis = false;
+          });
+        }
+        // throw Exception('Failed to update user');
+      }
+    } catch (e) {
+      print('Error decoding response body: $e');
     }
   }
 
   Future<void> deleteUser(int id) async {
-    final response = await http.delete(
-      Uri.parse(
-          '${ApiEndPoints.baseUrl}${ApiEndPoints.authEndpoints.userdata}/$id'),
-      headers: {'Content-Type': 'application/json'},
-    );
-    setState(() {});
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
-    Navigator.of(context).pop();
+    bool isTamil = box.read('isTamil');
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to delete user');
-    }
+    try {
+      final response = await http.delete(
+        Uri.parse(
+            '${ApiEndPoints.baseUrl}${ApiEndPoints.authEndpoints.userdata}/$id'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        if (mounted) {
+          setState(() {
+            useractiondis = true;
+            DelightToastBar(
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              animationDuration: const Duration(milliseconds: 100),
+              snackbarDuration: const Duration(milliseconds: 800),
+              builder: (context) => ToastCard(
+                color: Colors.green,
+                leading: const Icon(
+                  Icons.done,
+                  size: 28,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  isTamil
+                      ? "பயனர் வெற்றிகரமாக புதுப்பிக்கப்பட்டார்"
+                      : "User successfully updated",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ).show(context);
+          });
+        }
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+        Navigator.of(context).pop();
+      }
+
+      if (response.statusCode != 200) {
+        if (mounted) {
+          setState(() {
+            DelightToastBar(
+              position: DelightSnackbarPosition.top,
+              autoDismiss: true,
+              animationDuration: const Duration(milliseconds: 700),
+              snackbarDuration: const Duration(seconds: 2),
+              builder: (context) => ToastCard(
+                color: Colors.red,
+                leading: const Icon(
+                  Icons.notification_important_outlined,
+                  size: 28,
+                  color: Colors.white,
+                ),
+                title: Text(
+                  isTamil
+                      ? "பயனரைப் புதுப்பிப்பதில் பிழை"
+                      : "Error updating user",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ).show(context);
+            useractiondis = false;
+          });
+        }
+        // throw Exception('Failed to update user');
+      }
+    } catch (e) {}
   }
 
+  bool useractiondis = false;
+  final box = GetStorage();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -889,7 +1080,7 @@ class _UserEditPageState extends State<UserEditPage> {
                             height: 10,
                           ),
                           Badconditionields(
-                            controller: usernameController,
+                            controller: firstNameController,
                             hintText:
                                 Provider.of<LanguageProvider>(context).isTamil
                                     ? "முதல் பெயர்"
@@ -978,207 +1169,237 @@ class _UserEditPageState extends State<UserEditPage> {
                           const SizedBox(height: 16.0),
                           GestureDetector(
                             onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Dialog(
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(40.0),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(40.0),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 3,
-                                          left: 3,
-                                          right: 3,
-                                          bottom: 3,
+                              if (usernameController.text.isEmpty ||
+                                  firstNameController.text.isEmpty ||
+                                  lastNameController.text.isEmpty ||
+                                  phoneNumberController.text.isEmpty ||
+                                  staffIdController.text.isEmpty) {
+                                setState(() {
+                                  DelightToastBar(
+                                    position: DelightSnackbarPosition.top,
+                                    autoDismiss: true,
+                                    animationDuration:
+                                        const Duration(milliseconds: 700),
+                                    snackbarDuration:
+                                        const Duration(seconds: 2),
+                                    builder: (context) => ToastCard(
+                                      color: Colors.red,
+                                      leading: const Icon(
+                                        Icons.notification_important_outlined,
+                                        size: 28,
+                                        color: Colors.white,
+                                      ),
+                                      title: Text(
+                                        Provider.of<LanguageProvider>(context)
+                                                .isTamil
+                                            ? "அனைத்து புலங்களையும் நிரப்பவும்"
+                                            : "fill all the fields",
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 14,
+                                          color: Colors.white,
                                         ),
-                                        child: Container(
-                                          width: 150,
-                                          decoration: const BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(37),
-                                              bottomRight: Radius.circular(37),
-                                              topLeft: Radius.circular(37),
-                                              topRight: Radius.circular(37),
-                                            ),
+                                      ),
+                                    ),
+                                  ).show(context);
+                                });
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return Dialog(
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(40.0),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(40.0),
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                            top: 3,
+                                            left: 3,
+                                            right: 3,
+                                            bottom: 3,
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                const SizedBox(
-                                                  height: 20,
-                                                ),
-                                                Text(
-                                                  Provider.of<LanguageProvider>(
-                                                              context)
-                                                          .isTamil
-                                                      ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
-                                                      : "Are you sure?",
-                                                  style: GoogleFonts.manrope(
-                                                    color: Colors.black,
-                                                    fontSize:
-                                                        Provider.of<LanguageProvider>(
-                                                                    context)
-                                                                .isTamil
-                                                            ? 19
-                                                            : 23,
-                                                    fontWeight: FontWeight.w500,
+                                          child: Container(
+                                            width: 150,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(37),
+                                                bottomRight:
+                                                    Radius.circular(37),
+                                                topLeft: Radius.circular(37),
+                                                topRight: Radius.circular(37),
+                                              ),
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 20.0),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  const SizedBox(
+                                                    height: 20,
                                                   ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 20,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    OutlinedButton(
-                                                      style: OutlinedButton
-                                                          .styleFrom(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                          vertical: 8,
-                                                          horizontal: 32,
-                                                        ),
-                                                        foregroundColor:
-                                                            Colors.black87,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
-                                                        side: const BorderSide(
-                                                          color: Colors.black87,
-                                                        ),
-                                                      ),
-                                                      child: Text(
-                                                        Provider.of<LanguageProvider>(
-                                                                    context)
-                                                                .isTamil
-                                                            ? "இல்லை"
-                                                            : "No",
-                                                        style: GoogleFonts.manrope(
-                                                            color:
-                                                                Colors.black87,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: Provider.of<
-                                                                            LanguageProvider>(
-                                                                        context)
-                                                                    .isTamil
-                                                                ? 12
-                                                                : 15),
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
+                                                  Text(
+                                                    Provider.of<LanguageProvider>(
+                                                                context)
+                                                            .isTamil
+                                                        ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
+                                                        : "Are you sure?",
+                                                    style: GoogleFonts.manrope(
+                                                      color: Colors.black,
+                                                      fontSize:
+                                                          Provider.of<LanguageProvider>(
+                                                                      context)
+                                                                  .isTamil
+                                                              ? 19
+                                                              : 23,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                     ),
-                                                    ElevatedButton(
-                                                      style: const ButtonStyle(
-                                                        padding:
-                                                            WidgetStatePropertyAll(
-                                                          EdgeInsets.symmetric(
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      OutlinedButton(
+                                                        style: OutlinedButton
+                                                            .styleFrom(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
                                                             vertical: 8,
                                                             horizontal: 32,
                                                           ),
-                                                        ),
-                                                        backgroundColor:
-                                                            WidgetStatePropertyAll(
-                                                                Color.fromRGBO(
-                                                                    130,
-                                                                    204,
-                                                                    146,
-                                                                    1)),
-                                                        shape:
-                                                            WidgetStatePropertyAll(
-                                                          RoundedRectangleBorder(
+                                                          foregroundColor:
+                                                              Colors.black87,
+                                                          shape:
+                                                              RoundedRectangleBorder(
                                                             borderRadius:
                                                                 BorderRadius
-                                                                    .all(
-                                                              Radius.circular(
-                                                                  5),
+                                                                    .circular(
+                                                                        5),
+                                                          ),
+                                                          side:
+                                                              const BorderSide(
+                                                            color:
+                                                                Colors.black87,
+                                                          ),
+                                                        ),
+                                                        child: Text(
+                                                          Provider.of<LanguageProvider>(
+                                                                      context)
+                                                                  .isTamil
+                                                              ? "இல்லை"
+                                                              : "No",
+                                                          style: GoogleFonts.manrope(
+                                                              color: Colors
+                                                                  .black87,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: Provider.of<
+                                                                              LanguageProvider>(
+                                                                          context)
+                                                                      .isTamil
+                                                                  ? 12
+                                                                  : 15),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                      ElevatedButton(
+                                                        style:
+                                                            const ButtonStyle(
+                                                          padding:
+                                                              WidgetStatePropertyAll(
+                                                            EdgeInsets
+                                                                .symmetric(
+                                                              vertical: 8,
+                                                              horizontal: 32,
+                                                            ),
+                                                          ),
+                                                          backgroundColor:
+                                                              WidgetStatePropertyAll(
+                                                                  Color
+                                                                      .fromRGBO(
+                                                                          130,
+                                                                          204,
+                                                                          146,
+                                                                          1)),
+                                                          shape:
+                                                              WidgetStatePropertyAll(
+                                                            RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    5),
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
+                                                        child: const Icon(
+                                                          Icons.check,
+                                                          color: Colors.white,
+                                                        ),
+                                                        onPressed: () {
+                                                          final updatedUser =
+                                                              AllUsersModel(
+                                                            id: widget.user.id,
+                                                            username:
+                                                                usernameController
+                                                                    .text,
+                                                            firstName:
+                                                                firstNameController
+                                                                    .text,
+                                                            lastName:
+                                                                lastNameController
+                                                                    .text,
+                                                            phoneNumber:
+                                                                int.tryParse(
+                                                                    phoneNumberController
+                                                                        .text),
+                                                            staffId:
+                                                                staffIdController
+                                                                    .text,
+                                                          );
+                                                          updateUser(
+                                                              updatedUser);
+                                                          setState(() {
+                                                            useractiondis =
+                                                                true;
+                                                          });
+                                                        },
                                                       ),
-                                                      child: const Icon(
-                                                        Icons.check,
-                                                        color: Colors.white,
-                                                      ),
-                                                      onPressed: () {
-                                                        final updatedUser =
-                                                            AllUsersModel(
-                                                          id: widget.user.id,
-                                                          username:
-                                                              usernameController
-                                                                  .text,
-                                                          firstName:
-                                                              firstNameController
-                                                                  .text,
-                                                          lastName:
-                                                              lastNameController
-                                                                  .text,
-                                                          phoneNumber: int.tryParse(
-                                                              phoneNumberController
-                                                                  .text),
-                                                          staffId:
-                                                              staffIdController
-                                                                  .text,
-                                                        );
-                                                        updateUser(updatedUser);
-                                                      },
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  height: 20,
-                                                ),
-                                              ],
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
-                              // final updatedUser = AllUsersModel(
-                              //   id: widget.user.id,
-                              //   username: usernameController.text,
-                              //   firstName: firstNameController.text,
-                              //   lastName: lastNameController.text,
-                              //   phoneNumber:
-                              //       int.tryParse(phoneNumberController.text),
-                              //   staffId: staffIdController.text,
-                              // );
-
-                              // updateUser(updatedUser).then((_) {
-                              //   // Optionally, you could add some feedback for the user, like a snackbar
-                              //   ScaffoldMessenger.of(context).showSnackBar(
-                              //     SnackBar(
-                              //         content: Text('User updated successfully')),
-                              //   );
-                              // }).catchError((error) {
-                              //   // Handle errors
-                              //   ScaffoldMessenger.of(context).showSnackBar(
-                              //     SnackBar(
-                              //         content:
-                              //             Text('Failed to update user: $error')),
-                              //   );
-                              // });
+                                    );
+                                  },
+                                );
+                              }
                             },
                             child: Container(
                               height: 50,
@@ -1202,9 +1423,21 @@ class _UserEditPageState extends State<UserEditPage> {
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            height: 16,
+
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              right: 8,
+                              left: 8,
+                            ),
+                            child: Divider(
+                              height: 30,
+                              thickness: 3,
+                              color: Colors.grey[400],
+                            ),
                           ),
+                          // const SizedBox(
+                          //   height: 16,
+                          // ),
                           GestureDetector(
                             onTap: () {
                               showDialog(
@@ -1350,6 +1583,9 @@ class _UserEditPageState extends State<UserEditPage> {
                                                       onPressed: () {
                                                         deleteUser(
                                                             (widget.user.id!));
+                                                        setState(() {
+                                                          useractiondis = true;
+                                                        });
                                                       },
                                                     ),
                                                   ],

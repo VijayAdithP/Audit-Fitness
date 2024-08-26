@@ -25,7 +25,7 @@ class UserAuditCards extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          height: 150,
+          // height: 150,
           decoration: BoxDecoration(
             color: background,
             boxShadow: [
@@ -47,7 +47,6 @@ class UserAuditCards extends StatelessWidget {
                 style: GoogleFonts.manrope(
                   fontSize:
                       Provider.of<LanguageProvider>(context).isTamil ? 23 : 25,
-                  // color: Colors.white,
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
                 ),
@@ -61,7 +60,6 @@ class UserAuditCards extends StatelessWidget {
                   color: Colors.black,
                 ),
               ),
-              Expanded(child: Container()),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [child],

@@ -38,13 +38,14 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
 
     if (response.statusCode == 200) {
       List<dynamic> jsonData = json.decode(response.body);
-
-      setState(() {
-        weeklyTasks = jsonData
-            .map((item) => UserWeeklyTasksModel.fromJson(item))
-            .toList();
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          weeklyTasks = jsonData
+              .map((item) => UserWeeklyTasksModel.fromJson(item))
+              .toList();
+          isLoading = false;
+        });
+      }
 
       weeklyTasks.sort((a, b) => b.assignedAt!.compareTo(a.assignedAt!));
       return weeklyTasks;
@@ -105,7 +106,7 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
               ? const Center(
                   child: SpinKitThreeBounce(
                     color: const Color.fromARGB(255, 130, 111, 238),
-                    size: 50,
+                    size: 40,
                   ),
                 )
               : Column(
@@ -248,7 +249,7 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
                                         overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                           color: Colors.grey[700],
-                                          fontSize: 30,
+                                          fontSize: 20,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),

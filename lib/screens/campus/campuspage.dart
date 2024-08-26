@@ -286,7 +286,9 @@ class _CampusPageState extends State<CampusPage> {
                       : "YOUR TASKS",
                   style: GoogleFonts.manrope(
                     color: Colors.black,
-                    fontSize: 30,
+                    fontSize: Provider.of<LanguageProvider>(context).isTamil
+                        ? 27
+                        : 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

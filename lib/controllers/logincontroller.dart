@@ -4,21 +4,17 @@ import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
-// import 'package:shared_preferences/shared_preferences.dart';
 import 'package:auditfitnesstest/screens/main_page.dart';
 
 class LoginController extends GetxController {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   final box = GetStorage();
 
   Future<void> loginWithEmail() async {
     var headers = {'Content-Type': 'application/json'};
     try {
-      // final SharedPreferences? prefs = await _prefs;
       String username = usernameController.text;
-      // await prefs?.setString('username', username);
       box.write('username', username);
 
       var url = Uri.parse(

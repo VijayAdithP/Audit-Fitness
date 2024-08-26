@@ -111,8 +111,7 @@ class __Drawer_State extends State<_Drawer_> {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            onTap: () async {
-              // box.erase();
+            onTap: () {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

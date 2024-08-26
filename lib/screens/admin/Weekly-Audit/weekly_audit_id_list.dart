@@ -34,11 +34,12 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
           jsonData.map((item) => WeeklyTaskId.fromJson(item)).toList();
 
       weeklyTasks.sort((a, b) => b.weekTaskId!.compareTo(a.weekTaskId!));
-
-      setState(() {
-        lastFiveTasks = weeklyTasks.take(5).toList();
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          lastFiveTasks = weeklyTasks.take(5).toList();
+          isLoading = false;
+        });
+      }
 
       return lastFiveTasks;
     } else {
@@ -84,7 +85,6 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
   late Future<List<WeeklyTaskId>> futureWeeklyTasks;
   String? weeklyauditId;
   List<WeeklyTaskId> lastFiveTasks = [];
-  TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -414,7 +414,6 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                             bottom: 10,
                                           ),
                                           child: Container(
-                                            height: 120,
                                             decoration: const BoxDecoration(
                                               color: Colors.white,
                                               borderRadius: BorderRadius.all(
@@ -457,29 +456,32 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                                     color: Colors.grey[700],
                                                   ),
                                                 ),
-                                                const Expanded(
-                                                  child: SizedBox(height: 10),
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Container(
-                                                      width: 50,
-                                                      decoration: BoxDecoration(
-                                                        color: Colors.grey[300],
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                .all(
-                                                          Radius.circular(20),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.bottomCenter,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Container(
+                                                        width: 50,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              Colors.grey[300],
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .all(
+                                                            Radius.circular(20),
+                                                          ),
+                                                        ),
+                                                        child: const Icon(
+                                                          Icons.add,
+                                                          size: 30,
                                                         ),
                                                       ),
-                                                      child: const Icon(
-                                                        Icons.add,
-                                                        size: 30,
-                                                      ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -527,12 +529,14 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
           jsonData.map((item) => WeeklyTaskId.fromJson(item)).toList();
 
       weeklyTasks.sort((a, b) => b.weekTaskId!.compareTo(a.weekTaskId!));
-
-      setState(() {
-        allTasks = jsonData.map((item) => WeeklyTaskId.fromJson(item)).toList();
-        _filteredTasks = allTasks;
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          allTasks =
+              jsonData.map((item) => WeeklyTaskId.fromJson(item)).toList();
+          _filteredTasks = allTasks;
+          isLoading = false;
+        });
+      }
     } else {
       throw Exception('Failed to load daily tasks');
     }
@@ -672,7 +676,9 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            "No Result",
+                            Provider.of<LanguageProvider>(context).isTamil
+                                ? "முடிவு இல்லை"
+                                : "No Result",
                             style: TextStyle(
                               color: Colors.grey[700],
                               fontSize: 30,
@@ -681,7 +687,7 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                           ),
                           const SpinKitThreeBounce(
                             color: Color.fromARGB(255, 97, 81, 188),
-                            size: 50,
+                            size: 40,
                           ),
                         ],
                       )

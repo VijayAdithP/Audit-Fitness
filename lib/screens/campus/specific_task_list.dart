@@ -18,7 +18,7 @@ class SpecificTaskList extends StatefulWidget {
 
 class _SpecificTaskListState extends State<SpecificTaskList> {
   List<SpecificTask> tasks = [];
-  bool isLoading = true;
+  bool isLoading = false;
   int _currIndex = 0;
 
   @override
@@ -326,7 +326,7 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
                                                   : "Currently empty",
                                               style: TextStyle(
                                                 color: Colors.grey[700],
-                                                fontSize: 30,
+                                                fontSize: 20,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -499,20 +499,52 @@ class _CampusTaskSearchState extends State<CampusTaskSearch> {
     super.dispose();
   }
 
-  Future<void> fetchCampusTasks() async {
-    final response = await http.get(Uri.parse(ApiEndPoints.baseUrl +
-        ApiEndPoints.authEndpoints.specificPendingAreas));
+  // Future<void> fetchCampusTasks() async {
+  //   final response = await http.get(Uri.parse(ApiEndPoints.baseUrl +
+  //       ApiEndPoints.authEndpoints.specificPendingAreas));
 
-    if (response.statusCode == 200) {
-      List<dynamic> jsonData = jsonDecode(response.body);
-      setState(() {
-        allcampustasks =
-            jsonData.map((json) => SpecificTask.fromJson(json)).toList();
-        _filteredCampusTasks = allcampustasks;
-        isLoading = false;
-      });
-    } else {
-      throw Exception('Failed to load tasks');
+  //   if (response.statusCode == 200) {
+  //     List<dynamic> jsonData = jsonDecode(response.body);
+  //     setState(() {
+  //       allcampustasks =
+  //           jsonData.map((json) => SpecificTask.fromJson(json)).toList();
+  //       _filteredCampusTasks = allcampustasks;
+  //       isLoading = false;
+  //     });
+  //   } else {
+  //     throw Exception('Failed to load tasks');
+  //   }
+  // }
+
+  Future<void> fetchCampusTasks() async {
+    try {
+      final response = await http.get(Uri.parse(ApiEndPoints.baseUrl +
+          ApiEndPoints.authEndpoints.specificPendingAreas));
+
+      if (response.statusCode == 200) {
+        List<dynamic> jsonData = jsonDecode(response.body);
+
+        if (mounted) {
+          // Check if the widget is still mounted
+          setState(() {
+            allcampustasks =
+                jsonData.map((json) => SpecificTask.fromJson(json)).toList();
+            _filteredCampusTasks = allcampustasks;
+            isLoading = false;
+          });
+        }
+      } else {
+        throw Exception('Failed to load tasks');
+      }
+    } catch (e) {
+      // Handle exceptions (e.g., network errors)
+      if (mounted) {
+        // Check if the widget is still mounted
+        setState(() {
+          isLoading = false;
+        });
+      }
+      throw e;
     }
   }
 
@@ -645,13 +677,13 @@ class _CampusTaskSearchState extends State<CampusTaskSearch> {
                               : "No Result",
                           style: TextStyle(
                             color: Colors.grey[700],
-                            fontSize: 30,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SpinKitThreeBounce(
                           color: Color.fromARGB(255, 97, 81, 188),
-                          size: 50,
+                          size: 40,
                         ),
                       ],
                     )

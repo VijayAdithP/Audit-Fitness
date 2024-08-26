@@ -111,9 +111,11 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
           ),
         ).show(context);
         // print(jsonDecode(response.body)["Message"]);
-        setState(() {
-          selectedWeek = '';
-        });
+        if (mounted) {
+          setState(() {
+            selectedWeek = '';
+          });
+        }
         Navigator.of(context).pop();
       } else if (response.statusCode == 400) {
         DelightToastBar(
@@ -330,7 +332,7 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
                     const SizedBox(height: 20),
                     SizedBox(
                       height: 50,
-                      width: 300,
+                      width: double.maxFinite,
                       child: ElevatedButton(
                         onPressed: () {
                           if (_weeklyauditIdController.text.isEmpty) {
