@@ -1,5 +1,5 @@
 class ApiEndPoints {
-  static const String baseUrl = 'http://10.10.85.138:8001';
+  static const String baseUrl = 'http://10.10.165.185:8001';
   static AuthEndPoints authEndpoints = AuthEndPoints();
 }
 
@@ -40,4 +40,5 @@ class AuthEndPoints {
   final String campusStatusUpdate = '/update-status';
 
   final String userFCMtoken = '/store-token';
+  final String FCMtokendelete = '/logout-token';
 }

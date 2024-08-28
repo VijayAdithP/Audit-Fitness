@@ -83,7 +83,6 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
   }
 
   Future<void> submitweeklyaudittouser() async {
-    bool isTamil = box.read('isTamil');
     var headers = {'Content-Type': 'application/json'};
     try {
       var url = Uri.parse(ApiEndPoints.baseUrl +
@@ -114,7 +113,9 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  isTamil ? "பணி ஐடி ஏற்கனவே உள்ளது" : "TaskId already exists",
+                  Provider.of<LanguageProvider>(context).isTamil
+                      ? "பணி ஐடி ஏற்கனவே உள்ளது"
+                      : "TaskId already exists",
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
@@ -146,8 +147,8 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                     color: Colors.white,
                   ),
                   title: Text(
-                    isTamil
-                        ? "தணிக்கை வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
+                    Provider.of<LanguageProvider>(context).isTamil
+                        ? "வேலை வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
                         : "Audit successfully assigned",
                     style: const TextStyle(
                       fontWeight: FontWeight.w700,
@@ -282,7 +283,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                               Text(
                                 overflow: TextOverflow.visible,
                                 Provider.of<LanguageProvider>(context).isTamil
-                                    ? "தணிக்கைகளை ஒதுக்குங்கள்"
+                                    ? "வேலை ஒதுக்க"
                                     : "ASSIGN AUDITS",
                                 style: GoogleFonts.manrope(
                                   color: Colors.white,
@@ -334,7 +335,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                   Text(
                                     Provider.of<LanguageProvider>(context)
                                             .isTamil
-                                        ? "வாராந்திர தணிக்கை ஐடி"
+                                        ? "வாராந்திர வேலை ஐடி"
                                         : 'Weekly Audit ID',
                                     style: GoogleFonts.manrope(
                                       fontWeight: FontWeight.bold,
@@ -358,7 +359,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                   Text(
                                     Provider.of<LanguageProvider>(context)
                                             .isTamil
-                                        ? "வாராந்திர தணிக்கை தேதி"
+                                        ? "வாராந்திர வேலை தேதி"
                                         : 'Weekly Audit Date',
                                     style: GoogleFonts.manrope(
                                       fontWeight: FontWeight.bold,
@@ -481,7 +482,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                                 padding: EdgeInsets.zero,
                                                 children: snapshot.data!
                                                     .map((areaUser) {
-                                                  bool isSelected =
+                                                   isSelected =
                                                       _selectedAreas.contains(
                                                           areaUser
                                                               .areaSpecific);
@@ -538,8 +539,8 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                   ),
                                   GestureDetector(
                                     onTap: () {
-                                      if (_usernameController.text.isEmpty &&
-                                          isSelected == false) {
+                                      print(isSelected);
+                                      if (_usernameController.text.isEmpty && isSelected == false) {
                                         setState(() {
                                           DelightToastBar(
                                             position:
@@ -701,15 +702,16 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                                               ),
                                                               ElevatedButton(
                                                                 style:
-                                                                    const ButtonStyle(
+                                                                    ButtonStyle(
                                                                   padding:
                                                                       WidgetStatePropertyAll(
                                                                     EdgeInsets
                                                                         .symmetric(
                                                                       vertical:
                                                                           8,
-                                                                      horizontal:
-                                                                          32,
+                                                                      // horizontal:
+                                                                      //     MediaQuery.of(context).devicePixelRatio *
+                                                                      //         12,
                                                                     ),
                                                                   ),
                                                                   backgroundColor:

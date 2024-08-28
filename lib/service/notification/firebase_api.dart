@@ -70,7 +70,7 @@ class FirebaseApi {
 
     // Listen to token refresh
     _firebaseMessaging.onTokenRefresh.listen((newToken) {
-      print("FCM token refreshed: $newToken");
+      print("FCM token refreshed: $newToken");  
       box.write("FCMtoken", newToken);
       // Handle the new token as needed, e.g., update it on your server
     });

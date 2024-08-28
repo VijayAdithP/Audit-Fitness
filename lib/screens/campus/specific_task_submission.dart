@@ -355,10 +355,32 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
         backgroundColor:
             _useractblock ? Color.fromRGBO(229, 229, 229, 1) : Colors.black,
         body: _useractblock
-            ? const Center(
-                child: SpinKitThreeBounce(
-                  color: const Color.fromARGB(255, 130, 111, 238),
-                  size: 40,
+            ? Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      Provider.of<LanguageProvider>(context).isTamil
+                          ? "சேர்க்கப்படுகிறது"
+                          : "Adding task Id",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: Provider.of<LanguageProvider>(context).isTamil
+                            ? 17
+                            : 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    SpinKitThreeBounce(
+                      color: const Color.fromARGB(255, 130, 111, 238),
+                      size: 30,
+                    ),
+                  ],
                 ),
               )
             : Column(

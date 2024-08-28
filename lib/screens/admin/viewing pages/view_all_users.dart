@@ -302,8 +302,38 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
+                                  return Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Fetching data",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Colors.grey[600],
+                                            fontSize:
+                                                Provider.of<LanguageProvider>(
+                                                            context)
+                                                        .isTamil
+                                                    ? 17
+                                                    : 20,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        SpinKitThreeBounce(
+                                          color: const Color.fromARGB(
+                                              255, 130, 111, 238),
+                                          size: 30,
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 } else if (snapshot.hasError) {
                                   return Center(
                                       child: Text('Error: ${snapshot.error}'));
@@ -826,8 +856,6 @@ class _UserEditPageState extends State<UserEditPage> {
   }
 
   Future<void> updateUser(AllUsersModel user) async {
-    bool isTamil = box.read('isTamil');
-
     try {
       final response = await http.put(
         Uri.parse(
@@ -853,7 +881,7 @@ class _UserEditPageState extends State<UserEditPage> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  isTamil
+                  Provider.of<LanguageProvider>(context).isTamil
                       ? "பயனர் வெற்றிகரமாக புதுப்பிக்கப்பட்டார்"
                       : "User successfully updated",
                   style: const TextStyle(
@@ -887,7 +915,7 @@ class _UserEditPageState extends State<UserEditPage> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  isTamil
+                  Provider.of<LanguageProvider>(context).isTamil
                       ? "பயனரைப் புதுப்பிப்பதில் பிழை"
                       : "Error updating user",
                   style: const TextStyle(
@@ -909,8 +937,6 @@ class _UserEditPageState extends State<UserEditPage> {
   }
 
   Future<void> deleteUser(int id) async {
-    bool isTamil = box.read('isTamil');
-
     try {
       final response = await http.delete(
         Uri.parse(
@@ -935,7 +961,7 @@ class _UserEditPageState extends State<UserEditPage> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  isTamil
+                  Provider.of<LanguageProvider>(context).isTamil
                       ? "பயனர் வெற்றிகரமாக புதுப்பிக்கப்பட்டார்"
                       : "User successfully updated",
                   style: const TextStyle(
@@ -969,7 +995,7 @@ class _UserEditPageState extends State<UserEditPage> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  isTamil
+                  Provider.of<LanguageProvider>(context).isTamil
                       ? "பயனரைப் புதுப்பிப்பதில் பிழை"
                       : "Error updating user",
                   style: const TextStyle(

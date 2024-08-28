@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/admin/Tables/campus-progress-table.dart';
 import 'package:auditfitnesstest/screens/admin/Weekly-Audit/weekly_audit_id_list.dart';
@@ -7,6 +9,7 @@ import 'package:auditfitnesstest/screens/admin/viewing_pages.dart';
 import 'package:auditfitnesstest/screens/auth_screen.dart';
 import 'package:auditfitnesstest/screens/widgets/Admin-widgets/Weekly%20Audit/weekly_audit_dialog.dart';
 import 'package:auditfitnesstest/screens/widgets/Admin-widgets/audit-id-cards.dart';
+import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -131,6 +134,35 @@ class Drawer_ extends StatefulWidget {
 }
 
 class _Drawer_State extends State<Drawer_> {
+  Future<void> fcmtokendelete() async {
+    String FCMtoken = box.read('FCMtoken');
+    var headers = {'Content-Type': 'application/json'};
+    try {
+      print("calling");
+      var url = Uri.parse(
+          ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.FCMtokendelete);
+
+      var body = json.encode({
+        "fcmtoken": FCMtoken,
+      });
+
+      var response = await http.delete(url, body: body, headers: headers);
+      if (response.statusCode == 200) {
+        print("all good");
+      }
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return SimpleDialog(
+              title: const Text('Opps!'),
+              contentPadding: const EdgeInsets.all(20),
+              children: [Text(e.toString())],
+            );
+          });
+    }
+  }
+
   final box = GetStorage();
   @override
   Widget build(BuildContext context) {
@@ -211,7 +243,7 @@ class _Drawer_State extends State<Drawer_> {
             ),
             title: Text(
               Provider.of<LanguageProvider>(context).isTamil
-                  ? "சமீபத்தில் சேர்க்கப்பட்ட தணிக்கைகள்"
+                  ? "சமீபத்தில் சேர்க்கப்பட்ட வேலைகள்"
                   : 'Recently Added Audits',
               style: GoogleFonts.manrope(
                 fontWeight: FontWeight.w700,
@@ -222,7 +254,7 @@ class _Drawer_State extends State<Drawer_> {
               ListTile(
                 title: Text(
                   Provider.of<LanguageProvider>(context).isTamil
-                      ? "வாராந்திர தணிக்கை"
+                      ? "வாராந்திர வேலை"
                       : 'Weekly Audit',
                   style: GoogleFonts.manrope(
                     fontWeight: FontWeight.w700,
@@ -293,7 +325,8 @@ class _Drawer_State extends State<Drawer_> {
                 fontWeight: FontWeight.w700,
               ),
             ),
-            onTap: () async {
+            onTap: () {
+              fcmtokendelete();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -668,7 +701,7 @@ class _AdminPageState extends State<AdminPage> {
                 child: Text(
                   overflow: TextOverflow.visible,
                   Provider.of<LanguageProvider>(context).isTamil
-                      ? "நிர்வாக டாஷ்போர்டு"
+                      ? "நிர்வாக வேலை"
                       : "MANAGE YOUR TASKS",
                   style: GoogleFonts.manrope(
                     color: Colors.black,
@@ -685,13 +718,13 @@ class _AdminPageState extends State<AdminPage> {
                       // shadow: Colors.blue[300],
                       background: Colors.white,
                       text1: Provider.of<LanguageProvider>(context).isTamil
-                          ? "தணிக்கை ஐடியை உருவாக்கவும்"
+                          ? "வேலை ஐடியை உருவாக்கவும்"
                           : "Weekly Audits Id",
                       text2: Provider.of<LanguageProvider>(context).isTamil
                           ? "சேர்க்க தட்டவும்"
                           : "Tap to add",
                       cardtitle: Provider.of<LanguageProvider>(context).isTamil
-                          ? "வாராந்திர தணிக்கை"
+                          ? "வாராந்திர வேலை"
                           : "Weekly Audit",
                       navpage: () {
                         showDialog(
@@ -732,7 +765,7 @@ class _AdminPageState extends State<AdminPage> {
                           ? "சேர்க்க தட்டவும்"
                           : "Tap to view",
                       text1: Provider.of<LanguageProvider>(context).isTamil
-                          ? "வாராந்திர தணிக்கை அறிக்கைகள்"
+                          ? "வாராந்திர வேலைகை அறிக்கைகள்"
                           : "Weekly Audit Reports",
                       cardtitle: Provider.of<LanguageProvider>(context).isTamil
                           ? "வாராந்திர அறிக்கைகள்"
@@ -748,7 +781,7 @@ class _AdminPageState extends State<AdminPage> {
                           ? "பார்க்க தட்டவும்"
                           : "Tap to view",
                       text1: Provider.of<LanguageProvider>(context).isTamil
-                          ? "வளாக தணிக்கை அறிக்கைகள்"
+                          ? "வளாக வேலைகை அறிக்கைகள்"
                           : "Campus Audit Reports",
                       cardtitle: Provider.of<LanguageProvider>(context).isTamil
                           ? "வளாக அறிக்கைகள்"

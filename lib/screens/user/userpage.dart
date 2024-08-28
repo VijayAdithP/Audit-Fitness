@@ -1,7 +1,10 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/auth_screen.dart';
 import 'package:auditfitnesstest/screens/user/Weekly-Audit/weekly_user_audit_list.dart';
 import 'package:auditfitnesstest/screens/widgets/User-Widgets/user_audit_cards.dart';
+import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,6 +36,36 @@ class _Drawer_ extends StatefulWidget {
 
 class __Drawer_State extends State<_Drawer_> {
   final box = GetStorage();
+
+  Future<void> fcmtokendelete() async {
+    String FCMtoken = box.read('FCMtoken');
+    var headers = {'Content-Type': 'application/json'};
+    try {
+      print("calling");
+      var url = Uri.parse(
+          ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.FCMtokendelete);
+
+      var body = json.encode({
+        "fcmtoken": FCMtoken,
+      });
+
+      var response = await http.delete(url, body: body, headers: headers);
+      if (response.statusCode == 200) {
+        print("all good");
+      }
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return SimpleDialog(
+              title: const Text('Opps!'),
+              contentPadding: const EdgeInsets.all(20),
+              children: [Text(e.toString())],
+            );
+          });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final String username = box.read('username');
@@ -112,6 +145,7 @@ class __Drawer_State extends State<_Drawer_> {
               ),
             ),
             onTap: () {
+              fcmtokendelete();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -276,7 +310,7 @@ class _UserHomePageState extends State<UserHomePage> {
                         background: const Color.fromRGBO(135, 114, 255, 1),
                         cardtitle:
                             Provider.of<LanguageProvider>(context).isTamil
-                                ? "வாராந்திர தணிக்கை"
+                                ? "வாராந்திர வேலை"
                                 : "Weekly Audit",
                         navpage: () {
                           Navigator.push(

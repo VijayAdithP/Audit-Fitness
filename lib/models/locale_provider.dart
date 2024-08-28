@@ -49,26 +49,29 @@ class WeeklyTasksProvider with ChangeNotifier {
 
   Future<void> fetchWeeklyTasks() async {
     final String? username = box.read('username');
-    if (username == null) {
-      _weeklyTasksCount = 0;
-      notifyListeners();
-      return;
-    }
+    try {
+      if (username == null) {
+        _weeklyTasksCount = 0;
+        notifyListeners();
+        return;
+      }
 
-    final response = await http.get(Uri.parse(
-        '${ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.getweeklytaskper}/$username'));
+      final response = await http.get(Uri.parse(
+          '${ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.getweeklytaskper}/$username'));
 
-    if (response.statusCode == 200) {
-      List<dynamic> jsonData = json.decode(response.body);
-      List<UserWeeklyTasksModel> weeklyTasks =
-          jsonData.map((item) => UserWeeklyTasksModel.fromJson(item)).toList();
+      if (response.statusCode == 200) {
+        List<dynamic> jsonData = json.decode(response.body);
+        List<UserWeeklyTasksModel> weeklyTasks = jsonData
+            .map((item) => UserWeeklyTasksModel.fromJson(item))
+            .toList();
 
-      weeklyTasks.sort((a, b) => b.assignedAt!.compareTo(a.assignedAt!));
+        weeklyTasks.sort((a, b) => b.assignedAt!.compareTo(a.assignedAt!));
 
-      _weeklyTasksCount = weeklyTasks.length;
-      notifyListeners();
-    } else {
-      throw Exception('Failed to load weekly tasks');
+        _weeklyTasksCount = weeklyTasks.length;
+        notifyListeners();
+      }
+    } catch (e) {
+      print(e);
     }
   }
 

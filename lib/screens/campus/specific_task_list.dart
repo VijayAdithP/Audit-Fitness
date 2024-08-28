@@ -174,7 +174,7 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
                                                       Provider.of<LanguageProvider>(
                                                                   context)
                                                               .isTamil
-                                                          ? "நிலுவையில் உள்ள தணிக்கைகள்"
+                                                          ? "நிலுவையில் உள்ள வேலைகள்"
                                                           : "Pending audits",
                                                       style: const TextStyle(
                                                         fontSize: 17,
@@ -218,7 +218,7 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
                           Text(
                             overflow: TextOverflow.visible,
                             Provider.of<LanguageProvider>(context).isTamil
-                                ? "நிலுவையில் உள்ள தணிக்கைகள்"
+                                ? "நிலுவையில் உள்ள வேலைகள்"
                                 : "PENDING AUDITS",
                             style: GoogleFonts.manrope(
                               color: Colors.black,
@@ -296,7 +296,7 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
                                             Provider.of<LanguageProvider>(
                                                         context)
                                                     .isTamil
-                                                ? "பணி ஐடியை தேடவும்"
+                                                ? "பணி ஐடி"
                                                 : 'Search by task id',
                                             style: const TextStyle(
                                               fontSize: 18,
@@ -652,7 +652,7 @@ class _CampusTaskSearchState extends State<CampusTaskSearch> {
                           border: InputBorder.none,
                           hintText:
                               Provider.of<LanguageProvider>(context).isTamil
-                                  ? "பணி ஐடியை தேடவும்"
+                                  ? "பணி ஐடி"
                                   : "Search by taskId",
                           hintStyle: const TextStyle(
                             fontSize: 18,
@@ -673,7 +673,7 @@ class _CampusTaskSearchState extends State<CampusTaskSearch> {
                       children: [
                         Text(
                           Provider.of<LanguageProvider>(context).isTamil
-                              ? "முடிவு இல்லை"
+                              ? "ஒன்றுமில்லை"
                               : "No Result",
                           style: TextStyle(
                             color: Colors.grey[700],

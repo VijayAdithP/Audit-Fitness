@@ -171,7 +171,7 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
                                                   Provider.of<LanguageProvider>(
                                                               context)
                                                           .isTamil
-                                                      ? "வாராந்திர தணிக்கை நிலுவையில் உள்ளது"
+                                                      ? "நிலுவையில் உள்ள வேலைகள்"
                                                       : "Pending weekly audits",
                                                   style: const TextStyle(
                                                     fontSize: 17,
@@ -187,7 +187,7 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
                                               Provider.of<LanguageProvider>(
                                                           context)
                                                       .isTamil
-                                                  ? "உங்களிடம் நிலுவையில் உள்ள தணிக்கைகள் இதோ, நிர்ணயிக்கப்பட்ட காலக்கெடுவிற்கு முன் அவற்றை முடிக்கவும்"
+                                                  ? "உங்களிடம் நிலுவையில் உள்ள வேலைகள் இதோ, நிர்ணயிக்கப்பட்ட காலக்கெடுவிற்கு முன் அவற்றை முடிக்கவும்"
                                                   : "Here are the pending audits you have, Complete them before the set deadline",
                                               style: const TextStyle(
                                                 fontSize: 17,
@@ -210,7 +210,7 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
                           Text(
                             overflow: TextOverflow.visible,
                             Provider.of<LanguageProvider>(context).isTamil
-                                ? "வாராந்திர தணிக்கைகள்"
+                                ? "வாராந்திர வேலைகள்"
                                 : "PENDING WEEKLY AUDIT",
                             style: GoogleFonts.manrope(
                               color: Colors.black,

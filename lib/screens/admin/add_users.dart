@@ -123,7 +123,7 @@ class _AddUsersState extends State<AddUsers> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         backgroundColor:
             useractiondis ? Color.fromRGBO(229, 229, 229, 1) : Colors.black,
         body: useractiondis

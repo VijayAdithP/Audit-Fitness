@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:auditfitnesstest/models/admin%20specific/weekly%20models/new_weekly_report.dart';
+import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/admin/campus_progress_edit.dart';
 import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -16,6 +17,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -196,6 +198,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
       ));
 
       if (response.statusCode == 200) {
+        print(response.body);
         if (mounted) {
           setState(() {
             reports = (jsonDecode(response.body) as List)
@@ -254,7 +257,6 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
   }
 
   Future<void> fetchPDF() async {
-    bool isTamil = box.read('isTamil');
     try {
       if (!await _requestStoragePermission()) {
         print('Storage permission denied');
@@ -290,7 +292,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
               color: Colors.white,
             ),
             title: Text(
-              isTamil
+              Provider.of<LanguageProvider>(context).isTamil
                   ? "பணி ஐடி ஏற்கனவே உள்ளது"
                   : "PDF successfully downloaded",
               style: const TextStyle(
@@ -316,7 +318,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                 color: Colors.white,
               ),
               title: Text(
-                isTamil
+                Provider.of<LanguageProvider>(context).isTamil
                     ? "பணி ஐடி ஏற்கனவே உள்ளது"
                     : "PDF successfully downloaded",
                 style: const TextStyle(
@@ -355,7 +357,6 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
   }
 
   Future<String?> _savePDF(Uint8List pdfBytes, String fileName) async {
-    bool isTamil = box.read('isTamil');
     try {
       final directory = await getExternalStorageDirectory();
       if (directory != null) {
@@ -380,7 +381,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                 color: Colors.white,
               ),
               title: Text(
-                isTamil
+                Provider.of<LanguageProvider>(context).isTamil
                     ? "பணி ஐடி ஏற்கனவே உள்ளது"
                     : "PDF successfully downloaded",
                 style: const TextStyle(
@@ -625,7 +626,6 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool isTamil = box.read('isTamil');
     return Scaffold(
         appBar: AppBar(
           actions: [
@@ -664,10 +664,13 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
           ),
           backgroundColor: Colors.black,
           title: Text(
-            isTamil ? "வாராந்திர அறிக்கைகள்" : "Weekly Reports",
+            Provider.of<LanguageProvider>(context).isTamil
+                ? "வாராந்திர அறிக்கைகள்"
+                : "Weekly Reports",
             style: GoogleFonts.manrope(
               color: Colors.white,
-              fontSize: isTamil ? 17 : 25,
+              fontSize:
+                  Provider.of<LanguageProvider>(context).isTamil ? 17 : 25,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -692,15 +695,20 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                     reports: reports,
                     onShowImageDialog: _showImageDialog,
                   ),
-                  columnWidthMode: ColumnWidthMode.fitByCellValue,
+                  columnWidthMode: ColumnWidthMode.auto,
+
                   headerRowHeight: 100.0, // Set the header row height to 150.0
                   gridLinesVisibility: GridLinesVisibility.vertical,
                   headerGridLinesVisibility: GridLinesVisibility.vertical,
-                  // onQueryRowHeight: (details) {
-                  //   // Calculate and return the row height
-                  //   return details.getIntrinsicRowHeight(
-                  //     details.rowIndex,
-                  //   );
+
+                  // onQueryRowHeight: (RowHeightDetails details) {
+                  //   if (details.rowIndex== 2) {
+                  //     // Return a specific height for the header row
+                  //     return 100.0;
+                  //   } else {
+                  //     // Calculate and return the intrinsic height for other rows
+                  //     return details.getIntrinsicRowHeight(details.rowIndex);
+                  //   }
                   // },
                   columns: <GridColumn>[
                     GridColumn(
@@ -708,14 +716,19 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                       label: Container(
                         padding: const EdgeInsets.all(16.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Main Area',
+                        child: Text(
+                          Provider.of<LanguageProvider>(context).isTamil
+                              ? "வாராந்திர அறிக்கைகள்"
+                              : 'Main Area',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 17,
+                            fontSize:
+                                Provider.of<LanguageProvider>(context).isTamil
+                                    ? 15
+                                    : 17,
                             color: Colors.white,
                           ),
-                          overflow: TextOverflow.clip,
+                          overflow: TextOverflow.visible,
                           softWrap: true,
                         ),
                       ),
@@ -725,15 +738,20 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                       label: Container(
                         padding: const EdgeInsets.all(16.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Task ID',
+                        child: Text(
+                          Provider.of<LanguageProvider>(context).isTamil
+                              ? "பணி ஐடி"
+                              : 'Task ID',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 17,
+                            fontSize:
+                                Provider.of<LanguageProvider>(context).isTamil
+                                    ? 15
+                                    : 17,
                             color: Colors.white,
                           ),
-                          overflow: TextOverflow.clip,
-                          softWrap: true,
+                          overflow: TextOverflow.visible,
+                          // softWrap: true,
                         ),
                       ),
                     ),
@@ -742,14 +760,19 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                       label: Container(
                         padding: const EdgeInsets.all(16.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Specific Area',
+                        child: Text(
+                          Provider.of<LanguageProvider>(context).isTamil
+                              ? "பகுதி"
+                              : 'Specific Area',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 17,
+                            fontSize:
+                                Provider.of<LanguageProvider>(context).isTamil
+                                    ? 15
+                                    : 17,
                             color: Colors.white,
                           ),
-                          overflow: TextOverflow.clip,
+                          overflow: TextOverflow.visible,
                           softWrap: true,
                         ),
                       ),
@@ -759,14 +782,19 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                       label: Container(
                         padding: const EdgeInsets.all(16.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Audit Date',
+                        child: Text(
+                          Provider.of<LanguageProvider>(context).isTamil
+                              ? "தேதி"
+                              : 'Audit Date',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 17,
+                            fontSize:
+                                Provider.of<LanguageProvider>(context).isTamil
+                                    ? 15
+                                    : 17,
                             color: Colors.white,
                           ),
-                          overflow: TextOverflow.clip,
+                          overflow: TextOverflow.visible,
                           softWrap: true,
                         ),
                       ),
@@ -776,14 +804,19 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                       label: Container(
                         padding: const EdgeInsets.all(16.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Observation',
+                        child: Text(
+                          Provider.of<LanguageProvider>(context).isTamil
+                              ? "கவனிப்புகள்"
+                              : 'Observation',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 17,
+                            fontSize:
+                                Provider.of<LanguageProvider>(context).isTamil
+                                    ? 15
+                                    : 17,
                             color: Colors.white,
                           ),
-                          overflow: TextOverflow.clip,
+                          overflow: TextOverflow.visible,
                           softWrap: true,
                         ),
                       ),
@@ -793,14 +826,19 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                       label: Container(
                         padding: const EdgeInsets.all(16.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Remarks',
+                        child: Text(
+                          Provider.of<LanguageProvider>(context).isTamil
+                              ? "கருத்துக்கள்"
+                              : 'Remarks',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 17,
+                            fontSize:
+                                Provider.of<LanguageProvider>(context).isTamil
+                                    ? 15
+                                    : 17,
                             color: Colors.white,
                           ),
-                          overflow: TextOverflow.clip,
+                          overflow: TextOverflow.visible,
                           softWrap: true,
                         ),
                       ),
@@ -811,14 +849,19 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                       label: Container(
                         padding: const EdgeInsets.all(16.0),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
-                          'Images',
+                        child: Text(
+                          Provider.of<LanguageProvider>(context).isTamil
+                              ? "படங்கள்"
+                              : 'Images',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 17,
+                            fontSize:
+                                Provider.of<LanguageProvider>(context).isTamil
+                                    ? 15
+                                    : 17,
                             color: Colors.white,
                           ),
-                          overflow: TextOverflow.clip,
+                          overflow: TextOverflow.visible,
                           softWrap: true,
                         ),
                       ),
@@ -908,9 +951,12 @@ class ReportDataSource extends DataGridSource {
                     rowIndex,
                     row,
                   )
-                : Text(
-                    cell.value.toString(),
-                    style: const TextStyle(fontSize: 15),
+                : FittedBox(
+                    child: Text(
+                      cell.value.toString(),
+                      overflow: TextOverflow.visible,
+                      style: const TextStyle(fontSize: 15),
+                    ),
                   ),
           ),
       ],
@@ -1011,6 +1057,7 @@ class ReportDataSource extends DataGridSource {
       // Plain text for "No images" without "bad" in remarks
       return Text(
         buttonText,
+        overflow: TextOverflow.clip,
         style: const TextStyle(
           color: Colors.black, // Ensure plain text color is visible
         ),

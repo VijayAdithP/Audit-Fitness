@@ -68,6 +68,7 @@ class _DropdownUserState extends State<DropdownUser> {
                   : "Condition",
               style: GoogleFonts.manrope(
                 fontWeight: FontWeight.w500,
+                fontSize: 18,
               ),
             ),
           ),
@@ -105,7 +106,7 @@ class _DropdownUserState extends State<DropdownUser> {
                       : 'Good condition',
                   style: GoogleFonts.manrope(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 18,
                     // color: fontColor,
                   ),
                 ),
@@ -125,7 +126,7 @@ class _DropdownUserState extends State<DropdownUser> {
                       : 'Bad Condition',
                   style: GoogleFonts.manrope(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 18,
                     // color: fontColor,
                   ),
                 ),

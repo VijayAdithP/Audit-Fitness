@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -240,7 +241,7 @@ class _WeeklyUserAuditSubmmitPageState
                 ),
                 title: Text(
                   Provider.of<LanguageProvider>(context).isTamil
-                      ? "தணிக்கை வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
+                      ? "வேலை வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
                       : "Audit successfully submitted",
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
@@ -256,7 +257,7 @@ class _WeeklyUserAuditSubmmitPageState
 
         // Get.offAll(() => const UserHomePage());
         // Navigator.of(context).pop();
-        Navigator.of(context).pop();
+        // Navigator.of(context).pop();
         Navigator.of(context).pop();
         Navigator.of(context).pop();
       } else {
@@ -286,10 +287,32 @@ class _WeeklyUserAuditSubmmitPageState
             ? Color.fromRGBO(229, 229, 229, 1)
             : Colors.black,
         body: _useractivityblock
-            ? const Center(
-                child: SpinKitThreeBounce(
-                  color: const Color.fromARGB(255, 130, 111, 238),
-                  size: 40,
+            ? Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      Provider.of<LanguageProvider>(context).isTamil
+                          ? "சேர்க்கப்படுகிறது"
+                          : "Adding data",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: Provider.of<LanguageProvider>(context).isTamil
+                            ? 17
+                            : 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    SpinKitThreeBounce(
+                      color: const Color.fromARGB(255, 130, 111, 238),
+                      size: 30,
+                    ),
+                  ],
                 ),
               )
             : Column(
@@ -325,7 +348,7 @@ class _WeeklyUserAuditSubmmitPageState
                               Text(
                                 overflow: TextOverflow.visible,
                                 Provider.of<LanguageProvider>(context).isTamil
-                                    ? "தணிக்கை விவரங்கள்"
+                                    ? "வேலை விவரங்கள்"
                                     : "WEEKLY AUDITS",
                                 style: GoogleFonts.manrope(
                                   color: Colors.white,
@@ -394,7 +417,7 @@ class _WeeklyUserAuditSubmmitPageState
                                 const SizedBox(height: 16),
                                 Text(
                                   Provider.of<LanguageProvider>(context).isTamil
-                                      ? "தணிக்கையாளர் தொலைபேசி எண்"
+                                      ? "தொலைபேசி எண்"
                                       : "PhoneNumber",
                                   style: GoogleFonts.manrope(
                                     fontWeight: FontWeight.bold,
@@ -414,7 +437,7 @@ class _WeeklyUserAuditSubmmitPageState
                                 const SizedBox(height: 16),
                                 Text(
                                   Provider.of<LanguageProvider>(context).isTamil
-                                      ? "தணிக்கை ஐடி"
+                                      ? "வேலை ஐடி"
                                       : "Audit Id",
                                   style: GoogleFonts.manrope(
                                     fontWeight: FontWeight.bold,
@@ -505,15 +528,33 @@ class _WeeklyUserAuditSubmmitPageState
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          Provider.of<LanguageProvider>(context)
-                                                  .isTamil
-                                              ? question.questionTamil!
-                                              : question.question!,
-                                          style: GoogleFonts.manrope(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                Provider.of<LanguageProvider>(
+                                                            context)
+                                                        .isTamil
+                                                    ? question.questionTamil!
+                                                    : question.question!,
+                                                style: GoogleFonts.manrope(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ),
+                                            if (answers[question.id] == 'bad' &&
+                                                (controllers[question.id!]!
+                                                        .text
+                                                        .isEmpty ||
+                                                    images[question.id!] ==
+                                                        null))
+                                              const Icon(
+                                                Icons.error_outline,
+                                                color: Colors.red,
+                                                size: 20,
+                                              ),
+                                          ],
                                         ),
                                         const SizedBox(height: 5),
                                         DropdownUser(
@@ -543,202 +584,233 @@ class _WeeklyUserAuditSubmmitPageState
                                               Padding(
                                                 padding: const EdgeInsets.only(
                                                     top: 10.0),
-                                                child: Badconditionields(
+                                                child: TextField(
                                                   controller: controllers[
                                                       question.id!]!,
-                                                  hintText: Provider.of<
-                                                                  LanguageProvider>(
-                                                              context)
-                                                          .isTamil
-                                                      ? "நிபந்தனையைக் குறிப்பிடவும்"
-                                                      : "Specify the condition",
+                                                  textInputAction:
+                                                      TextInputAction.done,
+                                                  decoration: InputDecoration(
+                                                    filled: true,
+                                                    fillColor: Colors.white,
+                                                    enabledBorder:
+                                                        const OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  10)),
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Colors.transparent,
+                                                      ),
+                                                    ),
+                                                    focusedBorder:
+                                                        const OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  10)),
+                                                      borderSide: BorderSide(
+                                                        color:
+                                                            Colors.transparent,
+                                                      ),
+                                                    ),
+                                                    border: InputBorder.none,
+                                                    hintText: Provider.of<
+                                                                    LanguageProvider>(
+                                                                context)
+                                                            .isTamil
+                                                        ? "நிபந்தனையைக் குறிப்பிடவும்*"
+                                                        : "Specify the condition *",
+                                                    hintStyle:
+                                                        GoogleFonts.manrope(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                               const SizedBox(height: 10),
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: GestureDetector(
-                                                      onTap: () async {
-                                                        final pickedFile =
-                                                            await _picker.pickImage(
-                                                                source:
-                                                                    ImageSource
-                                                                        .camera);
-                                                        if (pickedFile !=
-                                                            null) {
-                                                          setState(() {
-                                                            images[question
-                                                                    .id!] =
-                                                                File(pickedFile
-                                                                    .path);
-                                                          });
-                                                        }
-                                                      },
-                                                      child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.white,
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
-                                                                          15)),
-                                                        ),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(10.0),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Icon(
-                                                                  Icons
-                                                                      .camera_alt,
-                                                                  color: Colors
-                                                                          .grey[
-                                                                      800],
-                                                                  size: 20),
-                                                              const SizedBox(
-                                                                  width: 5),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .only(
-                                                                  bottom: Provider.of<LanguageProvider>(
-                                                                              context)
-                                                                          .isTamil
-                                                                      ? 0
-                                                                      : MediaQuery.of(
-                                                                              context)
-                                                                          .devicePixelRatio,
-                                                                  top: Provider.of<LanguageProvider>(
-                                                                              context)
-                                                                          .isTamil
-                                                                      ? MediaQuery.of(
-                                                                              context)
-                                                                          .devicePixelRatio
-                                                                      : 0,
-                                                                ),
-                                                                child: Text(
-                                                                  Provider.of<LanguageProvider>(
-                                                                              context)
-                                                                          .isTamil
-                                                                      ? "எடுக்க"
-                                                                      : "Take pic",
-                                                                  style: GoogleFonts
-                                                                      .manrope(
-                                                                    fontSize:
-                                                                        16,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
+                                              IntrinsicHeight(
+                                                child: Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: GestureDetector(
+                                                        onTap: () async {
+                                                          final pickedFile =
+                                                              await _picker.pickImage(
+                                                                  source:
+                                                                      ImageSource
+                                                                          .camera);
+                                                          if (pickedFile !=
+                                                              null) {
+                                                            setState(() {
+                                                              images[question
+                                                                      .id!] =
+                                                                  File(pickedFile
+                                                                      .path);
+                                                            });
+                                                          }
+                                                        },
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            15)),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(10.0),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Icon(
+                                                                    Icons
+                                                                        .camera_alt,
                                                                     color: Colors
                                                                             .grey[
                                                                         800],
+                                                                    size: 20),
+                                                                const SizedBox(
+                                                                    width: 5),
+                                                                Padding(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .only(
+                                                                    bottom: Provider.of<LanguageProvider>(context)
+                                                                            .isTamil
+                                                                        ? 0
+                                                                        : MediaQuery.of(context)
+                                                                            .devicePixelRatio,
+                                                                    top: Provider.of<LanguageProvider>(context)
+                                                                            .isTamil
+                                                                        ? MediaQuery.of(context)
+                                                                            .devicePixelRatio
+                                                                        : 0,
+                                                                  ),
+                                                                  child: Text(
+                                                                    Provider.of<LanguageProvider>(context)
+                                                                            .isTamil
+                                                                        ? "எடுக்க*"
+                                                                        : "Take pic*",
+                                                                    style: GoogleFonts
+                                                                        .manrope(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: Colors
+                                                                              .grey[
+                                                                          800],
+                                                                    ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                            ],
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  const SizedBox(width: 10),
-                                                  Expanded(
-                                                    child: GestureDetector(
-                                                      onTap: () async {
-                                                        final pickedFile =
-                                                            await _picker.pickImage(
-                                                                source:
-                                                                    ImageSource
-                                                                        .gallery);
-                                                        if (pickedFile !=
-                                                            null) {
-                                                          setState(() {
-                                                            images[question
-                                                                    .id!] =
-                                                                File(pickedFile
-                                                                    .path);
-                                                          });
-                                                        }
-                                                      },
-                                                      child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.white,
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .all(Radius
-                                                                      .circular(
-                                                                          15)),
-                                                        ),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(10.0),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Icon(Icons.photo,
-                                                                  color: Colors
-                                                                          .grey[
-                                                                      800],
-                                                                  size: 20),
-                                                              const SizedBox(
-                                                                  width: 5),
-                                                              Padding(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .only(
-                                                                  bottom: Provider.of<LanguageProvider>(
-                                                                              context)
-                                                                          .isTamil
-                                                                      ? 0
-                                                                      : MediaQuery.of(
-                                                                              context)
-                                                                          .devicePixelRatio,
-                                                                  top: Provider.of<LanguageProvider>(
-                                                                              context)
-                                                                          .isTamil
-                                                                      ? MediaQuery.of(
-                                                                              context)
-                                                                          .devicePixelRatio
-                                                                      : 0,
-                                                                ),
-                                                                child: Text(
-                                                                  Provider.of<LanguageProvider>(
-                                                                              context)
-                                                                          .isTamil
-                                                                      ? "சேர்க்க"
-                                                                      : "Add Image",
-                                                                  style: GoogleFonts
-                                                                      .manrope(
-                                                                    fontSize:
-                                                                        16,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
+                                                    VerticalDivider(
+                                                      color: Colors.grey[400],
+                                                      thickness: 2,
+                                                    ),
+                                                    Expanded(
+                                                      child: GestureDetector(
+                                                        onTap: () async {
+                                                          final pickedFile =
+                                                              await _picker.pickImage(
+                                                                  source: ImageSource
+                                                                      .gallery);
+                                                          if (pickedFile !=
+                                                              null) {
+                                                            setState(() {
+                                                              images[question
+                                                                      .id!] =
+                                                                  File(pickedFile
+                                                                      .path);
+                                                            });
+                                                          }
+                                                        },
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                const BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            15)),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(10.0),
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Icon(
+                                                                    Icons.photo,
                                                                     color: Colors
                                                                             .grey[
                                                                         800],
+                                                                    size: 20),
+                                                                const SizedBox(
+                                                                    width: 5),
+                                                                Padding(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .only(
+                                                                    bottom: Provider.of<LanguageProvider>(context)
+                                                                            .isTamil
+                                                                        ? 0
+                                                                        : MediaQuery.of(context)
+                                                                            .devicePixelRatio,
+                                                                    top: Provider.of<LanguageProvider>(context)
+                                                                            .isTamil
+                                                                        ? MediaQuery.of(context)
+                                                                            .devicePixelRatio
+                                                                        : 0,
+                                                                  ),
+                                                                  child: Text(
+                                                                    Provider.of<LanguageProvider>(context)
+                                                                            .isTamil
+                                                                        ? "கேலரி*"
+                                                                        : "Add Image*",
+                                                                    style: GoogleFonts
+                                                                        .manrope(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: Colors
+                                                                              .grey[
+                                                                          800],
+                                                                    ),
                                                                   ),
                                                                 ),
-                                                              ),
-                                                            ],
+                                                              ],
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                              const SizedBox(height: 10),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
                                               if (images[question.id!] != null)
                                                 Row(
                                                   children: [
@@ -800,6 +872,9 @@ class _WeeklyUserAuditSubmmitPageState
                                                     ),
                                                   ],
                                                 ),
+                                              SizedBox(
+                                                height: 10,
+                                              ),
                                               const Divider(
                                                 thickness: 3,
                                                 color: Colors.grey,
@@ -811,6 +886,7 @@ class _WeeklyUserAuditSubmmitPageState
                                     ),
                                   ),
                                 ),
+
                                 // const SizedBox(
                                 //   height: 16,
                                 // ),
@@ -833,49 +909,319 @@ class _WeeklyUserAuditSubmmitPageState
                                           : "Suggestions",
                                 ),
                                 const SizedBox(height: 20),
+
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     XFile? camera =
+                                //         box.read('pickedFile_camera_file');
+                                //     XFile? gallery =
+                                //         box.read('pickedFile_gallery_file');
+                                //     bool empty = true;
+                                //     for (var question in questions) {
+                                //       setState(() {
+                                //         empty = controllers[question.id!]!
+                                //             .text
+                                //             .isNotEmpty;
+                                //       });
+                                //     }
+                                //     if (!allRemarksFilled &&
+                                //         answers[question.id] == 'bad' &&
+                                //         (controllers[question.id!]!
+                                //                 .text
+                                //                 .isEmpty ||
+                                //             images[question.id!] == null)) {
+                                //       DelightToastBar(
+                                //         position: DelightSnackbarPosition.top,
+                                //         autoDismiss: true,
+                                //         snackbarDuration: Durations.extralong4,
+                                //         builder: (context) => ToastCard(
+                                //           color: Colors.red,
+                                //           leading: const Icon(
+                                //             Icons
+                                //                 .notification_important_outlined,
+                                //             size: 28,
+                                //             color: Colors.white,
+                                //           ),
+                                //           title: Text(
+                                //             Provider.of<LanguageProvider>(
+                                //                         context)
+                                //                     .isTamil
+                                //                 ? "அனைத்து புலங்களையும் நிரப்பவும்"
+                                //                 : "Fill all the fields",
+                                //             style: const TextStyle(
+                                //               fontWeight: FontWeight.w700,
+                                //               fontSize: 14,
+                                //               color: Colors.white,
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ).show(context);
+                                //     } else {
+                                //       showDialog(
+                                //         context: context,
+                                //         builder: (BuildContext context) {
+                                //           return Dialog(
+                                //             backgroundColor: Colors.white,
+                                //             shape: RoundedRectangleBorder(
+                                //               borderRadius:
+                                //                   BorderRadius.circular(40.0),
+                                //             ),
+                                //             child: ClipRRect(
+                                //               borderRadius:
+                                //                   BorderRadius.circular(40.0),
+                                //               child: Padding(
+                                //                 padding: const EdgeInsets.only(
+                                //                   top: 3,
+                                //                   left: 3,
+                                //                   right: 3,
+                                //                   bottom: 3,
+                                //                 ),
+                                //                 child: Container(
+                                //                   width: 150,
+                                //                   decoration:
+                                //                       const BoxDecoration(
+                                //                     color: Colors.white,
+                                //                     borderRadius:
+                                //                         BorderRadius.only(
+                                //                       bottomLeft:
+                                //                           Radius.circular(37),
+                                //                       bottomRight:
+                                //                           Radius.circular(37),
+                                //                       topLeft:
+                                //                           Radius.circular(37),
+                                //                       topRight:
+                                //                           Radius.circular(37),
+                                //                     ),
+                                //                   ),
+                                //                   child: Padding(
+                                //                     padding: const EdgeInsets
+                                //                         .symmetric(
+                                //                         horizontal: 20.0),
+                                //                     child: Column(
+                                //                       mainAxisSize:
+                                //                           MainAxisSize.min,
+                                //                       crossAxisAlignment:
+                                //                           CrossAxisAlignment
+                                //                               .center,
+                                //                       children: [
+                                //                         const SizedBox(
+                                //                           height: 20,
+                                //                         ),
+                                //                         Text(
+                                //                           Provider.of<LanguageProvider>(
+                                //                                       context)
+                                //                                   .isTamil
+                                //                               ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
+                                //                               : "Are you sure?",
+                                //                           style: GoogleFonts
+                                //                               .manrope(
+                                //                             color: Colors.black,
+                                //                             fontSize: Provider.of<
+                                //                                             LanguageProvider>(
+                                //                                         context)
+                                //                                     .isTamil
+                                //                                 ? 19
+                                //                                 : 23,
+                                //                             fontWeight:
+                                //                                 FontWeight.w500,
+                                //                           ),
+                                //                         ),
+                                //                         const SizedBox(
+                                //                           height: 20,
+                                //                         ),
+                                //                         Row(
+                                //                           mainAxisAlignment:
+                                //                               MainAxisAlignment
+                                //                                   .spaceEvenly,
+                                //                           children: [
+                                //                             OutlinedButton(
+                                //                               style:
+                                //                                   OutlinedButton
+                                //                                       .styleFrom(
+                                //                                 padding:
+                                //                                     const EdgeInsets
+                                //                                         .symmetric(
+                                //                                   vertical: 8,
+                                //                                   horizontal:
+                                //                                       32,
+                                //                                 ),
+                                //                                 foregroundColor:
+                                //                                     Colors
+                                //                                         .black87,
+                                //                                 shape:
+                                //                                     RoundedRectangleBorder(
+                                //                                   borderRadius:
+                                //                                       BorderRadius
+                                //                                           .circular(
+                                //                                               5),
+                                //                                 ),
+                                //                                 side:
+                                //                                     const BorderSide(
+                                //                                   color: Colors
+                                //                                       .black87,
+                                //                                 ),
+                                //                               ),
+                                //                               child: Text(
+                                //                                 Provider.of<LanguageProvider>(
+                                //                                             context)
+                                //                                         .isTamil
+                                //                                     ? "இல்லை"
+                                //                                     : "No",
+                                //                                 style: GoogleFonts.manrope(
+                                //                                     color: Colors
+                                //                                         .black87,
+                                //                                     fontWeight:
+                                //                                         FontWeight
+                                //                                             .w500,
+                                //                                     fontSize:
+                                //                                         Provider.of<LanguageProvider>(context).isTamil
+                                //                                             ? 12
+                                //                                             : 15),
+                                //                               ),
+                                //                               onPressed: () {
+                                //                                 Navigator.of(
+                                //                                         context)
+                                //                                     .pop();
+                                //                               },
+                                //                             ),
+                                //                             ElevatedButton(
+                                //                               style:
+                                //                                   const ButtonStyle(
+                                //                                 padding:
+                                //                                     WidgetStatePropertyAll(
+                                //                                   EdgeInsets
+                                //                                       .symmetric(
+                                //                                     vertical: 8,
+                                //                                     horizontal:
+                                //                                         32,
+                                //                                   ),
+                                //                                 ),
+                                //                                 backgroundColor:
+                                //                                     WidgetStatePropertyAll(
+                                //                                   Color
+                                //                                       .fromRGBO(
+                                //                                           130,
+                                //                                           204,
+                                //                                           146,
+                                //                                           1),
+                                //                                 ),
+                                //                                 shape:
+                                //                                     WidgetStatePropertyAll(
+                                //                                   RoundedRectangleBorder(
+                                //                                     borderRadius:
+                                //                                         BorderRadius
+                                //                                             .all(
+                                //                                       Radius
+                                //                                           .circular(
+                                //                                               5),
+                                //                                     ),
+                                //                                   ),
+                                //                                 ),
+                                //                               ),
+                                //                               child: const Icon(
+                                //                                 Icons.check,
+                                //                                 color: Colors
+                                //                                     .white,
+                                //                               ),
+                                //                               onPressed: () {
+                                //                                 auditsubmituser();
+                                //                                 Navigator.of(
+                                //                                         context)
+                                //                                     .pop();
+                                //                                 setState(() {
+                                //                                   _useractivityblock =
+                                //                                       true;
+                                //                                 });
+                                //                               },
+                                //                             ),
+                                //                           ],
+                                //                         ),
+                                //                         const SizedBox(
+                                //                           height: 20,
+                                //                         ),
+                                //                       ],
+                                //                     ),
+                                //                   ),
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           );
+                                //         },
+                                //       );
+                                //     }
+                                //   },
+                                // child: Container(
+                                //   height: 50,
+                                //   width: double.maxFinite,
+                                //   decoration: const BoxDecoration(
+                                //     color: Colors.black,
+                                //     borderRadius:
+                                //         BorderRadius.all(Radius.circular(20)),
+                                //   ),
+                                //   child: Center(
+                                //     child: Text(
+                                //       "Submit",
+                                //       style: GoogleFonts.manrope(
+                                //         color: Colors.white,
+                                //         fontSize: 17,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                                // ),
+
                                 GestureDetector(
                                   onTap: () {
-                                    if (!allRemarksFilled) {
-                                      // Fluttertoast.showToast(
-                                      //   msg: "This is Center Short Toast",
-                                      //   toastLength: Toast.LENGTH_LONG,
-                                      //   gravity: ToastGravity.BOTTOM,
-                                      //   timeInSecForIosWeb: 1,
-                                      //   backgroundColor: Colors.red,
-                                      //   textColor: Colors.white,
-                                      //   fontSize: 16.0,
-                                      // );
-                                      setState(() {
-                                        DelightToastBar(
-                                          position: DelightSnackbarPosition.top,
-                                          autoDismiss: true,
-                                          // animationDuration: Durations.extralong4,
-                                          snackbarDuration:
-                                              Durations.extralong4,
-                                          builder: (context) => ToastCard(
-                                            color: Colors.red,
-                                            leading: const Icon(
-                                              Icons
-                                                  .notification_important_outlined,
-                                              size: 28,
-                                              color: Colors.white,
-                                            ),
-                                            title: Text(
-                                              Provider.of<LanguageProvider>(
-                                                          context)
-                                                      .isTamil
-                                                  ? "அனைத்து புலங்களையும் நிரப்பவும்"
-                                                  : "Fill all the fields",
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                fontSize: 14,
-                                                color: Colors.white,
+                                    // Iterate through all the questions to check conditions
+                                    for (var question in questions) {
+                                      // Update the state to determine if the current question's text is empty
+
+                                      // If any 'bad' remark is not properly filled, show a toast message
+                                      if (!allRemarksFilled ||
+                                          answers[question.id] == 'bad' &&
+                                              (controllers[question.id!]!
+                                                      .text
+                                                      .isEmpty ||
+                                                  images[question.id!] ==
+                                                      null)) {
+                                        if (mounted) {
+                                          setState(() {
+                                            DelightToastBar(
+                                              position:
+                                                  DelightSnackbarPosition.top,
+                                              autoDismiss: true,
+                                              snackbarDuration:
+                                                  Durations.extralong4,
+                                              builder: (context) => ToastCard(
+                                                color: Colors.red,
+                                                leading: const Icon(
+                                                  Icons
+                                                      .notification_important_outlined,
+                                                  size: 28,
+                                                  color: Colors.white,
+                                                ),
+                                                title: Text(
+                                                  Provider.of<LanguageProvider>(
+                                                              context)
+                                                          .isTamil
+                                                      ? "அனைத்து புலங்களையும் நிரப்பவும்"
+                                                      : "Fill all the fields",
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    fontSize: 14,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
                                               ),
-                                            ),
-                                          ),
-                                        ).show(context);
-                                      });
-                                    } else {
+                                            ).show(context);
+                                          });
+                                        }
+
+                                        return;
+                                      }
+                                    }
+
+                                    if (allRemarksFilled) {
                                       showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
@@ -889,28 +1235,17 @@ class _WeeklyUserAuditSubmmitPageState
                                               borderRadius:
                                                   BorderRadius.circular(40.0),
                                               child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                  top: 3,
-                                                  left: 3,
-                                                  right: 3,
-                                                  bottom: 3,
-                                                ),
+                                                padding:
+                                                    const EdgeInsets.all(3.0),
                                                 child: Container(
                                                   width: 150,
                                                   decoration:
                                                       const BoxDecoration(
                                                     color: Colors.white,
                                                     borderRadius:
-                                                        BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(37),
-                                                      bottomRight:
-                                                          Radius.circular(37),
-                                                      topLeft:
-                                                          Radius.circular(37),
-                                                      topRight:
-                                                          Radius.circular(37),
-                                                    ),
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                37)),
                                                   ),
                                                   child: Padding(
                                                     padding: const EdgeInsets
@@ -924,8 +1259,7 @@ class _WeeklyUserAuditSubmmitPageState
                                                               .center,
                                                       children: [
                                                         const SizedBox(
-                                                          height: 20,
-                                                        ),
+                                                            height: 20),
                                                         Text(
                                                           Provider.of<LanguageProvider>(
                                                                       context)
@@ -946,8 +1280,7 @@ class _WeeklyUserAuditSubmmitPageState
                                                           ),
                                                         ),
                                                         const SizedBox(
-                                                          height: 20,
-                                                        ),
+                                                            height: 20),
                                                         Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -974,11 +1307,9 @@ class _WeeklyUserAuditSubmmitPageState
                                                                           .circular(
                                                                               5),
                                                                 ),
-                                                                side:
-                                                                    const BorderSide(
-                                                                  color: Colors
-                                                                      .black87,
-                                                                ),
+                                                                side: const BorderSide(
+                                                                    color: Colors
+                                                                        .black87),
                                                               ),
                                                               child: Text(
                                                                 Provider.of<LanguageProvider>(
@@ -1038,10 +1369,9 @@ class _WeeklyUserAuditSubmmitPageState
                                                                 ),
                                                               ),
                                                               child: const Icon(
-                                                                Icons.check,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
+                                                                  Icons.check,
+                                                                  color: Colors
+                                                                      .white),
                                                               onPressed: () {
                                                                 auditsubmituser();
                                                                 Navigator.of(
@@ -1056,8 +1386,7 @@ class _WeeklyUserAuditSubmmitPageState
                                                           ],
                                                         ),
                                                         const SizedBox(
-                                                          height: 20,
-                                                        ),
+                                                            height: 20),
                                                       ],
                                                     ),
                                                   ),
@@ -1087,7 +1416,7 @@ class _WeeklyUserAuditSubmmitPageState
                                       ),
                                     ),
                                   ),
-                                ),
+                                )
                               ],
                             ),
                           ),

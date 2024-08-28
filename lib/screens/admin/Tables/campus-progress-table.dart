@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:auditfitnesstest/models/admin%20specific/campus_progress_table.dart';
+import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/admin/Tables/submited_weekly_audits.dart';
 import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -329,7 +331,6 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
   final box = GetStorage();
   @override
   Widget build(BuildContext context) {
-    bool isTamil = box.read('isTamil');
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
@@ -342,12 +343,12 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
         ),
         backgroundColor: Colors.black,
         title: Text(
-          isTamil
+          Provider.of<LanguageProvider>(context).isTamil
               ? "வளாக முன்னேற்ற \nஅறிக்கைகள்"
               : "Campus Progression \nReports",
           style: GoogleFonts.manrope(
             color: Colors.white,
-            fontSize: isTamil ? 20 : 25,
+            fontSize: Provider.of<LanguageProvider>(context).isTamil ? 20 : 25,
             fontWeight: FontWeight.w500,
           ),
           overflow: TextOverflow.visible,
@@ -598,14 +599,16 @@ class CampusProgressDataSource extends DataGridSource {
             padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16),
             alignment: Alignment.centerLeft,
             child: cell.columnName == 'Status'
-                ? Text(
-                    cell.value.toString(),
-                    style: TextStyle(
-                      color: cell.value.toString() == 'Completed'
-                          ? Colors.green
-                          : cell.value.toString() == 'In Progress'
-                              ? Colors.red
-                              : Colors.black,
+                ? FittedBox(
+                    child: Text(
+                      cell.value.toString(),
+                      style: TextStyle(
+                        color: cell.value.toString() == 'Completed'
+                            ? Colors.green
+                            : cell.value.toString() == 'In Progress'
+                                ? Colors.red
+                                : Colors.black,
+                      ),
                     ),
                   )
                 : Text(cell.value.toString()),

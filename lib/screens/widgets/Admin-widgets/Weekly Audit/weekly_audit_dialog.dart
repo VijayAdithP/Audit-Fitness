@@ -100,7 +100,7 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
             ),
             title: Text(
               Provider.of<LanguageProvider>(context).isTamil
-                  ? "வாராந்திர தணிக்கை உருவாக்கப்பட்டது"
+                  ? "வாராந்திர வேலை உருவாக்கப்பட்டது"
                   : "Weekly auditId created",
               style: const TextStyle(
                 fontWeight: FontWeight.w700,
@@ -287,13 +287,13 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
                     Badconditionields(
                       controller: _weeklyauditIdController,
                       hintText: Provider.of<LanguageProvider>(context).isTamil
-                          ? "தணிக்கை ஐடி"
+                          ? "வேலை ஐடி"
                           : "Audit ID",
                     ),
                     const SizedBox(height: 20),
                     Text(
                       Provider.of<LanguageProvider>(context).isTamil
-                          ? "வாராந்திர தணிக்கை தேதி"
+                          ? "வாராந்திர வேலை தேதி"
                           : "Weekly Audit Date",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,

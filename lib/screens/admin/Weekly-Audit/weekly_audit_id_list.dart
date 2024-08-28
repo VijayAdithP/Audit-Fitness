@@ -167,7 +167,7 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                                   Provider.of<LanguageProvider>(
                                                               context)
                                                           .isTamil
-                                                      ? "சில வாராந்திர தணிக்கை ஐடிகள்"
+                                                      ? "சில வாராந்திர வேலை ஐடிகள்"
                                                       : "Recent weekly audit id's",
                                                   style: const TextStyle(
                                                     fontSize: 17,
@@ -183,7 +183,7 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                               Provider.of<LanguageProvider>(
                                                           context)
                                                       .isTamil
-                                                  ? "மிகச் சமீபத்திய வாராந்திர தணிக்கைகள்அனைத்து பலவீனமான தணிக்கைகளையும் பார்க்க, தேடல் பட்டியில் தட்டவும்"
+                                                  ? "மிகச் சமீபத்திய வாராந்திர வேலைகள் அனைத்து பலவீனமான வேலை களையும் பார்க்க, தேடல் பட்டியில் தட்டவும்"
                                                   : "The most recent weekly audits are listed here to view all weekly audits tap on the search bar",
                                               style: const TextStyle(
                                                 fontSize: 17,
@@ -208,7 +208,7 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                           Text(
                             overflow: TextOverflow.visible,
                             Provider.of<LanguageProvider>(context).isTamil
-                                ? "சில வாராந்திர தணிக்கை ஐடிகள்"
+                                ? "சில வாராந்திர வேலை ஐடிகள்"
                                 : "RECENT WEEKLY AUDIT IDs",
                             style: GoogleFonts.manrope(
                               color: Colors.black,
@@ -314,29 +314,25 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                 ),
                                 child: Hero(
                                   tag: "Task search bar",
-                                  child: SizedBox(
-                                    height: 60,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                SearchAllWeeklyTaks(),
-                                          ),
-                                        );
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        elevation: 0,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(40.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SearchAllWeeklyTaks(),
                                         ),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 25, vertical: 15),
-                                        backgroundColor: Colors.white,
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 25, vertical: 15),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(40),
                                       ),
+                                      height: 60,
+                                      width: MediaQuery.of(context).size.width,
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -353,8 +349,9 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                             Provider.of<LanguageProvider>(
                                                         context)
                                                     .isTamil
-                                                ? "பணி ஐடி மூலம் தேடவும்"
+                                                ? "பணி ஐடி"
                                                 : 'Search by task id',
+                                            overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                               fontSize:
                                                   Provider.of<LanguageProvider>(
@@ -656,7 +653,7 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                             border: InputBorder.none,
                             hintText:
                                 Provider.of<LanguageProvider>(context).isTamil
-                                    ? "பணி ஐடி மூலம் தேடவும்"
+                                    ? "பணி ஐடி"
                                     : "Search by taskId",
                             hintStyle: const TextStyle(
                               fontSize: 18,

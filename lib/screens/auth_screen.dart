@@ -1,7 +1,9 @@
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/widgets/auth_textfields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../controllers/logincontroller.dart';
@@ -45,8 +47,11 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   LoginController loginController = Get.put(LoginController());
 
+  final box = GetStorage();
+
   @override
   Widget build(BuildContext context) {
+    // bool isloading = box.read('isloading');
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey[300],
@@ -113,7 +118,12 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.only(right: 10, left: 10),
                       child: GestureDetector(
-                        onTap: loginController.loginWithEmail,
+                        onTap: () {
+                          // setState(() {
+                          //   isloading = true;
+                          // });
+                          loginController.loginWithEmail();
+                        },
                         child: Container(
                           height: 50,
                           width: double.maxFinite,

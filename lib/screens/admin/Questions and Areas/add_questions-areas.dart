@@ -153,7 +153,6 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
   }
 
   Future<void> _submitData() async {
-    bool isTamil = box.read('isTamil');
     try {
       final response = await http.post(
         Uri.parse(ApiEndPoints.baseUrl +
@@ -184,7 +183,9 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  isTamil ? "கேள்வி சேர்க்கப்பட்டது" : "Question added",
+                  Provider.of<LanguageProvider>(context).isTamil
+                      ? "கேள்வி சேர்க்கப்பட்டது"
+                      : "Question added",
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
@@ -198,7 +199,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
 
         Get.off(() => const AdminNavPage());
       }
-      if (response.statusCode == 400) {
+      if (response.statusCode == 500) {
         if (mounted) {
           setState(() {
             DelightToastBar(
@@ -214,7 +215,9 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  isTamil ? "பணி ஐடி ஏற்கனவே உள்ளது" : "TaskId already exists",
+                  Provider.of<LanguageProvider>(context).isTamil
+                      ? "பணி ஐடி ஏற்கனவே உள்ளது"
+                      : "TaskId already exists",
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
@@ -1007,7 +1010,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                       child: Text(
                                         Provider.of<LanguageProvider>(context)
                                                 .isTamil
-                                            ? "தணிக்கையை சமர்ப்பிக்கவும்"
+                                            ? "வேலையை சமர்ப்பிக்கவும்"
                                             : "Submit Questions",
                                         style: GoogleFonts.manrope(
                                           color: Colors.white,

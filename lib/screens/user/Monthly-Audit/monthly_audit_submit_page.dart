@@ -310,7 +310,7 @@ class MonthlyUserAuditSubmmitPageState
         title: Text(
           overflow: TextOverflow.visible,
           Provider.of<LanguageProvider>(context).isTamil
-              ? "தொலைதூரப் பகுதி -\n வாராந்திர தணிக்கைத் திட்டம்"
+              ? "தொலைதூரப் பகுதி -\n வாராந்திர வேலைத் திட்டம்"
               : "Daily Audits",
           style: GoogleFonts.manrope(
             color: Colors.white,
@@ -1643,7 +1643,7 @@ class MonthlyUserAuditSubmmitPageState
                     child: Center(
                       child: Text(
                         Provider.of<LanguageProvider>(context).isTamil
-                            ? "தணிக்கையை சமர்ப்பிக்கவும்"
+                            ? "வேலையை சமர்ப்பிக்கவும்"
                             : "Submit Audit",
                         style: GoogleFonts.manrope(
                           color: Colors.white,

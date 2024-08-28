@@ -44,6 +44,8 @@ class LoginController extends GetxController {
         throw jsonDecode(response.body)["Message"] ?? "Invalid Login";
       }
     } catch (error) {
+      bool isloading = false;
+      box.write('isloading', isloading);
       Get.back();
       showDialog(
           context: Get.context!,
@@ -72,7 +74,7 @@ class LoginController extends GetxController {
 
       var response = await http.post(url, body: body, headers: headers);
       if (response.statusCode == 200) {
-        print("all good");
+        print("all good post");
       }
     } catch (e) {
       Get.back();

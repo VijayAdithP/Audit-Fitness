@@ -1,5 +1,8 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:auditfitnesstest/screens/auth_screen.dart';
 import 'package:auditfitnesstest/screens/campus/specific_task_list.dart';
+import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/widgets/Admin-widgets/audit-id-cards.dart';
@@ -58,6 +61,35 @@ class Drawer_ extends StatefulWidget {
 }
 
 class _Drawer_State extends State<Drawer_> {
+  Future<void> fcmtokendelete() async {
+    String FCMtoken = box.read('FCMtoken');
+    var headers = {'Content-Type': 'application/json'};
+    try {
+      print("calling");
+      var url = Uri.parse(
+          ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.FCMtokendelete);
+
+      var body = json.encode({
+        "fcmtoken": FCMtoken,
+      });
+
+      var response = await http.delete(url, body: body, headers: headers);
+      if (response.statusCode == 200) {
+        print("all good");
+      }
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return SimpleDialog(
+              title: const Text('Opps!'),
+              contentPadding: const EdgeInsets.all(20),
+              children: [Text(e.toString())],
+            );
+          });
+    }
+  }
+
   final box = GetStorage();
   @override
   Widget build(BuildContext context) {
@@ -140,6 +172,7 @@ class _Drawer_State extends State<Drawer_> {
             ),
             onTap: () async {
               // box.erase();
+              fcmtokendelete();
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -304,10 +337,10 @@ class _CampusPageState extends State<CampusPage> {
                           ? "பார்க்க"
                           : "Tap to view",
                       text1: Provider.of<LanguageProvider>(context).isTamil
-                          ? "நிலுவையில் உள்ள தணிக்கைகள்"
+                          ? "நிலுவையில் உள்ள வேலைகள்"
                           : "Pending Audits",
                       cardtitle: Provider.of<LanguageProvider>(context).isTamil
-                          ? "வாராந்திர தணிக்கை"
+                          ? "வாராந்திர வேலை"
                           : "New Audits",
                       navpage: () {
                         Navigator.push(
