@@ -372,121 +372,158 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                               Expanded(
                                 child: RefreshIndicator(
                                   onRefresh: _refreshTasks,
-                                  child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    itemCount: lastFiveTasks.length,
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  WeeklyAuditAssignmentpage(
-                                                weeklyAuditRange:
-                                                    getWeekDateRange(
-                                                        lastFiveTasks[index]
-                                                            .weekNumber!,
-                                                        lastFiveTasks[index]
-                                                            .year!),
-                                                weeklyAuditId:
-                                                    lastFiveTasks[index]
-                                                        .weeklyTaskId,
-                                                weeklyAuditweeknumber:
-                                                    lastFiveTasks[index]
-                                                        .weekNumber,
-                                                weeklyAuditmonth:
-                                                    lastFiveTasks[index].month,
-                                                weeklyAudityear:
-                                                    lastFiveTasks[index].year,
+                                  child: lastFiveTasks.isEmpty
+                                      ? Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              Provider.of<LanguageProvider>(
+                                                          context)
+                                                      .isTamil
+                                                  ? "தற்போது \nகாலியாக உள்ளது"
+                                                  : "Currently empty",
+                                              style: TextStyle(
+                                                color: Colors.grey[700],
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                          );
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            right: 10.0,
-                                            left: 10,
-                                            top: 10,
-                                            bottom: 10,
-                                          ),
-                                          child: Container(
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(30),
-                                              ),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: const Color.fromRGBO(
-                                                      158, 158, 158, 1),
-                                                  spreadRadius: -5,
-                                                  blurRadius: 5,
-                                                  offset: const Offset(0, 4),
-                                                ),
-                                              ],
-                                            ),
-                                            padding: const EdgeInsets.all(16.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  lastFiveTasks[index]
-                                                          .weeklyTaskId ??
-                                                      'No Task ID',
-                                                  style: GoogleFonts.manrope(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 25,
+                                          ],
+                                        )
+                                      : ListView.builder(
+                                          padding: EdgeInsets.zero,
+                                          itemCount: lastFiveTasks.length,
+                                          itemBuilder: (context, index) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        WeeklyAuditAssignmentpage(
+                                                      weeklyAuditRange:
+                                                          getWeekDateRange(
+                                                              lastFiveTasks[
+                                                                      index]
+                                                                  .weekNumber!,
+                                                              lastFiveTasks[
+                                                                      index]
+                                                                  .year!),
+                                                      weeklyAuditId:
+                                                          lastFiveTasks[index]
+                                                              .weeklyTaskId,
+                                                      weeklyAuditweeknumber:
+                                                          lastFiveTasks[index]
+                                                              .weekNumber,
+                                                      weeklyAuditmonth:
+                                                          lastFiveTasks[index]
+                                                              .month,
+                                                      weeklyAudityear:
+                                                          lastFiveTasks[index]
+                                                              .year,
+                                                    ),
                                                   ),
+                                                );
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                  right: 10.0,
+                                                  left: 10,
+                                                  top: 10,
+                                                  bottom: 10,
                                                 ),
-                                                Text(
-                                                  // lastFiveTasks[index].weekNumber.toString(),
-                                                  getWeekDateRange(
-                                                      lastFiveTasks[index]
-                                                          .weekNumber!,
-                                                      lastFiveTasks[index]
-                                                          .year!),
-                                                  style: GoogleFonts.manrope(
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: 15,
-                                                    color: Colors.grey[700],
+                                                child: Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(30),
+                                                    ),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: const Color
+                                                            .fromRGBO(
+                                                            158, 158, 158, 1),
+                                                        spreadRadius: -5,
+                                                        blurRadius: 5,
+                                                        offset:
+                                                            const Offset(0, 4),
+                                                      ),
+                                                    ],
                                                   ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      Alignment.bottomCenter,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
+                                                  padding: const EdgeInsets.all(
+                                                      16.0),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
-                                                      Container(
-                                                        width: 50,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              Colors.grey[300],
-                                                          borderRadius:
-                                                              const BorderRadius
-                                                                  .all(
-                                                            Radius.circular(20),
-                                                          ),
+                                                      Text(
+                                                        lastFiveTasks[index]
+                                                                .weeklyTaskId ??
+                                                            'No Task ID',
+                                                        style:
+                                                            GoogleFonts.manrope(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 25,
                                                         ),
-                                                        child: const Icon(
-                                                          Icons.add,
-                                                          size: 30,
+                                                      ),
+                                                      Text(
+                                                        // lastFiveTasks[index].weekNumber.toString(),
+                                                        getWeekDateRange(
+                                                            lastFiveTasks[index]
+                                                                .weekNumber!,
+                                                            lastFiveTasks[index]
+                                                                .year!),
+                                                        style:
+                                                            GoogleFonts.manrope(
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          fontSize: 15,
+                                                          color:
+                                                              Colors.grey[700],
+                                                        ),
+                                                      ),
+                                                      Align(
+                                                        alignment: Alignment
+                                                            .bottomCenter,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Container(
+                                                              width: 50,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .grey[300],
+                                                                borderRadius:
+                                                                    const BorderRadius
+                                                                        .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          20),
+                                                                ),
+                                                              ),
+                                                              child: const Icon(
+                                                                Icons.add,
+                                                                size: 30,
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
-                                              ],
-                                            ),
-                                          ),
+                                              ),
+                                            );
+                                          },
                                         ),
-                                      );
-                                    },
-                                  ),
                                 ),
                               ),
                             ],

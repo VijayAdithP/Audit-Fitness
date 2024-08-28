@@ -352,7 +352,6 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
                                   List<AllUsersModel> userRoles3 = users
                                       .where((user) => user.role == 3)
                                       .toList();
-
                                   return SingleChildScrollView(
                                     child: Column(
                                       children: [

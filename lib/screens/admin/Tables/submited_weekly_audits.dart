@@ -18,6 +18,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -474,9 +475,20 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: GestureDetector(
                               onTap: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) => imageDialog(url, context),
+                                // showDialog(
+                                //   context: context,
+                                //   builder: (_) => imageDialog(url, context),
+                                // );
+                                String specificArea = reports[mainAreaIndex]
+                                        .specificAreas?[specificAreaIndex]
+                                        .specificArea ??
+                                    'No data';
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FullscreenImage(
+                                        specarea: specificArea, url: url),
+                                  ),
                                 );
                               },
                               child: Container(
@@ -589,27 +601,38 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           ClipRRect(
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(10),
-              topRight: Radius.circular(10),
-            ),
-            child: InteractiveViewer(
-              child: CachedNetworkImage(
-                imageUrl: url,
-                fit: BoxFit.contain,
-                placeholder: (context, url) => const Center(
-                  child: CircularProgressIndicator(),
-                ),
-                errorWidget: (context, url, error) => const Icon(
-                  Icons.error,
-                  color: Colors.red,
-                  size: 50,
-                ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(10),
+                topRight: Radius.circular(10),
               ),
-            ),
-          ),
+              child: Container(
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height *
+                      0.5, // Adjust as needed
+                  maxWidth: MediaQuery.of(context).size.width,
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: url,
+                  fit: BoxFit.contain,
+                  imageBuilder: (context, imageProvider) => PhotoView(
+                    minScale: PhotoViewComputedScale.contained * 0.8,
+                    maxScale: PhotoViewComputedScale.contained * 2.0,
+                    imageProvider: imageProvider,
+                    backgroundDecoration: const BoxDecoration(
+                      color: Colors.black,
+                    ),
+                  ),
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(
+                    Icons.error,
+                    color: Colors.red,
+                    size: 50,
+                  ),
+                ),
+              )),
           TextButton(
-            // style: ButtonStyle(),
             onPressed: () => Navigator.pop(context),
             child: Text(
               'Close',
@@ -1085,5 +1108,58 @@ class ReportDataSource extends DataGridSource {
         ),
       );
     }
+  }
+}
+
+class FullscreenImage extends StatelessWidget {
+  final String url;
+  final String specarea;
+
+  const FullscreenImage({Key? key, required this.specarea, required this.url})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+        title: Text(
+          specarea,
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+      ),
+      backgroundColor: Colors.black,
+      body: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Center(
+          child: CachedNetworkImage(
+            imageUrl: url,
+            imageBuilder: (context, imageProvider) => PhotoView(
+              imageProvider: imageProvider,
+              minScale: PhotoViewComputedScale.contained * 0.8,
+              maxScale: PhotoViewComputedScale.covered * 2.0,
+              backgroundDecoration: const BoxDecoration(
+                color: Colors.black,
+              ),
+            ),
+            placeholder: (context, url) => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            errorWidget: (context, url, error) => const Icon(
+              Icons.error,
+              color: Colors.red,
+              size: 50,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -14,6 +14,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -297,11 +298,19 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
             if (auditData.imagePath != null)
               GestureDetector(
                 onTap: () {
-                  showDialog(
-                      context: context,
-                      builder: (_) => imageDialog(
-                          '${ApiEndPoints.baseUrl}/${auditData.imagePath!.trim().replaceAll('\\', '/').replaceAll(' ', '%20')}',
-                          context));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FullscreenImage(
+                          url:
+                              '${ApiEndPoints.baseUrl}/${auditData.imagePath!.trim().replaceAll('\\', '/').replaceAll(' ', '%20')}'),
+                    ),
+                  );
+                  // showDialog(
+                  //     context: context,
+                  //     builder: (_) => imageDialog(
+                  //         '${ApiEndPoints.baseUrl}/${auditData.imagePath!.trim().replaceAll('\\', '/').replaceAll(' ', '%20')}',
+                  //         context));
                 },
                 child: Container(
                   height: 200,
@@ -981,6 +990,50 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
   }
 }
 
+class FullscreenImage extends StatelessWidget {
+  final String url;
+
+  const FullscreenImage({Key? key, required this.url}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(
+          color: Colors.white,
+        ),
+      ),
+      backgroundColor: Colors.black,
+      body: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Center(
+          child: CachedNetworkImage(
+            imageUrl: url,
+            imageBuilder: (context, imageProvider) => PhotoView(
+              imageProvider: imageProvider,
+              minScale: PhotoViewComputedScale.contained * 0.8,
+              maxScale: PhotoViewComputedScale.covered * 2.0,
+              backgroundDecoration: const BoxDecoration(
+                color: Colors.black,
+              ),
+            ),
+            placeholder: (context, url) => const Center(
+              child: CircularProgressIndicator(),
+            ),
+            errorWidget: (context, url, error) => const Icon(
+              Icons.error,
+              color: Colors.red,
+              size: 50,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 // void loadDummyData() {
 //   String jsonData = '''
 // [
