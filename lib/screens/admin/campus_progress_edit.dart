@@ -541,7 +541,8 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                     left: 10,
                     child: GestureDetector(
                       onTap: () {
-                        if (specific_Task_id_contorller.text.isEmpty) {
+                        if (specific_Task_id_contorller.text.isEmpty ||
+                            action_taken_contorller.text.isEmpty) {
                           // print(widget.weeknumber);
                           // print(widget.month);
                           // print(widget.year);

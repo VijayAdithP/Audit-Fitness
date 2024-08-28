@@ -110,7 +110,7 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  _istamil!
+                  Provider.of<LanguageProvider>(context).isTamil
                       ? "முன்னேற்றம் வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
                       : "Progress successfully submited",
                   style: const TextStyle(

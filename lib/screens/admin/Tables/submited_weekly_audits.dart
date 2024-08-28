@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui';
 import 'package:auditfitnesstest/models/admin%20specific/weekly%20models/new_weekly_report.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/admin/campus_progress_edit.dart';
@@ -22,6 +23,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'dart:ui' as ui;
 
 class MenuItems {
   static const String selectWeek = 'Select Week';
@@ -256,7 +258,11 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
     return weekNumber;
   }
 
+  bool isfetching = false;
   Future<void> fetchPDF() async {
+    setState(() {
+      isfetching = true;
+    });
     try {
       if (!await _requestStoragePermission()) {
         print('Storage permission denied');
@@ -406,6 +412,9 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
   }
 
   Future<void> _openPDF(String filePath) async {
+    setState(() {
+      isfetching = false;
+    });
     final result = await OpenFile.open(filePath);
     if (result.type != ResultType.done) {
       print('Error opening PDF: ${result.message}');
@@ -627,248 +636,261 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          actions: [
-            PopupMenuButton<String>(
-                elevation: 0,
-                iconColor: Colors.white,
-                color: Colors.white,
-                onSelected: choiceAction,
-                itemBuilder: (BuildContext context) {
-                  return MenuItems.choices.map((String choice) {
-                    return PopupMenuItem<String>(
-                        value: choice,
-                        child: ListTile(
-                          title: Text(
-                            choice,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          leading: Icon(
-                            MenuItems.choiceIcons[choice],
-                            color: Colors.black,
-                          ),
-                        ));
-                  }).toList();
-                })
-          ],
-          actionsIconTheme: const IconThemeData(
-            size: 30,
-          ),
-          titleSpacing: 0,
-          iconTheme: const IconThemeData(
-            color: Colors.white,
-          ),
-          backgroundColor: Colors.black,
-          title: Text(
-            Provider.of<LanguageProvider>(context).isTamil
-                ? "வாராந்திர அறிக்கைகள்"
-                : "Weekly Reports",
-            style: GoogleFonts.manrope(
+      appBar: AppBar(
+        actions: [
+          PopupMenuButton<String>(
+              elevation: 0,
+              iconColor: Colors.white,
               color: Colors.white,
-              fontSize:
-                  Provider.of<LanguageProvider>(context).isTamil ? 17 : 25,
-              fontWeight: FontWeight.w500,
-            ),
+              onSelected: choiceAction,
+              itemBuilder: (BuildContext context) {
+                return MenuItems.choices.map((String choice) {
+                  return PopupMenuItem<String>(
+                    value: choice,
+                    child: ListTile(
+                      title: Text(
+                        choice,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      leading: Icon(
+                        MenuItems.choiceIcons[choice],
+                        color: Colors.black,
+                      ),
+                    ),
+                  );
+                }).toList();
+              })
+        ],
+        actionsIconTheme: const IconThemeData(
+          size: 30,
+        ),
+        titleSpacing: 0,
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
+        backgroundColor: Colors.black,
+        title: Text(
+          Provider.of<LanguageProvider>(context).isTamil
+              ? "வாராந்திர அறிக்கைகள்"
+              : "Weekly Reports",
+          style: GoogleFonts.manrope(
+            color: Colors.white,
+            fontSize: Provider.of<LanguageProvider>(context).isTamil ? 17 : 25,
+            fontWeight: FontWeight.w500,
           ),
         ),
-        backgroundColor: isLoading
-            ? const Color.fromRGBO(229, 229, 228, 1)
-            : const Color.fromRGBO(229, 229, 228, 1),
-        body: isLoading
-            ? const Center(
-                child: SpinKitThreeBounce(
-                  color: Color.fromARGB(255, 97, 81, 188),
-                  size: 50,
-                ),
-              )
-            : SfDataGridTheme(
-                data: SfDataGridThemeData(
-                  headerColor: const Color.fromRGBO(46, 46, 46, 1),
-                ),
-                child: SfDataGrid(
-                  source: ReportDataSource(
-                    context: context,
-                    reports: reports,
-                    onShowImageDialog: _showImageDialog,
-                  ),
-                  columnWidthMode: ColumnWidthMode.auto,
-
-                  headerRowHeight: 100.0, // Set the header row height to 150.0
-                  gridLinesVisibility: GridLinesVisibility.vertical,
-                  headerGridLinesVisibility: GridLinesVisibility.vertical,
-
-                  // onQueryRowHeight: (RowHeightDetails details) {
-                  //   if (details.rowIndex== 2) {
-                  //     // Return a specific height for the header row
-                  //     return 100.0;
-                  //   } else {
-                  //     // Calculate and return the intrinsic height for other rows
-                  //     return details.getIntrinsicRowHeight(details.rowIndex);
-                  //   }
-                  // },
-                  columns: <GridColumn>[
-                    GridColumn(
-                      columnName: 'Main Area',
-                      label: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          Provider.of<LanguageProvider>(context).isTamil
-                              ? "வாராந்திர அறிக்கைகள்"
-                              : 'Main Area',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize:
-                                Provider.of<LanguageProvider>(context).isTamil
-                                    ? 15
-                                    : 17,
-                            color: Colors.white,
-                          ),
-                          overflow: TextOverflow.visible,
-                          softWrap: true,
-                        ),
+      ),
+      backgroundColor: isLoading
+          ? const Color.fromRGBO(229, 229, 228, 1)
+          : const Color.fromRGBO(229, 229, 228, 1),
+      body: isLoading
+          ? const Center(
+              child: SpinKitThreeBounce(
+                color: Color.fromARGB(255, 97, 81, 188),
+                size: 50,
+              ),
+            )
+          : isfetching
+              ? Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    sfdatagridwidget(),
+                    BackdropFilter(
+                      filter: ui.ImageFilter.blur(
+                        sigmaX: 8.0,
+                        sigmaY: 8.0,
                       ),
-                    ),
-                    GridColumn(
-                      columnName: 'Task ID',
-                      label: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          Provider.of<LanguageProvider>(context).isTamil
-                              ? "பணி ஐடி"
-                              : 'Task ID',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize:
-                                Provider.of<LanguageProvider>(context).isTamil
-                                    ? 15
-                                    : 17,
-                            color: Colors.white,
+                      child: Positioned.fill(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: SpinKitThreeBounce(
+                            color: Color.fromARGB(255, 97, 81, 188),
+                            size: 50,
                           ),
-                          overflow: TextOverflow.visible,
-                          // softWrap: true,
-                        ),
-                      ),
-                    ),
-                    GridColumn(
-                      columnName: 'Specific Area',
-                      label: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          Provider.of<LanguageProvider>(context).isTamil
-                              ? "பகுதி"
-                              : 'Specific Area',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize:
-                                Provider.of<LanguageProvider>(context).isTamil
-                                    ? 15
-                                    : 17,
-                            color: Colors.white,
-                          ),
-                          overflow: TextOverflow.visible,
-                          softWrap: true,
-                        ),
-                      ),
-                    ),
-                    GridColumn(
-                      columnName: 'Audit Date',
-                      label: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          Provider.of<LanguageProvider>(context).isTamil
-                              ? "தேதி"
-                              : 'Audit Date',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize:
-                                Provider.of<LanguageProvider>(context).isTamil
-                                    ? 15
-                                    : 17,
-                            color: Colors.white,
-                          ),
-                          overflow: TextOverflow.visible,
-                          softWrap: true,
-                        ),
-                      ),
-                    ),
-                    GridColumn(
-                      columnName: 'Observation',
-                      label: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          Provider.of<LanguageProvider>(context).isTamil
-                              ? "கவனிப்புகள்"
-                              : 'Observation',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize:
-                                Provider.of<LanguageProvider>(context).isTamil
-                                    ? 15
-                                    : 17,
-                            color: Colors.white,
-                          ),
-                          overflow: TextOverflow.visible,
-                          softWrap: true,
-                        ),
-                      ),
-                    ),
-                    GridColumn(
-                      columnName: 'Remarks',
-                      label: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          Provider.of<LanguageProvider>(context).isTamil
-                              ? "கருத்துக்கள்"
-                              : 'Remarks',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize:
-                                Provider.of<LanguageProvider>(context).isTamil
-                                    ? 15
-                                    : 17,
-                            color: Colors.white,
-                          ),
-                          overflow: TextOverflow.visible,
-                          softWrap: true,
-                        ),
-                      ),
-                    ),
-                    GridColumn(
-                      width: 150.0,
-                      columnName: 'Images',
-                      label: Container(
-                        padding: const EdgeInsets.all(16.0),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          Provider.of<LanguageProvider>(context).isTamil
-                              ? "படங்கள்"
-                              : 'Images',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize:
-                                Provider.of<LanguageProvider>(context).isTamil
-                                    ? 15
-                                    : 17,
-                            color: Colors.white,
-                          ),
-                          overflow: TextOverflow.visible,
-                          softWrap: true,
                         ),
                       ),
                     ),
                   ],
+                )
+              : sfdatagridwidget(),
+    );
+  }
+
+  Widget sfdatagridwidget() {
+    return SfDataGridTheme(
+      data: SfDataGridThemeData(
+        headerColor: const Color.fromRGBO(46, 46, 46, 1),
+      ),
+      child: SfDataGrid(
+        source: ReportDataSource(
+          context: context,
+          reports: reports,
+          onShowImageDialog: _showImageDialog,
+        ),
+        columnWidthMode: ColumnWidthMode.auto,
+
+        headerRowHeight: 100.0, // Set the header row height to 150.0
+        gridLinesVisibility: GridLinesVisibility.vertical,
+        headerGridLinesVisibility: GridLinesVisibility.vertical,
+
+        // onQueryRowHeight: (RowHeightDetails details) {
+        //   if (details.rowIndex== 2) {
+        //     // Return a specific height for the header row
+        //     return 100.0;
+        //   } else {
+        //     // Calculate and return the intrinsic height for other rows
+        //     return details.getIntrinsicRowHeight(details.rowIndex);
+        //   }
+        // },
+        columns: <GridColumn>[
+          GridColumn(
+            columnName: 'Main Area',
+            label: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "வாராந்திர அறிக்கைகள்"
+                    : 'Main Area',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize:
+                      Provider.of<LanguageProvider>(context).isTamil ? 15 : 17,
+                  color: Colors.white,
                 ),
-              ));
+                overflow: TextOverflow.visible,
+                softWrap: true,
+              ),
+            ),
+          ),
+          GridColumn(
+            columnName: 'Task ID',
+            label: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "பணி ஐடி"
+                    : 'Task ID',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize:
+                      Provider.of<LanguageProvider>(context).isTamil ? 15 : 17,
+                  color: Colors.white,
+                ),
+                overflow: TextOverflow.visible,
+                // softWrap: true,
+              ),
+            ),
+          ),
+          GridColumn(
+            columnName: 'Specific Area',
+            label: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "பகுதி"
+                    : 'Specific Area',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize:
+                      Provider.of<LanguageProvider>(context).isTamil ? 15 : 17,
+                  color: Colors.white,
+                ),
+                overflow: TextOverflow.visible,
+                softWrap: true,
+              ),
+            ),
+          ),
+          GridColumn(
+            columnName: 'Audit Date',
+            label: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "தேதி"
+                    : 'Audit Date',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize:
+                      Provider.of<LanguageProvider>(context).isTamil ? 15 : 17,
+                  color: Colors.white,
+                ),
+                overflow: TextOverflow.visible,
+                softWrap: true,
+              ),
+            ),
+          ),
+          GridColumn(
+            columnName: 'Observation',
+            label: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "கவனிப்புகள்"
+                    : 'Observation',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize:
+                      Provider.of<LanguageProvider>(context).isTamil ? 15 : 17,
+                  color: Colors.white,
+                ),
+                overflow: TextOverflow.visible,
+                softWrap: true,
+              ),
+            ),
+          ),
+          GridColumn(
+            columnName: 'Remarks',
+            label: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "கருத்துக்கள்"
+                    : 'Remarks',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize:
+                      Provider.of<LanguageProvider>(context).isTamil ? 15 : 17,
+                  color: Colors.white,
+                ),
+                overflow: TextOverflow.visible,
+                softWrap: true,
+              ),
+            ),
+          ),
+          GridColumn(
+            width: 150.0,
+            columnName: 'Images',
+            label: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "படங்கள்"
+                    : 'Images',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize:
+                      Provider.of<LanguageProvider>(context).isTamil ? 15 : 17,
+                  color: Colors.white,
+                ),
+                overflow: TextOverflow.visible,
+                softWrap: true,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 

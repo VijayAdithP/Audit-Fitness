@@ -18,6 +18,7 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'dart:ui' as ui;
 
 class Campusprogresstable extends StatefulWidget {
   final String? pre_year;
@@ -236,7 +237,11 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
     });
   }
 
+  bool isfetching = false;
   Future<void> fetchPDF() async {
+    setState(() {
+      isfetching = true;
+    });
     try {
       if (!await _requestStoragePermission()) {
         print('Storage permission denied');
@@ -313,6 +318,9 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
   }
 
   Future<void> _openPDF(String filePath) async {
+    setState(() {
+      isfetching = false;
+    });
     final result = await OpenFile.open(filePath);
     if (result.type != ResultType.done) {
       print('Error opening PDF: ${result.message}');
@@ -391,149 +399,175 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
                 size: 50,
               ),
             )
-          : SfDataGridTheme(
-              data: SfDataGridThemeData(
-                // gridLineColor: Colors.black.withOpacity(0.3),
-                // headerHoverColor: Colors.white.withOpacity(0.3),
-                headerColor: const Color.fromRGBO(46, 46, 46, 1),
-              ),
-              child: SfDataGrid(
-                columnWidthMode: ColumnWidthMode.auto,
-                // rowHeight: 70.0, // Increase the height of each row
-                headerRowHeight: 100.0, // Increase the height of the header row
-                // shrinkWrapRows: true,
-                // onQueryRowHeight: (details) {
-                //   return details.getIntrinsicRowHeight(details.rowIndex);
-                // },
-                gridLinesVisibility: GridLinesVisibility.vertical,
-                headerGridLinesVisibility: GridLinesVisibility.vertical,
-                source: CampusProgressDataSource(
-                  context: context,
-                  reports: reports,
+          : isfetching
+              ? Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    sfgridwidget(),
+                    BackdropFilter(
+                      filter: ui.ImageFilter.blur(
+                        sigmaX: 8.0,
+                        sigmaY: 8.0,
+                      ),
+                      child: Positioned.fill(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: SpinKitThreeBounce(
+                            color: Color.fromARGB(255, 97, 81, 188),
+                            size: 50,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              : sfgridwidget(),
+    );
+  }
+
+  Widget sfgridwidget() {
+    return SfDataGridTheme(
+      data: SfDataGridThemeData(
+        // gridLineColor: Colors.black.withOpacity(0.3),
+        // headerHoverColor: Colors.white.withOpacity(0.3),
+        headerColor: const Color.fromRGBO(46, 46, 46, 1),
+      ),
+      child: SfDataGrid(
+        columnWidthMode: ColumnWidthMode.auto,
+        // rowHeight: 70.0, // Increase the height of each row
+        headerRowHeight: 100.0, // Increase the height of the header row
+        // shrinkWrapRows: true,
+        // onQueryRowHeight: (details) {
+        //   return details.getIntrinsicRowHeight(details.rowIndex);
+        // },
+        gridLinesVisibility: GridLinesVisibility.vertical,
+        headerGridLinesVisibility: GridLinesVisibility.vertical,
+        source: CampusProgressDataSource(
+          context: context,
+          reports: reports,
+        ),
+        columns: <GridColumn>[
+          GridColumn(
+            columnName: 'Main Area',
+            label: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                'Main Area',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                  color: Colors.white,
                 ),
-                columns: <GridColumn>[
-                  GridColumn(
-                    columnName: 'Main Area',
-                    label: Container(
-                      padding: const EdgeInsets.all(16.0),
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        'Main Area',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                          color: Colors.white,
-                        ),
-                        overflow: TextOverflow.clip,
-                        softWrap: true,
-                      ),
-                    ),
-                  ),
-                  GridColumn(
-                    columnName: 'Task ID',
-                    label: Container(
-                      padding: const EdgeInsets.all(16.0),
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        'Task ID',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                          color: Colors.white,
-                        ),
-                        overflow: TextOverflow.clip,
-                        softWrap: true,
-                      ),
-                    ),
-                  ),
-                  GridColumn(
-                    columnName: 'Specific Area',
-                    label: Container(
-                      padding: const EdgeInsets.all(16.0),
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        'Specific Area',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                          color: Colors.white,
-                        ),
-                        overflow: TextOverflow.clip,
-                        softWrap: true,
-                      ),
-                    ),
-                  ),
-                  GridColumn(
-                    columnName: 'Audit Date',
-                    label: Container(
-                      padding: const EdgeInsets.all(16.0),
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        'Audit Date',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                          color: Colors.white,
-                        ),
-                        overflow: TextOverflow.clip,
-                        softWrap: true,
-                      ),
-                    ),
-                  ),
-                  GridColumn(
-                    columnName: 'Observation',
-                    label: Container(
-                      padding: const EdgeInsets.all(16.0),
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        'Observations',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                          color: Colors.white,
-                        ),
-                        overflow: TextOverflow.clip,
-                        softWrap: true,
-                      ),
-                    ),
-                  ),
-                  GridColumn(
-                    columnName: 'Action Taken',
-                    label: Container(
-                      padding: const EdgeInsets.all(16.0),
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        'Action Taken',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                          color: Colors.white,
-                        ),
-                        overflow: TextOverflow.clip,
-                        softWrap: true,
-                      ),
-                    ),
-                  ),
-                  GridColumn(
-                    columnName: 'Status',
-                    label: Container(
-                      padding: const EdgeInsets.all(16.0),
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        'Status',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                          color: Colors.white,
-                        ),
-                        overflow: TextOverflow.clip,
-                        softWrap: true,
-                      ),
-                    ),
-                  ),
-                ],
+                overflow: TextOverflow.clip,
+                softWrap: true,
               ),
             ),
+          ),
+          GridColumn(
+            columnName: 'Task ID',
+            label: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                'Task ID',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                  color: Colors.white,
+                ),
+                overflow: TextOverflow.clip,
+                softWrap: true,
+              ),
+            ),
+          ),
+          GridColumn(
+            columnName: 'Specific Area',
+            label: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                'Specific Area',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                  color: Colors.white,
+                ),
+                overflow: TextOverflow.clip,
+                softWrap: true,
+              ),
+            ),
+          ),
+          GridColumn(
+            columnName: 'Audit Date',
+            label: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                'Audit Date',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                  color: Colors.white,
+                ),
+                overflow: TextOverflow.clip,
+                softWrap: true,
+              ),
+            ),
+          ),
+          GridColumn(
+            columnName: 'Observation',
+            label: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                'Observations',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                  color: Colors.white,
+                ),
+                overflow: TextOverflow.clip,
+                softWrap: true,
+              ),
+            ),
+          ),
+          GridColumn(
+            columnName: 'Action Taken',
+            label: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                'Action Taken',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                  color: Colors.white,
+                ),
+                overflow: TextOverflow.clip,
+                softWrap: true,
+              ),
+            ),
+          ),
+          GridColumn(
+            columnName: 'Status',
+            label: Container(
+              padding: const EdgeInsets.all(16.0),
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                'Status',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                  color: Colors.white,
+                ),
+                overflow: TextOverflow.clip,
+                softWrap: true,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
