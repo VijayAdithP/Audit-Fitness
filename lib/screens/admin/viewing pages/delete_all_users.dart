@@ -29,6 +29,14 @@ class _DeleteAllUsersState extends State<DeleteAllUsers> {
     }
   }
 
+    @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _languageProvider = Provider.of<LanguageProvider>(context);
+  }
+
+  late LanguageProvider _languageProvider;
+
   Future<void> updateUser(AllUsersModel user) async {
     final response = await http.put(
       Uri.parse(
@@ -51,7 +59,7 @@ class _DeleteAllUsersState extends State<DeleteAllUsers> {
             color: Colors.white,
           ),
           title: Text(
-            Provider.of<LanguageProvider>(context).isTamil
+          _languageProvider.isTamil
                 ? "பணி ஐடி ஏற்கனவே உள்ளது"
                 : "PDF successfully downloaded",
             style: const TextStyle(

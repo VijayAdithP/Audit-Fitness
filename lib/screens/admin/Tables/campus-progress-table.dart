@@ -452,8 +452,10 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
             label: Container(
               padding: const EdgeInsets.all(16.0),
               alignment: Alignment.centerLeft,
-              child: const Text(
-                'Main Area',
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "பகுதி"
+                    : 'Main Area',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
@@ -469,8 +471,10 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
             label: Container(
               padding: const EdgeInsets.all(16.0),
               alignment: Alignment.centerLeft,
-              child: const Text(
-                'Task ID',
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "பணி ஐடி"
+                    : 'Task ID',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
@@ -486,8 +490,10 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
             label: Container(
               padding: const EdgeInsets.all(16.0),
               alignment: Alignment.centerLeft,
-              child: const Text(
-                'Specific Area',
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "பகுதி"
+                    : 'Specific Area',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
@@ -503,8 +509,10 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
             label: Container(
               padding: const EdgeInsets.all(16.0),
               alignment: Alignment.centerLeft,
-              child: const Text(
-                'Audit Date',
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "தேதி"
+                    : 'Audit Date',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
@@ -520,8 +528,10 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
             label: Container(
               padding: const EdgeInsets.all(16.0),
               alignment: Alignment.centerLeft,
-              child: const Text(
-                'Observations',
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "கவனிப்புகள்"
+                    : 'Observation',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
@@ -537,8 +547,10 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
             label: Container(
               padding: const EdgeInsets.all(16.0),
               alignment: Alignment.centerLeft,
-              child: const Text(
-                'Action Taken',
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "தேவை"
+                    : 'Action Taken',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
@@ -554,8 +566,10 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
             label: Container(
               padding: const EdgeInsets.all(16.0),
               alignment: Alignment.centerLeft,
-              child: const Text(
-                'Status',
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "நிலை"
+                    : 'Status',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 17,

@@ -181,6 +181,13 @@ class _WeeklyUserAuditSubmmitPageState
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _languageProvider = Provider.of<LanguageProvider>(context);
+  }
+
+  late LanguageProvider _languageProvider;
   Future<void> auditsubmituser() async {
     username = box.read('username');
     try {
@@ -240,7 +247,7 @@ class _WeeklyUserAuditSubmmitPageState
                   color: Colors.white,
                 ),
                 title: Text(
-                  Provider.of<LanguageProvider>(context).isTamil
+                  _languageProvider.isTamil
                       ? "வேலை வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
                       : "Audit successfully submitted",
                   style: const TextStyle(
@@ -1201,9 +1208,7 @@ class _WeeklyUserAuditSubmmitPageState
                                                   color: Colors.white,
                                                 ),
                                                 title: Text(
-                                                  Provider.of<LanguageProvider>(
-                                                              context)
-                                                          .isTamil
+                                                  _languageProvider.isTamil
                                                       ? "அனைத்து புலங்களையும் நிரப்பவும்"
                                                       : "Fill all the fields",
                                                   style: const TextStyle(

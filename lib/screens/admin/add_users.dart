@@ -30,6 +30,13 @@ class _AddUsersState extends State<AddUsers> {
   final TextEditingController phonenumbercontroller = TextEditingController();
   final TextEditingController staffidcontroller = TextEditingController();
   bool useractiondis = false;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _languageProvider = Provider.of<LanguageProvider>(context);
+  }
+
+  late LanguageProvider _languageProvider;
   Future<void> registerWithEmail() async {
     try {
       var headers = {'Content-Type': 'application/json'};
@@ -65,7 +72,7 @@ class _AddUsersState extends State<AddUsers> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  Provider.of<LanguageProvider>(context).isTamil
+                  _languageProvider.isTamil
                       ? "பயனர் வெற்றிகரமாக உருவாக்கப்பட்டது"
                       : "User successfully created",
                   style: const TextStyle(
@@ -727,9 +734,7 @@ class _AddUsersState extends State<AddUsers> {
                                               color: Colors.white,
                                             ),
                                             title: Text(
-                                              Provider.of<LanguageProvider>(
-                                                          context)
-                                                      .isTamil
+                                              _languageProvider.isTamil
                                                   ? "அனைத்து புலங்களையும் நிரப்பவு"
                                                   : "Fill all the fields",
                                               style: const TextStyle(

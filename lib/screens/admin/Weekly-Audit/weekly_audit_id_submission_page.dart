@@ -82,6 +82,13 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
     }
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _languageProvider = Provider.of<LanguageProvider>(context);
+  }
+
+  late LanguageProvider _languageProvider;
   Future<void> submitweeklyaudittouser() async {
     var headers = {'Content-Type': 'application/json'};
     try {
@@ -113,7 +120,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  Provider.of<LanguageProvider>(context).isTamil
+                  _languageProvider.isTamil
                       ? "பணி ஐடி ஏற்கனவே உள்ளது"
                       : "TaskId already exists",
                   style: const TextStyle(
@@ -147,7 +154,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                     color: Colors.white,
                   ),
                   title: Text(
-                    Provider.of<LanguageProvider>(context).isTamil
+                    _languageProvider.isTamil
                         ? "வேலை வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
                         : "Audit successfully assigned",
                     style: const TextStyle(
@@ -470,7 +477,13 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
-                                          return const CircularProgressIndicator();
+                                          return Center(
+                                            child: const SpinKitThreeBounce(
+                                              color: const Color.fromARGB(
+                                                  255, 130, 111, 238),
+                                              size: 30,
+                                            ),
+                                          );
                                         } else if (snapshot.hasError) {
                                           return Text(
                                               'Error: ${snapshot.error}');
@@ -482,10 +495,9 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                                 padding: EdgeInsets.zero,
                                                 children: snapshot.data!
                                                     .map((areaUser) {
-                                                   isSelected =
-                                                      _selectedAreas.contains(
-                                                          areaUser
-                                                              .areaSpecific);
+                                                  isSelected = _selectedAreas
+                                                      .contains(areaUser
+                                                          .areaSpecific);
                                                   return Padding(
                                                     padding:
                                                         const EdgeInsets.only(
@@ -540,7 +552,8 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                   GestureDetector(
                                     onTap: () {
                                       print(isSelected);
-                                      if (_usernameController.text.isEmpty && isSelected == false) {
+                                      if (_usernameController.text.isEmpty ||
+                                          !isSelected) {
                                         setState(() {
                                           DelightToastBar(
                                             position:
@@ -557,9 +570,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                                 color: Colors.white,
                                               ),
                                               title: Text(
-                                                Provider.of<LanguageProvider>(
-                                                            context)
-                                                        .isTamil
+                                                _languageProvider.isTamil
                                                     ? "அனைத்து புலங்களையும் நிரப்பவு"
                                                     : "Fill all the fields",
                                                 style: const TextStyle(

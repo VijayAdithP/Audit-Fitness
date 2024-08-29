@@ -78,8 +78,15 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
     }
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _languageProvider = Provider.of<LanguageProvider>(context);
+  }
+
+  late LanguageProvider _languageProvider;
+
   Future<void> progressUpdate() async {
-    bool? _istamil = box.read('isTamil');
     var headers = {'Content-Type': 'application/json'};
     try {
       var url = Uri.parse(
@@ -111,7 +118,7 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  Provider.of<LanguageProvider>(context).isTamil
+                  _languageProvider.isTamil
                       ? "முன்னேற்றம் வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
                       : "Progress successfully submited",
                   style: const TextStyle(

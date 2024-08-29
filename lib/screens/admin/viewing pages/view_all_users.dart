@@ -854,6 +854,13 @@ class _UserEditPageState extends State<UserEditPage> {
     staffIdController = TextEditingController(text: widget.user.staffId);
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _languageProvider = Provider.of<LanguageProvider>(context);
+  }
+
+  late LanguageProvider _languageProvider;
   Future<void> updateUser(AllUsersModel user) async {
     try {
       final response = await http.put(
@@ -880,7 +887,7 @@ class _UserEditPageState extends State<UserEditPage> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  Provider.of<LanguageProvider>(context).isTamil
+                  _languageProvider.isTamil
                       ? "பயனர் வெற்றிகரமாக புதுப்பிக்கப்பட்டார்"
                       : "User successfully updated",
                   style: const TextStyle(
@@ -914,7 +921,7 @@ class _UserEditPageState extends State<UserEditPage> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  Provider.of<LanguageProvider>(context).isTamil
+                  _languageProvider.isTamil
                       ? "பயனரைப் புதுப்பிப்பதில் பிழை"
                       : "Error updating user",
                   style: const TextStyle(
@@ -960,7 +967,7 @@ class _UserEditPageState extends State<UserEditPage> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  Provider.of<LanguageProvider>(context).isTamil
+                  _languageProvider.isTamil
                       ? "பயனர் வெற்றிகரமாக புதுப்பிக்கப்பட்டார்"
                       : "User successfully updated",
                   style: const TextStyle(
@@ -994,7 +1001,7 @@ class _UserEditPageState extends State<UserEditPage> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  Provider.of<LanguageProvider>(context).isTamil
+                  _languageProvider.isTamil
                       ? "பயனரைப் புதுப்பிப்பதில் பிழை"
                       : "Error updating user",
                   style: const TextStyle(
@@ -1215,8 +1222,7 @@ class _UserEditPageState extends State<UserEditPage> {
                                         color: Colors.white,
                                       ),
                                       title: Text(
-                                        Provider.of<LanguageProvider>(context)
-                                                .isTamil
+                                        _languageProvider.isTamil
                                             ? "அனைத்து புலங்களையும் நிரப்பவும்"
                                             : "fill all the fields",
                                         style: const TextStyle(

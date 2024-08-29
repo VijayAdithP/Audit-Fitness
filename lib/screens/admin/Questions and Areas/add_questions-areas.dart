@@ -110,6 +110,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
       setState(() {
         _mainAreaNames = mainAreaNames;
       });
+      // print(_mainAreaNames);
     } catch (e) {
       print('Failed to load main areas: $e');
     }
@@ -152,6 +153,14 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _languageProvider = Provider.of<LanguageProvider>(context);
+  }
+
+  late LanguageProvider _languageProvider;
+
   Future<void> _submitData() async {
     try {
       final response = await http.post(
@@ -183,7 +192,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  Provider.of<LanguageProvider>(context).isTamil
+                  _languageProvider.isTamil
                       ? "கேள்வி சேர்க்கப்பட்டது"
                       : "Question added",
                   style: const TextStyle(
@@ -215,7 +224,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                   color: Colors.white,
                 ),
                 title: Text(
-                  Provider.of<LanguageProvider>(context).isTamil
+                  _languageProvider.isTamil
                       ? "பணி ஐடி ஏற்கனவே உள்ளது"
                       : "TaskId already exists",
                   style: const TextStyle(
@@ -716,9 +725,41 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                 const SizedBox(height: 10),
                                 GestureDetector(
                                   onTap: () {
-                                    _addQuestion();
-                                    tamilquestionscontroller.clear();
-                                    questionscontroller.clear();
+                                    if (tamilquestionscontroller
+                                            .text.isNotEmpty ||
+                                        questionscontroller.text.isNotEmpty) {
+                                      _addQuestion();
+                                      tamilquestionscontroller.clear();
+                                      questionscontroller.clear();
+                                    } else {
+                                      setState(() {
+                                        DelightToastBar(
+                                          position: DelightSnackbarPosition.top,
+                                          autoDismiss: true,
+                                          snackbarDuration:
+                                              Durations.extralong4,
+                                          builder: (context) => ToastCard(
+                                            color: Colors.red,
+                                            leading: const Icon(
+                                              Icons
+                                                  .notification_important_outlined,
+                                              size: 28,
+                                              color: Colors.white,
+                                            ),
+                                            title: Text(
+                                              _languageProvider.isTamil
+                                                  ? "அனைத்து புலங்களையும் நிரப்பவு"
+                                                  : "Fill all the fields",
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 14,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ).show(context);
+                                      });
+                                    }
                                   },
                                   child: Container(
                                     height: 50,
@@ -789,9 +830,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                               color: Colors.white,
                                             ),
                                             title: Text(
-                                              Provider.of<LanguageProvider>(
-                                                          context)
-                                                      .isTamil
+                                              _languageProvider.isTamil
                                                   ? "அனைத்து புலங்களையும் நிரப்பவு"
                                                   : "Fill all the fields",
                                               style: const TextStyle(

@@ -260,6 +260,13 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
   }
 
   bool isfetching = false;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _languageProvider = Provider.of<LanguageProvider>(context);
+  }
+
+  late LanguageProvider _languageProvider;
   Future<void> fetchPDF() async {
     setState(() {
       isfetching = true;
@@ -299,7 +306,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
               color: Colors.white,
             ),
             title: Text(
-              Provider.of<LanguageProvider>(context).isTamil
+              _languageProvider.isTamil
                   ? "பணி ஐடி ஏற்கனவே உள்ளது"
                   : "PDF successfully downloaded",
               style: const TextStyle(
@@ -325,7 +332,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                 color: Colors.white,
               ),
               title: Text(
-                Provider.of<LanguageProvider>(context).isTamil
+                _languageProvider.isTamil
                     ? "பணி ஐடி ஏற்கனவே உள்ளது"
                     : "PDF successfully downloaded",
                 style: const TextStyle(
@@ -388,7 +395,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                 color: Colors.white,
               ),
               title: Text(
-                Provider.of<LanguageProvider>(context).isTamil
+                _languageProvider.isTamil
                     ? "பணி ஐடி ஏற்கனவே உள்ளது"
                     : "PDF successfully downloaded",
                 style: const TextStyle(
@@ -777,7 +784,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
               alignment: Alignment.centerLeft,
               child: Text(
                 Provider.of<LanguageProvider>(context).isTamil
-                    ? "வாராந்திர அறிக்கைகள்"
+                    ? "பகுதி"
                     : 'Main Area',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -997,11 +1004,17 @@ class ReportDataSource extends DataGridSource {
                     row,
                   )
                 : FittedBox(
-                    child: Text(
-                      cell.value.toString(),
-                      overflow: TextOverflow.visible,
-                      style: const TextStyle(fontSize: 15),
-                    ),
+                    child: cell.value == ""
+                        ? Text(
+                            ",",
+                            overflow: TextOverflow.visible,
+                            style: const TextStyle(fontSize: 17),
+                          )
+                        : Text(
+                            cell.value,
+                            overflow: TextOverflow.visible,
+                            style: const TextStyle(fontSize: 15),
+                          ),
                   ),
           ),
       ],

@@ -332,138 +332,152 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
                                             ),
                                           ],
                                         )
-                                      : ListView.builder(
-                                          padding: EdgeInsets.zero,
-                                          itemCount: tasks.length,
-                                          itemBuilder: (context, index) {
-                                            final task = tasks[index];
-                                            return GestureDetector(
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        SpecificTaskSubmission(
-                                                      specificArea:
-                                                          task.specificArea!,
-                                                      month: task.month!,
-                                                      specificTaskId:
-                                                          task.specificTaskId!,
-                                                      weeknumber:
-                                                          task.weekNumber!,
-                                                      year: task.year!,
+                                      : isLoading
+                                          ? const Center(
+                                              child: SpinKitThreeBounce(
+                                                color: Color.fromARGB(
+                                                    255, 97, 81, 188),
+                                                size: 50,
+                                              ),
+                                            )
+                                          : ListView.builder(
+                                              padding: EdgeInsets.zero,
+                                              itemCount: tasks.length,
+                                              itemBuilder: (context, index) {
+                                                final task = tasks[index];
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            SpecificTaskSubmission(
+                                                          specificArea: task
+                                                              .specificArea!,
+                                                          month: task.month!,
+                                                          specificTaskId: task
+                                                              .specificTaskId!,
+                                                          weeknumber:
+                                                              task.weekNumber!,
+                                                          year: task.year!,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Container(
+                                                      height: 180,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            const BorderRadius
+                                                                .all(
+                                                          Radius.circular(30),
+                                                        ),
+                                                      ),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16.0),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            task.specificArea!,
+                                                            style: GoogleFonts
+                                                                .manrope(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 25,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            task.actionTaken!,
+                                                            style: GoogleFonts
+                                                                .manrope(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              fontSize: 15,
+                                                              color: Colors
+                                                                  .grey[700],
+                                                            ),
+                                                          ),
+                                                          const Expanded(
+                                                            child: SizedBox(
+                                                                height: 10),
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Container(
+                                                                  // width:
+                                                                  //     Provider.of<LanguageProvider>(
+                                                                  //                 context)
+                                                                  //             .isTamil
+                                                                  //         ? 130
+                                                                  //         : 100,
+                                                                  decoration:
+                                                                      BoxDecoration(
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        300],
+                                                                    borderRadius:
+                                                                        const BorderRadius
+                                                                            .all(
+                                                                      Radius.circular(
+                                                                          20),
+                                                                    ),
+                                                                  ),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .all(
+                                                                            8.0),
+                                                                    child:
+                                                                        Center(
+                                                                      child:
+                                                                          Text(
+                                                                        Provider.of<LanguageProvider>(context).isTamil
+                                                                            ? "பணி ஐடி: ${task.specificTaskId!.toString()}"
+                                                                            : 'Task Id: ${task.specificTaskId!.toString()}',
+                                                                        style:
+                                                                            const TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          // fontSize: Provider.of<
+                                                                          //                 LanguageProvider>(
+                                                                          //             context)
+                                                                          //         .isTamil
+                                                                          //     ? 15
+                                                                          //     : 14,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  )
+                                                                  // const Icon(
+                                                                  //   Icons.add,
+                                                                  //   size: 30,
+                                                                  // ),
+                                                                  ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
                                                 );
                                               },
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Container(
-                                                  height: 180,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                      Radius.circular(30),
-                                                    ),
-                                                  ),
-                                                  padding: const EdgeInsets.all(
-                                                      16.0),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        task.specificArea!,
-                                                        style:
-                                                            GoogleFonts.manrope(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 25,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        task.actionTaken!,
-                                                        style:
-                                                            GoogleFonts.manrope(
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          fontSize: 15,
-                                                          color:
-                                                              Colors.grey[700],
-                                                        ),
-                                                      ),
-                                                      const Expanded(
-                                                        child: SizedBox(
-                                                            height: 10),
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          Container(
-                                                              // width:
-                                                              //     Provider.of<LanguageProvider>(
-                                                              //                 context)
-                                                              //             .isTamil
-                                                              //         ? 130
-                                                              //         : 100,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .grey[300],
-                                                                borderRadius:
-                                                                    const BorderRadius
-                                                                        .all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          20),
-                                                                ),
-                                                              ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        8.0),
-                                                                child: Center(
-                                                                  child: Text(
-                                                                    Provider.of<LanguageProvider>(context)
-                                                                            .isTamil
-                                                                        ? "பணி ஐடி: ${task.specificTaskId!.toString()}"
-                                                                        : 'Task Id: ${task.specificTaskId!.toString()}',
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      // fontSize: Provider.of<
-                                                                      //                 LanguageProvider>(
-                                                                      //             context)
-                                                                      //         .isTamil
-                                                                      //     ? 15
-                                                                      //     : 14,
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              )
-                                                              // const Icon(
-                                                              //   Icons.add,
-                                                              //   size: 30,
-                                                              // ),
-                                                              ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ),
+                                            ),
                                 ),
                               ),
                             ],

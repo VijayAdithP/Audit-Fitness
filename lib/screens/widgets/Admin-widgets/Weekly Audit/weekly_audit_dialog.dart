@@ -67,6 +67,13 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
     return weekNumber;
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _languageProvider = Provider.of<LanguageProvider>(context);
+  }
+
+  late LanguageProvider _languageProvider;
   Future<void> createweeklytaskId() async {
     var headers = {'Content-Type': 'application/json'};
     try {
@@ -99,7 +106,7 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
               color: Colors.white,
             ),
             title: Text(
-              Provider.of<LanguageProvider>(context).isTamil
+              _languageProvider.isTamil
                   ? "வாராந்திர வேலை உருவாக்கப்பட்டது"
                   : "Weekly auditId created",
               style: const TextStyle(
@@ -131,7 +138,7 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
               color: Colors.white,
             ),
             title: Text(
-              Provider.of<LanguageProvider>(context).isTamil
+              _languageProvider.isTamil
                   ? "பணி ஐடி ஏற்கனவே உள்ளது"
                   : "TaskId already exists",
               style: const TextStyle(
@@ -335,33 +342,32 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
                       width: double.maxFinite,
                       child: ElevatedButton(
                         onPressed: () {
-                          if (_weeklyauditIdController.text.isEmpty) {
-                            setState(() {
-                              DelightToastBar(
-                                position: DelightSnackbarPosition.top,
-                                autoDismiss: true,
-                                snackbarDuration: Durations.extralong4,
-                                builder: (context) => ToastCard(
-                                  color: Colors.red,
-                                  leading: const Icon(
-                                    Icons.notification_important_outlined,
-                                    size: 28,
+                          if (_weeklyauditIdController.text.isEmpty ||
+                              year == 0 ||
+                              month == "") {
+                            DelightToastBar(
+                              position: DelightSnackbarPosition.top,
+                              autoDismiss: true,
+                              snackbarDuration: Durations.extralong4,
+                              builder: (context) => ToastCard(
+                                color: Colors.red,
+                                leading: const Icon(
+                                  Icons.notification_important_outlined,
+                                  size: 28,
+                                  color: Colors.white,
+                                ),
+                                title: Text(
+                                  _languageProvider.isTamil
+                                      ? "அனைத்து புலங்களையும் நிரப்பவு"
+                                      : "Fill all the fields",
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14,
                                     color: Colors.white,
                                   ),
-                                  title: Text(
-                                    Provider.of<LanguageProvider>(context)
-                                            .isTamil
-                                        ? "அனைத்து புலங்களையும் நிரப்பவு"
-                                        : "Fill all the fields",
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14,
-                                      color: Colors.white,
-                                    ),
-                                  ),
                                 ),
-                              ).show(context);
-                            });
+                              ),
+                            ).show(context);
                           } else {
                             createweeklytaskId();
                           }
