@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/widgets/User-Widgets/bad_condition_user.dart';
 import 'package:delightful_toast/delight_toast.dart';
@@ -99,7 +100,7 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
           animationDuration: const Duration(milliseconds: 100),
           snackbarDuration: const Duration(milliseconds: 800),
           builder: (context) => ToastCard(
-            color: Colors.green,
+            color: alertgreen,
             leading: const Icon(
               Icons.done,
               size: 28,
@@ -107,7 +108,7 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
             ),
             title: Text(
               _languageProvider.isTamil
-                  ? "வாராந்திர வேலை உருவாக்கப்பட்டது"
+                  ? "வார வேலை உருவாக்கப்பட்டது"
                   : "Weekly auditId created",
               style: const TextStyle(
                 fontWeight: FontWeight.w700,
@@ -131,7 +132,7 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
           animationDuration: const Duration(milliseconds: 700),
           snackbarDuration: const Duration(seconds: 2),
           builder: (context) => ToastCard(
-            color: Colors.red,
+            color: alertred,
             leading: const Icon(
               Icons.notification_important_outlined,
               size: 28,
@@ -162,7 +163,7 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          backgroundColor: Colors.black,
+          backgroundColor: lighterbackgroundblue,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
@@ -170,42 +171,45 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
             borderRadius: BorderRadius.circular(20.0),
             child: Container(
               height: 400,
-              child: SfDateRangePicker(
-                view: DateRangePickerView.month,
-                selectionMode: DateRangePickerSelectionMode.single,
-                initialSelectedDate: selectedDate,
-                onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-                  Navigator.of(context).pop(args.value);
-                },
-                todayHighlightColor: Colors.white,
-                backgroundColor: Colors.black,
-                selectionTextStyle: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                selectionColor: Colors.white,
-                monthCellStyle: const DateRangePickerMonthCellStyle(
-                  todayTextStyle: TextStyle(
-                    color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SfDateRangePicker(
+                  view: DateRangePickerView.month,
+                  selectionMode: DateRangePickerSelectionMode.single,
+                  initialSelectedDate: selectedDate,
+                  onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+                    Navigator.of(context).pop(args.value);
+                  },
+                  todayHighlightColor: greyblue,
+                  backgroundColor: lighterbackgroundblue,
+                  selectionTextStyle: TextStyle(
+                    color: lighterbackgroundblue,
                     fontWeight: FontWeight.bold,
                   ),
-                  textStyle: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                headerStyle: const DateRangePickerHeaderStyle(
-                  backgroundColor: Colors.black,
-                  textStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                monthViewSettings: const DateRangePickerMonthViewSettings(
-                  viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                  selectionColor: greyblue,
+                  monthCellStyle: DateRangePickerMonthCellStyle(
+                    todayTextStyle: TextStyle(
+                      color: greyblue,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textStyle: TextStyle(
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w600,
+                      color: greyblue,
+                    ),
+                  ),
+                  headerStyle: DateRangePickerHeaderStyle(
+                    backgroundColor: lighterbackgroundblue,
+                    textStyle: TextStyle(
+                      color: greyblue,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  monthViewSettings: DateRangePickerMonthViewSettings(
+                    viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                      textStyle: TextStyle(
+                        color: greyblue,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
@@ -250,150 +254,143 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
   Widget build(BuildContext context) {
     return Dialog(
       elevation: 20,
-      backgroundColor: Colors.grey[200],
+      backgroundColor: lighterbackgroundblue,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(40.0),
+        borderRadius: BorderRadius.circular(20.0),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(40.0),
+        borderRadius: BorderRadius.circular(20.0),
         child: Padding(
           padding: const EdgeInsets.only(
-            top: 3,
-            left: 3,
-            right: 3,
-            bottom: 3,
+            top: 7,
+            left: 7,
+            right: 7,
+            bottom: 7,
           ),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.grey[200],
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(37),
-                bottomRight: Radius.circular(37),
-                topLeft: Radius.circular(37),
-                topRight: Radius.circular(37),
-              ),
-            ),
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const SizedBox(height: 20),
-                    Text(
-                      Provider.of<LanguageProvider>(context).isTamil
-                          ? "வாராந்திர பணி ஐடி"
-                          : "Weekly Task Id",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  const SizedBox(height: 20),
+                  Text(
+                    Provider.of<LanguageProvider>(context).isTamil
+                        ? "வார பணி ஐடி"
+                        : "Weekly Task Id",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                      color: greyblue,
                     ),
-                    const SizedBox(height: 5),
-                    Badconditionields(
-                      controller: _weeklyauditIdController,
-                      hintText: Provider.of<LanguageProvider>(context).isTamil
-                          ? "வேலை ஐடி"
-                          : "Audit ID",
+                  ),
+                  const SizedBox(height: 5),
+                  Badconditionields(
+                    controller: _weeklyauditIdController,
+                    hintText: Provider.of<LanguageProvider>(context).isTamil
+                        ? "வேலை ஐடி"
+                        : "Audit ID",
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    Provider.of<LanguageProvider>(context).isTamil
+                        ? "வார வேலை தேதி"
+                        : "Weekly Audit Date",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                      color: greyblue,
                     ),
-                    const SizedBox(height: 20),
-                    Text(
-                      Provider.of<LanguageProvider>(context).isTamil
-                          ? "வாராந்திர வேலை தேதி"
-                          : "Weekly Audit Date",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    GestureDetector(
-                      onTap: _showDatePicker,
-                      child: Container(
-                        // height: 55,
-                        width: double.maxFinite,
-                        padding: const EdgeInsets.all(12.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: _showDatePicker,
+                    child: Container(
+                      height: 55,
+                      width: double.maxFinite,
+                      padding: const EdgeInsets.all(12.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: Colors.grey[400]!,
                         ),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            selectedWeek.isEmpty
-                                ? Provider.of<LanguageProvider>(context).isTamil
-                                    ? "வாரம்"
-                                    : 'Tap to select date'
-                                : getWeekDateRange(
-                                    int.parse(selectedWeek), year),
-                            style: TextStyle(
-                              color: Colors.grey[800],
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            ),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          selectedWeek.isEmpty
+                              ? Provider.of<LanguageProvider>(context).isTamil
+                                  ? "வாரம்"
+                                  : 'Tap to select date'
+                              : getWeekDateRange(int.parse(selectedWeek), year),
+                          style: TextStyle(
+                            color: greyblue,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      height: 50,
-                      width: double.maxFinite,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_weeklyauditIdController.text.isEmpty ||
-                              year == 0 ||
-                              month == "") {
-                            DelightToastBar(
-                              position: DelightSnackbarPosition.top,
-                              autoDismiss: true,
-                              snackbarDuration: Durations.extralong4,
-                              builder: (context) => ToastCard(
-                                color: Colors.red,
-                                leading: const Icon(
-                                  Icons.notification_important_outlined,
-                                  size: 28,
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    height: 50,
+                    width: double.maxFinite,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_weeklyauditIdController.text.isEmpty ||
+                            year == 0 ||
+                            month == "") {
+                          DelightToastBar(
+                            position: DelightSnackbarPosition.top,
+                            autoDismiss: true,
+                            snackbarDuration: Durations.extralong4,
+                            builder: (context) => ToastCard(
+                              color: alertred,
+                              leading: const Icon(
+                                Icons.notification_important_outlined,
+                                size: 28,
+                                color: Colors.white,
+                              ),
+                              title: Text(
+                                _languageProvider.isTamil
+                                    ? "அனைத்து புலங்களையும் நிரப்பவு"
+                                    : "Fill all the fields",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
                                   color: Colors.white,
                                 ),
-                                title: Text(
-                                  _languageProvider.isTamil
-                                      ? "அனைத்து புலங்களையும் நிரப்பவு"
-                                      : "Fill all the fields",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14,
-                                    color: Colors.white,
-                                  ),
-                                ),
                               ),
-                            ).show(context);
-                          } else {
-                            createweeklytaskId();
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 50, vertical: 15),
-                          backgroundColor: Colors.black,
+                            ),
+                          ).show(context);
+                        } else {
+                          createweeklytaskId();
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
                         ),
-                        child: Text(
-                          Provider.of<LanguageProvider>(context).isTamil
-                              ? "உருவாக்கு"
-                              : 'CREATE',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                          ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 50, vertical: 15),
+                        backgroundColor: greyblue,
+                      ),
+                      child: Text(
+                        Provider.of<LanguageProvider>(context).isTamil
+                            ? "உருவாக்கு"
+                            : 'CREATE',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: lighterbackgroundblue,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 10),
+                ],
               ),
             ),
           ),

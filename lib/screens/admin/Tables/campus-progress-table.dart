@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:auditfitnesstest/models/admin%20specific/campus_progress_table.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/admin/Tables/submited_weekly_audits.dart';
@@ -116,7 +117,7 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          backgroundColor: Colors.black,
+          backgroundColor: lighterbackgroundblue,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
@@ -124,42 +125,46 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
             borderRadius: BorderRadius.circular(20.0),
             child: Container(
               height: 400,
-              child: SfDateRangePicker(
-                view: DateRangePickerView.month,
-                selectionMode: DateRangePickerSelectionMode.single,
-                initialSelectedDate: _selectedDate,
-                onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-                  Navigator.of(context).pop(args.value);
-                },
-                todayHighlightColor: Colors.white,
-                backgroundColor: Colors.black,
-                selectionTextStyle: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                selectionColor: Colors.white,
-                monthCellStyle: const DateRangePickerMonthCellStyle(
-                  todayTextStyle: TextStyle(
-                    color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SfDateRangePicker(
+                  view: DateRangePickerView.month,
+                  selectionMode: DateRangePickerSelectionMode.single,
+                  initialSelectedDate: _selectedDate,
+                  onSelectionChanged:
+                      (DateRangePickerSelectionChangedArgs args) {
+                    Navigator.of(context).pop(args.value);
+                  },
+                  todayHighlightColor: greyblue,
+                  backgroundColor: lighterbackgroundblue,
+                  selectionTextStyle: TextStyle(
+                    color: lighterbackgroundblue,
                     fontWeight: FontWeight.bold,
                   ),
-                  textStyle: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                headerStyle: const DateRangePickerHeaderStyle(
-                  backgroundColor: Colors.black,
-                  textStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                monthViewSettings: const DateRangePickerMonthViewSettings(
-                  viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                  selectionColor: greyblue,
+                  monthCellStyle: DateRangePickerMonthCellStyle(
+                    todayTextStyle: TextStyle(
+                      color: greyblue,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textStyle: TextStyle(
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w600,
+                      color: greyblue,
+                    ),
+                  ),
+                  headerStyle: DateRangePickerHeaderStyle(
+                    backgroundColor: lighterbackgroundblue,
+                    textStyle: TextStyle(
+                      color: greyblue,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  monthViewSettings: DateRangePickerMonthViewSettings(
+                    viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                      textStyle: TextStyle(
+                        color: greyblue,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
@@ -346,25 +351,31 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
         actionsIconTheme: const IconThemeData(
           size: 30,
         ),
-        iconTheme: const IconThemeData(
-          color: Colors.white,
+        iconTheme: IconThemeData(
+          color: darkblue,
         ),
-        backgroundColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15),
+          ),
+        ),
+        backgroundColor: Colors.white,
         title: Text(
           Provider.of<LanguageProvider>(context).isTamil
               ? "வளாக முன்னேற்ற \nஅறிக்கைகள்"
               : "Campus Progression \nReports",
-          style: GoogleFonts.manrope(
-            color: Colors.white,
-            fontSize: Provider.of<LanguageProvider>(context).isTamil ? 20 : 25,
-            fontWeight: FontWeight.w500,
+          style: TextStyle(
+            color: greyblue,
+            fontSize: Provider.of<LanguageProvider>(context).isTamil ? 18 : 21,
+            fontWeight: FontWeight.bold,
           ),
           overflow: TextOverflow.visible,
         ),
         actions: [
           PopupMenuButton<String>(
               elevation: 0,
-              iconColor: Colors.white,
+              iconColor: greyblue,
               color: Colors.white,
               onSelected: choiceAction,
               itemBuilder: (BuildContext context) {
@@ -374,29 +385,27 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
                       child: ListTile(
                         title: Text(
                           choice,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
-                            color: Colors.black,
+                            color: greyblue,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         leading: Icon(
                           MenuItems.choiceIcons[choice],
-                          color: Colors.black,
+                          color: greyblue,
                         ),
                       ));
                 }).toList();
               })
         ],
       ),
-      backgroundColor: isLoading
-          ? const Color.fromRGBO(229, 229, 228, 1)
-          : const Color.fromRGBO(229, 229, 228, 1),
+      backgroundColor: lighterbackgroundblue,
       body: isLoading
           ? const Center(
               child: SpinKitThreeBounce(
                 color: Color.fromARGB(255, 97, 81, 188),
-                size: 50,
+                size: 30,
               ),
             )
           : isfetching
@@ -414,7 +423,7 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
                           alignment: Alignment.center,
                           child: SpinKitThreeBounce(
                             color: Color.fromARGB(255, 97, 81, 188),
-                            size: 50,
+                            size: 30,
                           ),
                         ),
                       ),
@@ -430,7 +439,7 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
       data: SfDataGridThemeData(
         // gridLineColor: Colors.black.withOpacity(0.3),
         // headerHoverColor: Colors.white.withOpacity(0.3),
-        headerColor: const Color.fromRGBO(46, 46, 46, 1),
+        headerColor: greyblue,
       ),
       child: SfDataGrid(
         columnWidthMode: ColumnWidthMode.auto,
@@ -640,7 +649,7 @@ class CampusProgressDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     int rowIndex = dataGridRows.indexOf(row);
     return DataGridRowAdapter(
-      color: rowIndex.isEven ? Colors.grey[200] : Colors.white,
+      color: rowIndex.isEven ? lightbackgroundblue : Colors.white,
       cells: [
         for (var cell in row.getCells())
           Container(
@@ -655,11 +664,16 @@ class CampusProgressDataSource extends DataGridSource {
                             ? Colors.green
                             : cell.value.toString() == 'In Progress'
                                 ? Colors.red
-                                : Colors.black,
+                                : greyblue,
                       ),
                     ),
                   )
-                : Text(cell.value.toString()),
+                : Text(
+                    cell.value.toString(),
+                    style: TextStyle(
+                      color: greyblue,
+                    ),
+                  ),
           ),
       ],
     );

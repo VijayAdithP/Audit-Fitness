@@ -1,3 +1,4 @@
+import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/widgets/auth_textfields.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
     // bool isloading = box.read('isloading');
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.grey[300],
+      backgroundColor: lighterbackgroundblue,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10),
@@ -75,9 +76,10 @@ class _LoginPageState extends State<LoginPage> {
                             ? "வருக"
                             : "Welcome",
                         style: GoogleFonts.manrope(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
+                            color: greyblue,
                           ),
                         ),
                       ),
@@ -92,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                             ? "உள்நுழைய உங்கள் நற்சான்றிதழை உள்ளிடவும்"
                             : "Enter your Credential to log in",
                         style: GoogleFonts.manrope(
-                          color: Colors.grey[800],
+                          color: greyblue,
                           fontSize: 20,
                         ),
                       ),
@@ -127,8 +129,8 @@ class _LoginPageState extends State<LoginPage> {
                         child: Container(
                           height: 50,
                           width: double.maxFinite,
-                          decoration: const BoxDecoration(
-                            color: Colors.black,
+                          decoration: BoxDecoration(
+                            color: darkblue,
                             borderRadius: const BorderRadius.all(
                               Radius.circular(20),
                             ),
@@ -159,10 +161,10 @@ class _LoginPageState extends State<LoginPage> {
                         padding: const EdgeInsets.only(left: 10.0),
                         child: Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.type_specimen_sharp,
                               size: 30,
-                              color: Colors.black,
+                              color: greyblue,
                             ),
                             const SizedBox(
                               width: 10,
@@ -174,6 +176,7 @@ class _LoginPageState extends State<LoginPage> {
                               style: GoogleFonts.manrope(
                                 fontSize: 17,
                                 fontWeight: FontWeight.w800,
+                                color: greyblue,
                               ),
                             ),
                           ],

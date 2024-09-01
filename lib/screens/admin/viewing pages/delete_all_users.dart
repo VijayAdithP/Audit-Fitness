@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:auditfitnesstest/models/user%20data/all_users_model.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/utils/apiendpoints.dart';
@@ -52,7 +53,7 @@ class _DeleteAllUsersState extends State<DeleteAllUsers> {
         animationDuration: const Duration(milliseconds: 100),
         snackbarDuration: const Duration(milliseconds: 800),
         builder: (context) => ToastCard(
-          color: Colors.green,
+          color: alertgreen,
           leading: const Icon(
             Icons.done,
             size: 28,

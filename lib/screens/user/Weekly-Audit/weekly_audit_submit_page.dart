@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
+import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/models/admin%20specific/question_model.dart';
 import 'package:auditfitnesstest/models/user%20data/specific_user_main_area_model.dart';
@@ -20,6 +22,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class WeeklyUserAuditSubmmitPage extends StatefulWidget {
@@ -232,35 +235,37 @@ class _WeeklyUserAuditSubmmitPageState
       var response = await request.send();
 
       if (response.statusCode == 200) {
-        if (mounted) {
-          setState(() {
-            DelightToastBar(
-              position: DelightSnackbarPosition.top,
-              autoDismiss: true,
-              animationDuration: const Duration(milliseconds: 100),
-              snackbarDuration: const Duration(milliseconds: 800),
-              builder: (context) => ToastCard(
-                color: Colors.green,
-                leading: const Icon(
-                  Icons.done,
-                  size: 28,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  _languageProvider.isTamil
-                      ? "வேலை வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
-                      : "Audit successfully submitted",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            setState(() {
+              DelightToastBar(
+                position: DelightSnackbarPosition.top,
+                autoDismiss: true,
+                animationDuration: const Duration(milliseconds: 100),
+                snackbarDuration: const Duration(milliseconds: 800),
+                builder: (context) => ToastCard(
+                  color: alertgreen,
+                  leading: const Icon(
+                    Icons.done,
+                    size: 28,
                     color: Colors.white,
                   ),
+                  title: Text(
+                    _languageProvider.isTamil
+                        ? "வேலை வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
+                        : "Audit successfully submitted",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
-              ),
-            ).show(context);
-            _useractivityblock = true;
-          });
-        }
+              ).show(context);
+              _useractivityblock = true;
+            });
+          }
+        });
 
         // Get.offAll(() => const UserHomePage());
         // Navigator.of(context).pop();
@@ -285,107 +290,133 @@ class _WeeklyUserAuditSubmmitPageState
     }
   }
 
+  bool _isRequestingPermission = false;
+
   @override
   Widget build(BuildContext context) {
     username = box.read('username');
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: _useractivityblock
-            ? Color.fromRGBO(229, 229, 229, 1)
-            : Colors.black,
-        body: _useractivityblock
-            ? Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      Provider.of<LanguageProvider>(context).isTamil
-                          ? "சேர்க்கப்படுகிறது"
-                          : "Adding data",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: Provider.of<LanguageProvider>(context).isTamil
-                            ? 17
-                            : 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    SpinKitThreeBounce(
-                      color: const Color.fromARGB(255, 130, 111, 238),
-                      size: 30,
-                    ),
-                  ],
-                ),
-              )
-            : Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(
-                      // top: 10.0,
-                      left: 15.0,
-                      right: 15.0,
-                      bottom: 10.0,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                overflow: TextOverflow.visible,
-                                Provider.of<LanguageProvider>(context).isTamil
-                                    ? "வேலை விவரங்கள்"
-                                    : "WEEKLY AUDITS",
-                                style: GoogleFonts.manrope(
-                                  color: Colors.white,
-                                  fontSize:
-                                      Provider.of<LanguageProvider>(context)
-                                              .isTamil
-                                          ? 17
-                                          : 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          backgroundColor: lighterbackgroundblue,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(
+              color: darkblue,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15),
+              ),
+            ),
+            toolbarHeight: 70,
+            // backgroundColor: Colors.red,
+            titleSpacing: 0,
+            title: Text(
+              overflow: TextOverflow.visible,
+              Provider.of<LanguageProvider>(context).isTamil
+                  ? "வேலை விவரங்கள்"
+                  : "WEEKLY AUDITS",
+              style: TextStyle(
+                color: darkblue,
+                fontWeight: FontWeight.bold,
+                fontSize:
+                    Provider.of<LanguageProvider>(context).isTamil ? 18 : 21,
+              ),
+            ),
+          ),
+          body: _useractivityblock
+              ? Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        Provider.of<LanguageProvider>(context).isTamil
+                            ? "சேர்க்கப்படுகிறது"
+                            : "Adding data",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize:
+                              Provider.of<LanguageProvider>(context).isTamil
+                                  ? 17
+                                  : 20,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(35.0),
-                        topRight: Radius.circular(35.0),
                       ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SpinKitThreeBounce(
+                        color: const Color.fromARGB(255, 130, 111, 238),
+                        size: 30,
+                      ),
+                    ],
+                  ),
+                )
+              : Column(
+                  children: [
+                    // Container(
+                    //   padding: const EdgeInsets.only(
+                    //     // top: 10.0,
+                    //     left: 15.0,
+                    //     right: 15.0,
+                    //     bottom: 10.0,
+                    //   ),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: <Widget>[
+                    //       Padding(
+                    //         padding: const EdgeInsets.only(top: 10),
+                    //         child: Row(
+                    //           mainAxisAlignment: MainAxisAlignment.start,
+                    //           children: [
+                    //             GestureDetector(
+                    //               onTap: () {
+                    //                 Navigator.of(context).pop();
+                    //               },
+                    //               child: const Icon(
+                    //                 Icons.arrow_back,
+                    //                 color: Colors.white,
+                    //                 size: 30,
+                    //               ),
+                    //             ),
+                    //             const SizedBox(
+                    //               width: 10,
+                    //             ),
+                    //             Text(
+                    //               overflow: TextOverflow.visible,
+                    //               Provider.of<LanguageProvider>(context).isTamil
+                    //                   ? "வேலை விவரங்கள்"
+                    //                   : "WEEKLY AUDITS",
+                    //               style: GoogleFonts.manrope(
+                    //                 color: Colors.white,
+                    //                 fontSize:
+                    //                     Provider.of<LanguageProvider>(context)
+                    //                             .isTamil
+                    //                         ? 17
+                    //                         : 20,
+                    //                 fontWeight: FontWeight.bold,
+                    //               ),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    Expanded(
                       child: Container(
-                        decoration: const BoxDecoration(
-                          color: Color.fromRGBO(229, 229, 229, 1),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(35.0),
-                            topRight: Radius.circular(35.0),
-                          ),
+                        decoration: BoxDecoration(
+                          color: lighterbackgroundblue,
+                          // borderRadius: BorderRadius.only(
+                          //   topLeft: Radius.circular(35.0),
+                          //   topRight: Radius.circular(35.0),
+                          // ),
                         ),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.vertical,
@@ -409,6 +440,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   style: GoogleFonts.manrope(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
+                                    color: greyblue,
                                   ),
                                 ),
                                 const SizedBox(height: 5),
@@ -429,6 +461,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   style: GoogleFonts.manrope(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
+                                    color: greyblue,
                                   ),
                                 ),
                                 const SizedBox(height: 5),
@@ -438,6 +471,7 @@ class _WeeklyUserAuditSubmmitPageState
                                     userDataNumber.toString(),
                                     style: GoogleFonts.manrope(
                                       fontSize: 20,
+                                      color: greyblue,
                                     ),
                                   ),
                                 ),
@@ -449,6 +483,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   style: GoogleFonts.manrope(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
+                                    color: greyblue,
                                   ),
                                 ),
                                 const SizedBox(height: 5),
@@ -458,6 +493,7 @@ class _WeeklyUserAuditSubmmitPageState
                                     widget.auditId!,
                                     style: GoogleFonts.manrope(
                                       fontSize: 20,
+                                      color: greyblue,
                                     ),
                                   ),
                                 ),
@@ -469,6 +505,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   style: GoogleFonts.manrope(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
+                                    color: greyblue,
                                   ),
                                 ),
                                 const SizedBox(height: 5),
@@ -478,6 +515,7 @@ class _WeeklyUserAuditSubmmitPageState
                                     widget.auditAuditRange!,
                                     style: GoogleFonts.manrope(
                                       fontSize: 20,
+                                      color: greyblue,
                                     ),
                                   ),
                                 ),
@@ -489,6 +527,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   style: GoogleFonts.manrope(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
+                                    color: greyblue,
                                   ),
                                 ),
                                 const SizedBox(height: 5),
@@ -498,6 +537,7 @@ class _WeeklyUserAuditSubmmitPageState
                                     MainAreaVar,
                                     style: GoogleFonts.manrope(
                                       fontSize: 20,
+                                      color: greyblue,
                                     ),
                                   ),
                                 ),
@@ -509,6 +549,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   style: GoogleFonts.manrope(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
+                                    color: greyblue,
                                   ),
                                 ),
                                 const SizedBox(height: 5),
@@ -518,13 +559,14 @@ class _WeeklyUserAuditSubmmitPageState
                                     widget.auditarea!,
                                     style: GoogleFonts.manrope(
                                       fontSize: 20,
+                                      color: greyblue,
                                     ),
                                   ),
                                 ),
                                 const SizedBox(height: 16),
-                                const Divider(
+                                Divider(
                                   thickness: 3,
-                                  color: Colors.grey,
+                                  color: greyblue,
                                   height: 20,
                                 ),
                                 ...questions.map(
@@ -547,6 +589,7 @@ class _WeeklyUserAuditSubmmitPageState
                                                 style: GoogleFonts.manrope(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 20,
+                                                  color: greyblue,
                                                 ),
                                               ),
                                             ),
@@ -574,15 +617,15 @@ class _WeeklyUserAuditSubmmitPageState
                                         ),
                                         const SizedBox(height: 5),
                                         if (answers[question.id] == null)
-                                          const Divider(
+                                          Divider(
                                             thickness: 3,
-                                            color: Colors.grey,
+                                            color: greyblue,
                                             height: 20,
                                           ),
                                         if (answers[question.id] == 'good')
-                                          const Divider(
+                                          Divider(
                                             thickness: 3,
-                                            color: Colors.grey,
+                                            color: greyblue,
                                             height: 20,
                                           ),
                                         if (answers[question.id] == 'bad')
@@ -592,6 +635,7 @@ class _WeeklyUserAuditSubmmitPageState
                                                 padding: const EdgeInsets.only(
                                                     top: 10.0),
                                                 child: TextField(
+                                                  maxLines: null,
                                                   controller: controllers[
                                                       question.id!]!,
                                                   textInputAction:
@@ -600,25 +644,25 @@ class _WeeklyUserAuditSubmmitPageState
                                                     filled: true,
                                                     fillColor: Colors.white,
                                                     enabledBorder:
-                                                        const OutlineInputBorder(
+                                                        OutlineInputBorder(
                                                       borderRadius:
                                                           BorderRadius.all(
-                                                              Radius.circular(
-                                                                  10)),
+                                                        Radius.circular(10),
+                                                      ),
                                                       borderSide: BorderSide(
                                                         color:
-                                                            Colors.transparent,
+                                                            Colors.grey[400]!,
                                                       ),
                                                     ),
                                                     focusedBorder:
-                                                        const OutlineInputBorder(
+                                                        OutlineInputBorder(
                                                       borderRadius:
                                                           BorderRadius.all(
-                                                              Radius.circular(
-                                                                  10)),
+                                                        Radius.circular(10),
+                                                      ),
                                                       borderSide: BorderSide(
                                                         color:
-                                                            Colors.transparent,
+                                                            Colors.grey[400]!,
                                                       ),
                                                     ),
                                                     border: InputBorder.none,
@@ -632,6 +676,7 @@ class _WeeklyUserAuditSubmmitPageState
                                                         GoogleFonts.manrope(
                                                       fontWeight:
                                                           FontWeight.w500,
+                                                      color: greyblue,
                                                     ),
                                                   ),
                                                 ),
@@ -643,30 +688,69 @@ class _WeeklyUserAuditSubmmitPageState
                                                     Expanded(
                                                       child: GestureDetector(
                                                         onTap: () async {
-                                                          final pickedFile =
-                                                              await _picker.pickImage(
-                                                                  source:
-                                                                      ImageSource
-                                                                          .camera);
-                                                          if (pickedFile !=
-                                                              null) {
-                                                            setState(() {
-                                                              images[question
-                                                                      .id!] =
-                                                                  File(pickedFile
-                                                                      .path);
-                                                            });
+                                                          // Check if a permission request is already running
+                                                          if (_isRequestingPermission)
+                                                            return;
+
+                                                          _isRequestingPermission =
+                                                              true;
+
+                                                          try {
+                                                            // Request the camera permission
+                                                            PermissionStatus
+                                                                status =
+                                                                await Permission
+                                                                    .camera
+                                                                    .request();
+
+                                                            if (status
+                                                                .isGranted) {
+                                                              // If permission is granted, proceed with picking the image
+                                                              final pickedFile =
+                                                                  await _picker
+                                                                      .pickImage(
+                                                                          source:
+                                                                              ImageSource.camera);
+                                                              if (pickedFile !=
+                                                                      null &&
+                                                                  question.id !=
+                                                                      null) {
+                                                                setState(() {
+                                                                  images[question
+                                                                          .id!] =
+                                                                      File(pickedFile
+                                                                          .path);
+                                                                });
+                                                              }
+                                                            } else if (status
+                                                                    .isDenied ||
+                                                                status
+                                                                    .isPermanentlyDenied) {
+                                                              openAppSettings();
+                                                            }
+                                                          } catch (e) {
+                                                            print(
+                                                                "Error requesting camera permission: $e");
+                                                          } finally {
+                                                            _isRequestingPermission =
+                                                                false;
                                                           }
                                                         },
                                                         child: Container(
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: Colors.white,
+                                                            color:
+                                                                lightbackgroundblue,
                                                             borderRadius:
                                                                 const BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            15)),
+                                                                    .all(
+                                                              Radius.circular(
+                                                                  15),
+                                                            ),
+                                                            border: Border.all(
+                                                              color: Colors
+                                                                  .grey[400]!,
+                                                            ),
                                                           ),
                                                           child: Padding(
                                                             padding:
@@ -680,9 +764,8 @@ class _WeeklyUserAuditSubmmitPageState
                                                                 Icon(
                                                                     Icons
                                                                         .camera_alt,
-                                                                    color: Colors
-                                                                            .grey[
-                                                                        800],
+                                                                    color:
+                                                                        greyblue,
                                                                     size: 20),
                                                                 const SizedBox(
                                                                     width: 5),
@@ -713,9 +796,8 @@ class _WeeklyUserAuditSubmmitPageState
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w500,
-                                                                      color: Colors
-                                                                              .grey[
-                                                                          800],
+                                                                      color:
+                                                                          greyblue,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -726,7 +808,7 @@ class _WeeklyUserAuditSubmmitPageState
                                                       ),
                                                     ),
                                                     VerticalDivider(
-                                                      color: Colors.grey[400],
+                                                      color: greyblue,
                                                       thickness: 2,
                                                     ),
                                                     Expanded(
@@ -737,7 +819,9 @@ class _WeeklyUserAuditSubmmitPageState
                                                                   source: ImageSource
                                                                       .gallery);
                                                           if (pickedFile !=
-                                                              null) {
+                                                                  null &&
+                                                              question.id !=
+                                                                  null) {
                                                             setState(() {
                                                               images[question
                                                                       .id!] =
@@ -749,12 +833,18 @@ class _WeeklyUserAuditSubmmitPageState
                                                         child: Container(
                                                           decoration:
                                                               BoxDecoration(
-                                                            color: Colors.white,
+                                                            color:
+                                                                lightbackgroundblue,
                                                             borderRadius:
                                                                 const BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            15)),
+                                                                    .all(
+                                                              Radius.circular(
+                                                                  15),
+                                                            ),
+                                                            border: Border.all(
+                                                              color: Colors
+                                                                  .grey[400]!,
+                                                            ),
                                                           ),
                                                           child: Padding(
                                                             padding:
@@ -767,9 +857,8 @@ class _WeeklyUserAuditSubmmitPageState
                                                               children: [
                                                                 Icon(
                                                                     Icons.photo,
-                                                                    color: Colors
-                                                                            .grey[
-                                                                        800],
+                                                                    color:
+                                                                        greyblue,
                                                                     size: 20),
                                                                 const SizedBox(
                                                                     width: 5),
@@ -800,9 +889,8 @@ class _WeeklyUserAuditSubmmitPageState
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w500,
-                                                                      color: Colors
-                                                                              .grey[
-                                                                          800],
+                                                                      color:
+                                                                          greyblue,
                                                                     ),
                                                                   ),
                                                                 ),
@@ -882,9 +970,9 @@ class _WeeklyUserAuditSubmmitPageState
                                               SizedBox(
                                                 height: 10,
                                               ),
-                                              const Divider(
+                                              Divider(
                                                 thickness: 3,
-                                                color: Colors.grey,
+                                                color: greyblue,
                                                 height: 20,
                                               ),
                                             ],
@@ -904,6 +992,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   style: GoogleFonts.manrope(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
+                                    color: greyblue,
                                   ),
                                 ),
                                 const SizedBox(height: 10),
@@ -1200,7 +1289,7 @@ class _WeeklyUserAuditSubmmitPageState
                                               snackbarDuration:
                                                   Durations.extralong4,
                                               builder: (context) => ToastCard(
-                                                color: Colors.red,
+                                                color: alertred,
                                                 leading: const Icon(
                                                   Icons
                                                       .notification_important_outlined,
@@ -1234,28 +1323,30 @@ class _WeeklyUserAuditSubmmitPageState
                                             backgroundColor: Colors.white,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(40.0),
+                                                  BorderRadius.circular(15.0),
                                             ),
                                             child: ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.circular(40.0),
+                                                  BorderRadius.circular(15.0),
                                               child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(3.0),
+                                                padding: const EdgeInsets.only(
+                                                  top: 3,
+                                                  left: 3,
+                                                  right: 3,
+                                                  bottom: 3,
+                                                ),
                                                 child: Container(
                                                   width: 150,
                                                   decoration:
                                                       const BoxDecoration(
                                                     color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                37)),
                                                   ),
                                                   child: Padding(
                                                     padding: const EdgeInsets
                                                         .symmetric(
-                                                        horizontal: 20.0),
+                                                      horizontal: 20.0,
+                                                      vertical: 20,
+                                                    ),
                                                     child: Column(
                                                       mainAxisSize:
                                                           MainAxisSize.min,
@@ -1263,8 +1354,6 @@ class _WeeklyUserAuditSubmmitPageState
                                                           CrossAxisAlignment
                                                               .center,
                                                       children: [
-                                                        const SizedBox(
-                                                            height: 20),
                                                         Text(
                                                           Provider.of<LanguageProvider>(
                                                                       context)
@@ -1281,117 +1370,93 @@ class _WeeklyUserAuditSubmmitPageState
                                                                 ? 19
                                                                 : 23,
                                                             fontWeight:
-                                                                FontWeight.w500,
+                                                                FontWeight.bold,
                                                           ),
                                                         ),
                                                         const SizedBox(
-                                                            height: 20),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceEvenly,
-                                                          children: [
-                                                            OutlinedButton(
-                                                              style:
-                                                                  OutlinedButton
-                                                                      .styleFrom(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .symmetric(
-                                                                  vertical: 8,
-                                                                  horizontal:
-                                                                      32,
-                                                                ),
-                                                                foregroundColor:
-                                                                    Colors
-                                                                        .black87,
-                                                                shape:
-                                                                    RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              5),
-                                                                ),
-                                                                side: const BorderSide(
-                                                                    color: Colors
-                                                                        .black87),
-                                                              ),
-                                                              child: Text(
-                                                                Provider.of<LanguageProvider>(
-                                                                            context)
-                                                                        .isTamil
-                                                                    ? "இல்லை"
-                                                                    : "No",
-                                                                style: GoogleFonts.manrope(
-                                                                    color: Colors
-                                                                        .black87,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    fontSize:
-                                                                        Provider.of<LanguageProvider>(context).isTamil
-                                                                            ? 12
-                                                                            : 15),
-                                                              ),
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                              },
-                                                            ),
-                                                            ElevatedButton(
-                                                              style:
-                                                                  const ButtonStyle(
-                                                                padding:
-                                                                    WidgetStatePropertyAll(
-                                                                  EdgeInsets
-                                                                      .symmetric(
-                                                                    vertical: 8,
-                                                                    horizontal:
-                                                                        32,
-                                                                  ),
-                                                                ),
-                                                                backgroundColor:
-                                                                    WidgetStatePropertyAll(
-                                                                  Color
-                                                                      .fromRGBO(
-                                                                          130,
-                                                                          204,
-                                                                          146,
-                                                                          1),
-                                                                ),
-                                                                shape:
-                                                                    WidgetStatePropertyAll(
-                                                                  RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .all(
-                                                                      Radius
-                                                                          .circular(
-                                                                              5),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              child: const Icon(
-                                                                  Icons.check,
-                                                                  color: Colors
-                                                                      .white),
-                                                              onPressed: () {
-                                                                auditsubmituser();
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                                setState(() {
-                                                                  _useractivityblock =
-                                                                      true;
-                                                                });
-                                                              },
-                                                            ),
-                                                          ],
+                                                          height: 30,
                                                         ),
-                                                        const SizedBox(
-                                                            height: 20),
+                                                        IntrinsicHeight(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceEvenly,
+                                                            children: [
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                },
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                    left: 10,
+                                                                    right: 10,
+                                                                  ),
+                                                                  child: Text(
+                                                                    Provider.of<LanguageProvider>(context)
+                                                                            .isTamil
+                                                                        ? "இல்லை"
+                                                                        : "No",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .red,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        fontSize: Provider.of<LanguageProvider>(context).isTamil
+                                                                            ? 14
+                                                                            : 17),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              VerticalDivider(
+                                                                color: Colors
+                                                                    .grey
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                                thickness: 1,
+                                                              ),
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  auditsubmituser();
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                  setState(() {
+                                                                    _useractivityblock =
+                                                                        true;
+                                                                  });
+                                                                },
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                    left: 10,
+                                                                    right: 10,
+                                                                  ),
+                                                                  child: Text(
+                                                                    Provider.of<LanguageProvider>(context)
+                                                                            .isTamil
+                                                                        ? "ஆம்"
+                                                                        : "yes",
+                                                                    style: TextStyle(
+                                                                        color:
+                                                                            paleblue,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        fontSize: Provider.of<LanguageProvider>(context).isTamil
+                                                                            ? 14
+                                                                            : 17),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
                                                   ),
@@ -1399,6 +1464,170 @@ class _WeeklyUserAuditSubmmitPageState
                                               ),
                                             ),
                                           );
+                                          // Dialog(
+                                          //   backgroundColor: Colors.white,
+                                          //   shape: RoundedRectangleBorder(
+                                          //     borderRadius:
+                                          //         BorderRadius.circular(15.0),
+                                          //   ),
+                                          //   child: ClipRRect(
+                                          //     borderRadius:
+                                          //         BorderRadius.circular(15.0),
+                                          //     child: Padding(
+                                          //       padding:
+                                          //           const EdgeInsets.all(3.0),
+                                          //       child: Container(
+                                          //         width: 150,
+                                          //         decoration:
+                                          //             const BoxDecoration(
+                                          //           color: Colors.white,
+                                          //           borderRadius:
+                                          //               BorderRadius.all(
+                                          //                   Radius.circular(
+                                          //                       37)),
+                                          //         ),
+                                          //         child: Padding(
+                                          //           padding: const EdgeInsets
+                                          //               .symmetric(
+                                          //               horizontal: 20.0),
+                                          //           child: Column(
+                                          //             mainAxisSize:
+                                          //                 MainAxisSize.min,
+                                          //             crossAxisAlignment:
+                                          //                 CrossAxisAlignment
+                                          //                     .center,
+                                          //             children: [
+                                          //               const SizedBox(
+                                          //                   height: 20),
+                                          //               Text(
+                                          //                 Provider.of<LanguageProvider>(
+                                          //                             context)
+                                          //                         .isTamil
+                                          //                     ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
+                                          //                     : "Are you sure?",
+                                          //                 style: GoogleFonts
+                                          //                     .manrope(
+                                          //                   color: Colors.black,
+                                          //                   fontSize: Provider.of<
+                                          //                                   LanguageProvider>(
+                                          //                               context)
+                                          //                           .isTamil
+                                          //                       ? 19
+                                          //                       : 23,
+                                          //                   fontWeight:
+                                          //                       FontWeight.w500,
+                                          //                 ),
+                                          //               ),
+                                          //               const SizedBox(
+                                          //                   height: 20),
+                                          //               Row(
+                                          //                 mainAxisAlignment:
+                                          //                     MainAxisAlignment
+                                          //                         .spaceEvenly,
+                                          //                 children: [
+                                          //                   OutlinedButton(
+                                          //                     style:
+                                          //                         OutlinedButton
+                                          //                             .styleFrom(
+                                          //                       padding:
+                                          //                           const EdgeInsets
+                                          //                               .symmetric(
+                                          //                         vertical: 8,
+                                          //                         horizontal:
+                                          //                             32,
+                                          //                       ),
+                                          //                       foregroundColor:
+                                          //                           Colors
+                                          //                               .black87,
+                                          //                       shape:
+                                          //                           RoundedRectangleBorder(
+                                          //                         borderRadius:
+                                          //                             BorderRadius
+                                          //                                 .circular(
+                                          //                                     5),
+                                          //                       ),
+                                          //                       side: const BorderSide(
+                                          //                           color: Colors
+                                          //                               .black87),
+                                          //                     ),
+                                          //                     child: Text(
+                                          //                       Provider.of<LanguageProvider>(
+                                          //                                   context)
+                                          //                               .isTamil
+                                          //                           ? "இல்லை"
+                                          //                           : "No",
+                                          //                       style: GoogleFonts.manrope(
+                                          //                           color: Colors
+                                          //                               .black87,
+                                          //                           fontWeight:
+                                          //                               FontWeight
+                                          //                                   .w500,
+                                          //                           fontSize:
+                                          //                               Provider.of<LanguageProvider>(context).isTamil
+                                          //                                   ? 12
+                                          //                                   : 15),
+                                          //                     ),
+                                          //                     onPressed: () {
+                                          //                       Navigator.of(
+                                          //                               context)
+                                          //                           .pop();
+                                          //                     },
+                                          //                   ),
+                                          //                   ElevatedButton(
+                                          //                     style:
+                                          //                         ButtonStyle(
+                                          //                       padding:
+                                          //                           WidgetStatePropertyAll(
+                                          //                         EdgeInsets
+                                          //                             .symmetric(
+                                          //                           vertical: 8,
+                                          //                           // horizontal:
+                                          //                           //     32,
+                                          //                         ),
+                                          //                       ),
+                                          //                       backgroundColor:
+                                          //                           WidgetStatePropertyAll(
+                                          //                         paleblue,
+                                          //                       ),
+                                          //                       shape:
+                                          //                           WidgetStatePropertyAll(
+                                          //                         RoundedRectangleBorder(
+                                          //                           borderRadius:
+                                          //                               BorderRadius
+                                          //                                   .all(
+                                          //                             Radius
+                                          //                                 .circular(
+                                          //                                     5),
+                                          //                           ),
+                                          //                         ),
+                                          //                       ),
+                                          //                     ),
+                                          //                     child: const Icon(
+                                          //                         Icons.check,
+                                          //                         color: Colors
+                                          //                             .white),
+                                          //                     onPressed: () {
+                                          // auditsubmituser();
+                                          // Navigator.of(
+                                          //         context)
+                                          //     .pop();
+                                          // setState(() {
+                                          //   _useractivityblock =
+                                          //       true;
+                                          // });
+                                          //                     },
+                                          //                   ),
+                                          //                 ],
+                                          //               ),
+                                          //               const SizedBox(
+                                          //                   height: 20),
+                                          //             ],
+                                          //           ),
+                                          //         ),
+                                          //       ),
+                                          //     ),
+                                          //   ),
+                                          // );
                                         },
                                       );
                                     }
@@ -1406,15 +1635,18 @@ class _WeeklyUserAuditSubmmitPageState
                                   child: Container(
                                     height: 50,
                                     width: double.maxFinite,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.black,
+                                    decoration: BoxDecoration(
+                                      color: darkblue,
                                       borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
+                                          BorderRadius.all(Radius.circular(15)),
                                     ),
                                     child: Center(
                                       child: Text(
-                                        "Submit",
-                                        style: GoogleFonts.manrope(
+                                        Provider.of<LanguageProvider>(context)
+                                                .isTamil
+                                            ? "சமர்ப்பிக்க"
+                                            : "Submit",
+                                        style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 17,
                                         ),
@@ -1428,9 +1660,9 @@ class _WeeklyUserAuditSubmmitPageState
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+        ),
       ),
     );
   }

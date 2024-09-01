@@ -65,12 +65,19 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => WeeklyTasksProvider()),
       ],
       child: GetMaterialApp(
-        theme: ThemeData(
-          textTheme: GoogleFonts.manropeTextTheme(),
-        ),
-        debugShowCheckedModeBanner: false,
-        home: token1 != null ? const Mainpage() : const AuthScreen(),
-      ),
+          theme: ThemeData(
+            textTheme: GoogleFonts.poppinsTextTheme(),
+            // useMaterial3: false,
+          ),
+          debugShowCheckedModeBanner: false,
+          home: token1 != null ? const Mainpage() : const AuthScreen(),
+          builder: (context, child) {
+            final mediaQueryData = MediaQuery.of(context);
+            final scale = mediaQueryData.textScaleFactor.clamp(0.8, 0.9);
+            return MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaleFactor: scale),
+                child: child!);
+          }),
     ),
   );
 }

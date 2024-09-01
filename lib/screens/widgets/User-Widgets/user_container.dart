@@ -17,6 +17,9 @@ class UserContainer extends StatelessWidget {
     return Container(
       width: double.maxFinite,
       decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey[400]!,
+        ),
         boxShadow: [
           BoxShadow(
             color: color!,

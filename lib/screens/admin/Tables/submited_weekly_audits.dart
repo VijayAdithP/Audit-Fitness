@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:auditfitnesstest/models/admin%20specific/weekly%20models/new_weekly_report.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/admin/campus_progress_edit.dart';
@@ -129,50 +130,54 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
       context: context,
       builder: (BuildContext context) {
         return Dialog(
-          backgroundColor: Colors.black,
+          backgroundColor: lighterbackgroundblue,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20.0),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
-            child: SizedBox(
+            child: Container(
               height: 400,
-              child: SfDateRangePicker(
-                view: DateRangePickerView.month,
-                selectionMode: DateRangePickerSelectionMode.single,
-                initialSelectedDate: selectedDate,
-                onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
-                  Navigator.of(context).pop(args.value);
-                },
-                todayHighlightColor: Colors.white,
-                backgroundColor: Colors.black,
-                selectionTextStyle: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                selectionColor: Colors.white,
-                monthCellStyle: const DateRangePickerMonthCellStyle(
-                  todayTextStyle: TextStyle(
-                    color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SfDateRangePicker(
+                  view: DateRangePickerView.month,
+                  selectionMode: DateRangePickerSelectionMode.single,
+                  initialSelectedDate: selectedDate,
+                  onSelectionChanged:
+                      (DateRangePickerSelectionChangedArgs args) {
+                    Navigator.of(context).pop(args.value);
+                  },
+                  todayHighlightColor: greyblue,
+                  backgroundColor: lighterbackgroundblue,
+                  selectionTextStyle: TextStyle(
+                    color: lighterbackgroundblue,
                     fontWeight: FontWeight.bold,
                   ),
-                  textStyle: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                headerStyle: const DateRangePickerHeaderStyle(
-                  backgroundColor: Colors.black,
-                  textStyle: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                monthViewSettings: const DateRangePickerMonthViewSettings(
-                  viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                  selectionColor: greyblue,
+                  monthCellStyle: DateRangePickerMonthCellStyle(
+                    todayTextStyle: TextStyle(
+                      color: greyblue,
+                      fontWeight: FontWeight.bold,
+                    ),
                     textStyle: TextStyle(
-                      color: Colors.white70,
-                      fontWeight: FontWeight.w600,
+                      color: greyblue,
+                    ),
+                  ),
+                  headerStyle: DateRangePickerHeaderStyle(
+                    backgroundColor: lighterbackgroundblue,
+                    textStyle: TextStyle(
+                      color: greyblue,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  monthViewSettings: DateRangePickerMonthViewSettings(
+                    viewHeaderStyle: DateRangePickerViewHeaderStyle(
+                      textStyle: TextStyle(
+                        color: greyblue,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
@@ -299,7 +304,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
           animationDuration: const Duration(milliseconds: 100),
           snackbarDuration: const Duration(milliseconds: 800),
           builder: (context) => ToastCard(
-            color: Colors.green,
+            color: alertgreen,
             leading: const Icon(
               Icons.done,
               size: 28,
@@ -325,7 +330,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
             animationDuration: const Duration(milliseconds: 100),
             snackbarDuration: const Duration(milliseconds: 800),
             builder: (context) => ToastCard(
-              color: Colors.green,
+              color: alertgreen,
               leading: const Icon(
                 Icons.done,
                 size: 28,
@@ -388,7 +393,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
             animationDuration: const Duration(milliseconds: 100),
             snackbarDuration: const Duration(milliseconds: 800),
             builder: (context) => ToastCard(
-              color: Colors.green,
+              color: alertgreen,
               leading: const Icon(
                 Icons.done,
                 size: 28,
@@ -453,7 +458,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
         return Dialog(
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(40.0),
+            borderRadius: BorderRadius.circular(15.0),
           ),
           child: SizedBox(
             height: 350,
@@ -462,8 +467,8 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
               padding: const EdgeInsets.all(8.0),
               child: ClipRRect(
                 borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -501,10 +506,10 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.grey[200],
-                                  borderRadius: BorderRadius.circular(30),
+                                  borderRadius: BorderRadius.circular(15),
                                 ),
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(30),
+                                  borderRadius: BorderRadius.circular(15),
                                   child: CachedNetworkImage(
                                     imageUrl: url,
                                     fit: BoxFit.fill,
@@ -531,10 +536,10 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                     SmoothPageIndicator(
                       controller: pageController,
                       count: urls.length,
-                      effect: const ExpandingDotsEffect(
+                      effect: ExpandingDotsEffect(
                         dotHeight: 8,
                         dotWidth: 8,
-                        activeDotColor: Colors.black,
+                        activeDotColor: paleblue,
                         dotColor: Colors.grey,
                       ),
                     ),
@@ -543,7 +548,8 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                     ),
                     SizedBox(
                       height: 50,
-                      width: 250,
+                      // width: 250,/
+                      width: double.maxFinite,
                       child: ElevatedButton(
                         onPressed: () {
                           String specificArea = reports[mainAreaIndex]
@@ -579,13 +585,17 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          backgroundColor: Colors.black,
+                          backgroundColor: darkblue,
                         ),
-                        child: const Text(
-                          'CREATE CAMPUS ID',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
+                        child: FittedBox(
+                          child: Text(
+                            Provider.of<LanguageProvider>(context).isTamil
+                                ? "கேம்பஸ் ஐடியை உருவாக்கவும்"
+                                : 'CREATE CAMPUS ID',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ),
@@ -670,7 +680,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
         actions: [
           PopupMenuButton<String>(
               elevation: 0,
-              iconColor: Colors.white,
+              iconColor: greyblue,
               color: Colors.white,
               onSelected: choiceAction,
               itemBuilder: (BuildContext context) {
@@ -680,48 +690,49 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                     child: ListTile(
                       title: Text(
                         choice,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
-                          color: Colors.black,
+                          color: greyblue,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       leading: Icon(
                         MenuItems.choiceIcons[choice],
-                        color: Colors.black,
+                        color: greyblue,
                       ),
                     ),
                   );
                 }).toList();
               })
         ],
-        actionsIconTheme: const IconThemeData(
-          size: 30,
+        iconTheme: IconThemeData(
+          color: darkblue,
         ),
-        titleSpacing: 0,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(15),
+            bottomRight: Radius.circular(15),
+          ),
         ),
-        backgroundColor: Colors.black,
+        toolbarHeight: 70,
+        backgroundColor: Colors.white,
         title: Text(
           Provider.of<LanguageProvider>(context).isTamil
-              ? "வாராந்திர அறிக்கைகள்"
+              ? "வார அறிக்கைகள்"
               : "Weekly Reports",
-          style: GoogleFonts.manrope(
-            color: Colors.white,
+          style: TextStyle(
+            color: greyblue,
             fontSize: Provider.of<LanguageProvider>(context).isTamil ? 17 : 25,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
-      backgroundColor: isLoading
-          ? const Color.fromRGBO(229, 229, 228, 1)
-          : const Color.fromRGBO(229, 229, 228, 1),
+      backgroundColor: lighterbackgroundblue,
       body: isLoading
           ? const Center(
               child: SpinKitThreeBounce(
                 color: Color.fromARGB(255, 97, 81, 188),
-                size: 50,
+                size: 30,
               ),
             )
           : isfetching
@@ -739,7 +750,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                           alignment: Alignment.center,
                           child: SpinKitThreeBounce(
                             color: Color.fromARGB(255, 97, 81, 188),
-                            size: 50,
+                            size: 30,
                           ),
                         ),
                       ),
@@ -753,7 +764,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
   Widget sfdatagridwidget() {
     return SfDataGridTheme(
       data: SfDataGridThemeData(
-        headerColor: const Color.fromRGBO(46, 46, 46, 1),
+        headerColor: greyblue,
       ),
       child: SfDataGrid(
         source: ReportDataSource(
@@ -989,7 +1000,7 @@ class ReportDataSource extends DataGridSource {
     int rowIndex = dataGridRows.indexOf(row);
 
     return DataGridRowAdapter(
-      color: rowIndex.isEven ? Colors.grey[200] : Colors.white,
+      color: rowIndex.isEven ? lightbackgroundblue : Colors.white,
       cells: [
         for (var cell in row.getCells())
           Container(
@@ -1077,9 +1088,9 @@ class ReportDataSource extends DataGridSource {
           },
           child: Text(
             buttonText,
-            style: const TextStyle(
-              color: Colors.blue,
-              // fontSize: 16,
+            style: TextStyle(
+              color: typicalblue,
+              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -1104,8 +1115,8 @@ class ReportDataSource extends DataGridSource {
         child: Container(
           child: Text(
             "Create Id",
-            style: const TextStyle(
-              color: Colors.blue,
+            style: TextStyle(
+              color: greyblue,
               // fontSize: 16,
             ),
           ),
@@ -1116,8 +1127,8 @@ class ReportDataSource extends DataGridSource {
       return Text(
         buttonText,
         overflow: TextOverflow.clip,
-        style: const TextStyle(
-          color: Colors.black, // Ensure plain text color is visible
+        style: TextStyle(
+          color: darkblue, // Ensure plain text color is visible
         ),
       );
     }

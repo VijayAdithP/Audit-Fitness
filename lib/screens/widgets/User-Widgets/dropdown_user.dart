@@ -51,6 +51,9 @@ class _DropdownUserState extends State<DropdownUser> {
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),
+        border: Border.all(
+          color: Colors.grey[400]!,
+        ),
       ),
       child: Center(
         child: DropdownButton<String>(
@@ -72,6 +75,7 @@ class _DropdownUserState extends State<DropdownUser> {
               ),
             ),
           ),
+
           underline: const SizedBox(),
           borderRadius: const BorderRadius.all(
             Radius.circular(10),

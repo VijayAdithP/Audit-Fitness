@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:auditfitnesstest/models/user%20data/all_users_model.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/widgets/User-Widgets/bad_condition_user.dart';
@@ -7,6 +8,7 @@ import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/components/toast_card.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -61,214 +63,277 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromRGBO(229, 229, 228, 1),
+      color: Colors.white,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color.fromRGBO(229, 229, 228, 1),
+          backgroundColor: lighterbackgroundblue,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(
+              color: darkblue,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15),
+              ),
+            ),
+            toolbarHeight: 70,
+            titleSpacing: 0,
+            title: Text(
+              Provider.of<LanguageProvider>(context).isTamil
+                  ? "அனைத்து பயனர்கள்"
+                  : "All users",
+              style: TextStyle(
+                color: darkblue,
+                fontWeight: FontWeight.bold,
+                fontSize:
+                    Provider.of<LanguageProvider>(context).isTamil ? 18 : 21,
+              ),
+            ),
+            actions: [
+              IconButton(
+                icon: AnimatedSwitcher(
+                  duration: const Duration(seconds: 1),
+                  transitionBuilder: (child, anim) => RotationTransition(
+                    turns: child.key == ValueKey('icon1')
+                        ? Tween<double>(begin: 1, end: -1).animate(anim)
+                        : Tween<double>(begin: -1, end: 1).animate(anim),
+                    child: FadeTransition(opacity: anim, child: child),
+                  ),
+                  child: _currIndex == 0
+                      ? Icon(
+                          Icons.sync,
+                          color: darkblue,
+                          key: const ValueKey('icon1'),
+                          size: 20,
+                        )
+                      : Icon(
+                          Icons.sync,
+                          color: darkblue,
+                          key: const ValueKey('icon2'),
+                          size: 20,
+                        ),
+                ),
+                onPressed: () {
+                  _onrefresh2();
+                  setState(() {
+                    _currIndex = _currIndex == 0 ? 1 : 0;
+                  });
+                },
+              ),
+              SizedBox(width: 16), // Add spacing between the icons and the edge
+            ],
+          ),
           body: Column(
             children: [
-              Container(
-                padding: const EdgeInsets.only(
-                  left: 15.0,
-                  right: 15.0,
-                  bottom: 10.0,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.black,
-                            size: 30,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: AnimatedSwitcher(
-                                  duration: const Duration(seconds: 1),
-                                  transitionBuilder: (child, anim) =>
-                                      RotationTransition(
-                                        turns: child.key == ValueKey('icon1')
-                                            ? Tween<double>(begin: 1, end: -1)
-                                                .animate(anim)
-                                            : Tween<double>(begin: -1, end: 1)
-                                                .animate(anim),
-                                        child: FadeTransition(
-                                            opacity: anim, child: child),
-                                      ),
-                                  child: _currIndex == 0
-                                      ? Icon(Icons.sync,
-                                          color: Colors.black,
-                                          key: const ValueKey('icon1'))
-                                      : Icon(
-                                          Icons.sync,
-                                          color: Colors.black,
-                                          key: const ValueKey('icon2'),
-                                        )),
-                              onPressed: () {
-                                _onrefresh2();
-                                setState(() {
-                                  _currIndex = _currIndex == 0 ? 1 : 0;
-                                });
-                              },
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return SimpleDialog(
-                                        backgroundColor:
-                                            const Color.fromRGBO(46, 46, 46, 1),
-                                        contentPadding:
-                                            const EdgeInsets.all(20),
-                                        title: Column(
-                                          children: [
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                Provider.of<LanguageProvider>(
-                                                            context)
-                                                        .isTamil
-                                                    ? "தகவல்"
-                                                    : "INFO",
-                                                style: const TextStyle(
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.blueAccent,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            Align(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                textAlign: TextAlign.center,
-                                                Provider.of<LanguageProvider>(
-                                                            context)
-                                                        .isTamil
-                                                    ? "அனைத்து பயனர்களும்"
-                                                    : "All users",
-                                                style: const TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        children: [
-                                          Text(
-                                            Provider.of<LanguageProvider>(
-                                                        context)
-                                                    .isTamil
-                                                ? "அனைத்து பயனர்களும் இங்கு பட்டியலிடப்பட்டுள்ளனர், குறிப்பிட்ட பயனர் விவரங்களைத் திருத்த, தேடல் பட்டியில் தட்டவும்"
-                                                : "All user are listed here grouped by their roles, To edit specific user details tap on the search bar",
-                                            style: const TextStyle(
-                                              fontSize: 17,
-                                              // fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ],
-                                      );
-                                    });
-                              },
-                              child: const Icon(
-                                Icons.info,
-                                size: 25,
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      overflow: TextOverflow.visible,
-                      Provider.of<LanguageProvider>(context).isTamil
-                          ? "அனைத்து பயனர்களும்"
-                          : "ALL USERS",
-                      style: GoogleFonts.manrope(
-                        color: Colors.black,
-                        fontSize: 35,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   padding: const EdgeInsets.only(
+              //     left: 15.0,
+              //     right: 15.0,
+              //     bottom: 10.0,
+              //   ),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: <Widget>[
+              //       Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //           GestureDetector(
+              //             onTap: () {
+              //               Navigator.of(context).pop();
+              //             },
+              //             child: const Icon(
+              //               Icons.arrow_back,
+              //               color: Colors.black,
+              //               size: 30,
+              //             ),
+              //           ),
+              //           Row(
+              //             children: [
+              // IconButton(
+              //   icon: AnimatedSwitcher(
+              //       duration: const Duration(seconds: 1),
+              //       transitionBuilder: (child, anim) =>
+              //           RotationTransition(
+              //             turns: child.key == ValueKey('icon1')
+              //                 ? Tween<double>(begin: 1, end: -1)
+              //                     .animate(anim)
+              //                 : Tween<double>(begin: -1, end: 1)
+              //                     .animate(anim),
+              //             child: FadeTransition(
+              //                 opacity: anim, child: child),
+              //           ),
+              //       child: _currIndex == 0
+              //           ? Icon(Icons.sync,
+              //               color: Colors.black,
+              //               key: const ValueKey('icon1'))
+              //           : Icon(
+              //               Icons.sync,
+              //               color: Colors.black,
+              //               key: const ValueKey('icon2'),
+              //             )),
+              //   onPressed: () {
+              //     _onrefresh2();
+              //     setState(() {
+              //       _currIndex = _currIndex == 0 ? 1 : 0;
+              //     });
+              //   },
+              // ),
+              //               SizedBox(
+              //                 width: 10,
+              //               ),
+              //               GestureDetector(
+              //                 onTap: () {
+              //                   showDialog(
+              //                       context: context,
+              //                       builder: (context) {
+              //                         return SimpleDialog(
+              //                           backgroundColor:
+              //                               const Color.fromRGBO(46, 46, 46, 1),
+              //                           contentPadding:
+              //                               const EdgeInsets.all(20),
+              //                           title: Column(
+              //                             children: [
+              //                               Align(
+              //                                 alignment: Alignment.center,
+              //                                 child: Text(
+              //                                   Provider.of<LanguageProvider>(
+              //                                               context)
+              //                                           .isTamil
+              //                                       ? "தகவல்"
+              //                                       : "INFO",
+              //                                   style: const TextStyle(
+              //                                     fontSize: 20,
+              //                                     fontWeight: FontWeight.bold,
+              //                                     color: Colors.blueAccent,
+              //                                   ),
+              //                                 ),
+              //                               ),
+              //                               const SizedBox(
+              //                                 height: 5,
+              //                               ),
+              //                               Align(
+              //                                 alignment: Alignment.center,
+              //                                 child: Text(
+              //                                   textAlign: TextAlign.center,
+              //                                   Provider.of<LanguageProvider>(
+              //                                               context)
+              //                                           .isTamil
+              //                                       ? "அனைத்து பயனர்களும்"
+              //                                       : "All users",
+              //                                   style: const TextStyle(
+              //                                     fontSize: 17,
+              //                                     fontWeight: FontWeight.bold,
+              //                                     color: Colors.white,
+              //                                   ),
+              //                                 ),
+              //                               ),
+              //                             ],
+              //                           ),
+              //                           children: [
+              //                             Text(
+              //                               Provider.of<LanguageProvider>(
+              //                                           context)
+              //                                       .isTamil
+              //                                   ? "அனைத்து பயனர்களும் இங்கு பட்டியலிடப்பட்டுள்ளனர், குறிப்பிட்ட பயனர் விவரங்களைத் திருத்த, தேடல் பட்டியில் தட்டவும்"
+              //                                   : "All user are listed here grouped by their roles, To edit specific user details tap on the search bar",
+              //                               style: const TextStyle(
+              //                                 fontSize: 17,
+              //                                 // fontWeight: FontWeight.bold,
+              //                                 color: Colors.white,
+              //                               ),
+              //                             ),
+              //                           ],
+              //                         );
+              //                       });
+              //                 },
+              //                 child: const Icon(
+              //                   Icons.info,
+              //                   size: 25,
+              //                 ),
+              //               ),
+              //             ],
+              //           )
+              //         ],
+              //       ),
+              //       const SizedBox(
+              //         height: 5,
+              //       ),
+              //       Text(
+              //         overflow: TextOverflow.visible,
+              //         Provider.of<LanguageProvider>(context).isTamil
+              //             ? "அனைத்து பயனர்களும்"
+              //             : "ALL USERS",
+              //         style: GoogleFonts.manrope(
+              //           color: Colors.black,
+              //           fontSize: 35,
+              //           fontWeight: FontWeight.bold,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               Expanded(
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(37.0),
-                    topRight: Radius.circular(37.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: lighterbackgroundblue,
+                    // borderRadius: BorderRadius.only(
+                    //   topLeft: Radius.circular(37.0),
+                    //   topRight: Radius.circular(37.0),
+                    // ),
                   ),
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(229, 229, 228, 1),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(37.0),
-                        topRight: Radius.circular(37.0),
-                      ),
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              right: 15.0,
-                              left: 15,
-                              top: 10,
-                              bottom: 10,
-                            ),
-                            child: Hero(
-                              tag: "search bar",
-                              child: SizedBox(
-                                height: 60,
-                                width: MediaQuery.of(context).size.width,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => UserSearchPage(),
-                                      ),
-                                    );
-                                    fetchUsers();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(40.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 15.0,
+                            left: 15,
+                            top: 10,
+                            bottom: 10,
+                          ),
+                          child: Hero(
+                            tag: "search bar",
+                            child: Material(
+                              elevation: 1,
+                              shadowColor: lightbackgroundblue,
+                              borderRadius: BorderRadius.circular(40),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => UserSearchPage(),
                                     ),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 25, vertical: 15),
-                                    backgroundColor: Colors.white,
+                                  );
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25, vertical: 15),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(40),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: const Color.fromRGBO(
+                                            158, 158, 158, 1),
+                                        spreadRadius: -5,
+                                        blurRadius: 5,
+                                        // offset:
+                                        // const Offset(0, 4),
+                                      ),
+                                    ],
                                   ),
+                                  height: 60,
+                                  width: MediaQuery.of(context).size.width,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      const Icon(
+                                      Icon(
                                         Icons.search,
                                         size: 25,
-                                        color: Colors.black54,
+                                        color: darkblue.withOpacity(0.6),
                                       ),
                                       const SizedBox(
                                         width: 10,
@@ -278,9 +343,15 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
                                                 .isTamil
                                             ? "பயனர்பெயர்"
                                             : 'Search by username',
-                                        style: const TextStyle(
-                                          fontSize: 17,
-                                          color: Colors.black54,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontSize:
+                                              Provider.of<LanguageProvider>(
+                                                          context)
+                                                      .isTamil
+                                                  ? 16
+                                                  : 18,
+                                          color: darkblue.withOpacity(0.6),
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -290,104 +361,152 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              right: 8.0,
-                              left: 8,
-                              // top: 10,
-                              // bottom: 10,
-                            ),
-                            child: FutureBuilder<List<AllUsersModel>>(
-                              future: futureUsers,
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Center(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Fetching data",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.grey[600],
-                                            fontSize:
-                                                Provider.of<LanguageProvider>(
-                                                            context)
-                                                        .isTamil
-                                                    ? 17
-                                                    : 20,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                          // Hero(
+                          //   tag: "search bar",
+                          //   child: SizedBox(
+                          //     height: 60,
+                          //     width: MediaQuery.of(context).size.width,
+                          //     child: ElevatedButton(
+                          //       onPressed: () {
+                          //         Navigator.push(
+                          //           context,
+                          //           MaterialPageRoute(
+                          //             builder: (context) => UserSearchPage(),
+                          //           ),
+                          //         );
+                          //         fetchUsers();
+                          //       },
+                          //       style: ElevatedButton.styleFrom(
+                          //         elevation: 0,
+                          //         shape: RoundedRectangleBorder(
+                          //           borderRadius: BorderRadius.circular(40.0),
+                          //         ),
+                          //         padding: const EdgeInsets.symmetric(
+                          //             horizontal: 25, vertical: 15),
+                          //         backgroundColor: Colors.white,
+                          //       ),
+                          //       child: Row(
+                          //         mainAxisAlignment: MainAxisAlignment.start,
+                          //         children: [
+                          //           const Icon(
+                          //             Icons.search,
+                          //             size: 25,
+                          //             color: Colors.black54,
+                          //           ),
+                          //           const SizedBox(
+                          //             width: 10,
+                          //           ),
+                          //           Text(
+                          //             Provider.of<LanguageProvider>(context)
+                          //                     .isTamil
+                          //                 ? "பயனர்பெயர்"
+                          //                 : 'Search by username',
+                          //             style: const TextStyle(
+                          //               fontSize: 17,
+                          //               color: Colors.black54,
+                          //               fontWeight: FontWeight.bold,
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            right: 8.0,
+                            left: 8,
+                            // top: 10,
+                            // bottom: 10,
+                          ),
+                          child: FutureBuilder<List<AllUsersModel>>(
+                            future: futureUsers,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Fetching data",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.grey[600],
+                                          fontSize:
+                                              Provider.of<LanguageProvider>(
+                                                          context)
+                                                      .isTamil
+                                                  ? 17
+                                                  : 20,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        SpinKitThreeBounce(
-                                          color: const Color.fromARGB(
-                                              255, 130, 111, 238),
-                                          size: 30,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                } else if (snapshot.hasError) {
-                                  return Center(
-                                      child: Text('Error: ${snapshot.error}'));
-                                } else if (!snapshot.hasData ||
-                                    snapshot.data!.isEmpty) {
-                                  return const Center(
-                                      child: Text('No users found'));
-                                } else {
-                                  List<AllUsersModel> users = snapshot.data!;
-                                  List<AllUsersModel> userRoles1 = users
-                                      .where((user) => user.role == 1)
-                                      .toList();
-                                  List<AllUsersModel> userRoles2 = users
-                                      .where((user) => user.role == 2)
-                                      .toList();
-                                  List<AllUsersModel> userRoles3 = users
-                                      .where((user) => user.role == 3)
-                                      .toList();
-                                  return SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        _buildRoleTile(
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      SpinKitThreeBounce(
+                                        color: const Color.fromARGB(
+                                            255, 130, 111, 238),
+                                        size: 30,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Center(
+                                    child: Text('Error: ${snapshot.error}'));
+                              } else if (!snapshot.hasData ||
+                                  snapshot.data!.isEmpty) {
+                                return const Center(
+                                    child: Text('No users found'));
+                              } else {
+                                List<AllUsersModel> users = snapshot.data!;
+                                List<AllUsersModel> userRoles1 = users
+                                    .where((user) => user.role == 1)
+                                    .toList();
+                                List<AllUsersModel> userRoles2 = users
+                                    .where((user) => user.role == 2)
+                                    .toList();
+                                List<AllUsersModel> userRoles3 = users
+                                    .where((user) => user.role == 3)
+                                    .toList();
+                                return SingleChildScrollView(
+                                  child: Column(
+                                    children: [
+                                      _buildRoleTile(
+                                        Provider.of<LanguageProvider>(context)
+                                                .isTamil
+                                            ? "பயனர்கள்"
+                                            : 'Users',
+                                        userRoles2,
+                                        true,
+                                      ),
+                                      _buildRoleTile(
                                           Provider.of<LanguageProvider>(context)
                                                   .isTamil
-                                              ? "பயனர்கள்"
-                                              : 'Users',
-                                          userRoles2,
-                                          true,
-                                        ),
-                                        _buildRoleTile(
-                                            Provider.of<LanguageProvider>(
-                                                        context)
-                                                    .isTamil
-                                                ? "நிர்வாகிகள்"
-                                                : 'Admins',
-                                            userRoles1,
-                                            false),
-                                        _buildRoleTile(
-                                            Provider.of<LanguageProvider>(
-                                                        context)
-                                                    .isTamil
-                                                ? "வளாகம்"
-                                                : 'Campus',
-                                            userRoles3,
-                                            false),
-                                      ],
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
+                                              ? "நிர்வாகிகள்"
+                                              : 'Admins',
+                                          userRoles1,
+                                          false),
+                                      _buildRoleTile(
+                                          Provider.of<LanguageProvider>(context)
+                                                  .isTamil
+                                              ? "வளாகம்"
+                                              : 'Campus',
+                                          userRoles3,
+                                          false),
+                                    ],
+                                  ),
+                                );
+                              }
+                            },
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -402,15 +521,16 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
   Widget _buildRoleTile(
       String title, List<AllUsersModel> users, bool isexpanded) {
     return Card(
-      color: Colors.white,
+      color: lightbackgroundblue,
       elevation: 0,
+
+      // shadowColor: lightbackgroundblue,
       margin: const EdgeInsets.all(8.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(8),
       ),
       clipBehavior: Clip.antiAlias,
       child: ExpansionTile(
-        initiallyExpanded: isexpanded,
         shape: const Border(),
         controlAffinity: ListTileControlAffinity.trailing,
         backgroundColor: Colors.white,
@@ -437,7 +557,7 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
                           ? "ஐடி"
                           : 'ID',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        // fontWeight: FontWeight.bold,
                         fontSize: Provider.of<LanguageProvider>(context).isTamil
                             ? 15
                             : 17,
@@ -450,7 +570,7 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
                           ? "பயனர் பெயர்"
                           : 'Username',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        // fontWeight: FontWeight.bold,
                         fontSize: Provider.of<LanguageProvider>(context).isTamil
                             ? 15
                             : 17,
@@ -463,7 +583,7 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
                           ? "முதல் பெயர்"
                           : 'First Name',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        // fontWeight: FontWeight.bold,
                         fontSize: Provider.of<LanguageProvider>(context).isTamil
                             ? 15
                             : 17,
@@ -476,7 +596,7 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
                           ? "கடைசி பெயர்"
                           : 'Last Name',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        // fontWeight: FontWeight.bold,
                         fontSize: Provider.of<LanguageProvider>(context).isTamil
                             ? 15
                             : 17,
@@ -489,7 +609,7 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
                           ? "தொலைபேசி எண்"
                           : 'Phone Number',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        // fontWeight: FontWeight.bold,
                         fontSize: Provider.of<LanguageProvider>(context).isTamil
                             ? 15
                             : 17,
@@ -502,7 +622,7 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
                           ? "பணியாளர் ஐடி"
                           : 'Staff Id',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                        // fontWeight: FontWeight.bold,
                         fontSize: Provider.of<LanguageProvider>(context).isTamil
                             ? 15
                             : 17,
@@ -599,7 +719,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
       color: Color.fromRGBO(229, 229, 228, 1),
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color.fromRGBO(229, 229, 228, 1),
+          backgroundColor: lighterbackgroundblue,
           // appBar: AppBar(
           //   title: const Text('User Search'),
           // ),
@@ -616,6 +736,8 @@ class _UserSearchPageState extends State<UserSearchPage> {
                 child: Hero(
                   tag: "search bar",
                   child: Material(
+                    elevation: 1,
+                    shadowColor: lightbackgroundblue,
                     borderRadius: BorderRadius.circular(40),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(40),
@@ -623,25 +745,34 @@ class _UserSearchPageState extends State<UserSearchPage> {
                         height: 60,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color.fromRGBO(158, 158, 158, 1),
+                              spreadRadius: -5,
+                              blurRadius: 5,
+                              // offset:
+                              // const Offset(0, 4),
+                            ),
+                          ],
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(40),
                         ),
                         child: TextField(
                           textInputAction: TextInputAction.done,
                           maxLines: null,
-                          expands: true,
+                          // expands: true,
                           controller: _searchController,
                           decoration: InputDecoration(
                             icon: GestureDetector(
                               onTap: () {
                                 Navigator.of(context).pop();
                               },
-                              child: const Padding(
+                              child: Padding(
                                 padding: const EdgeInsets.only(left: 20.0),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.arrow_back,
                                   size: 25,
-                                  color: Colors.black54,
+                                  color: darkblue.withOpacity(0.6),
                                 ),
                               ),
                             ),
@@ -668,9 +799,9 @@ class _UserSearchPageState extends State<UserSearchPage> {
                                 Provider.of<LanguageProvider>(context).isTamil
                                     ? "பயனர்பெயர்"
                                     : "Search by username",
-                            hintStyle: const TextStyle(
+                            hintStyle: TextStyle(
                               fontSize: 18,
-                              color: Colors.black54,
+                              color: darkblue.withOpacity(0.6),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -684,7 +815,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
                 child: _filteredUsers.isEmpty
                     ? RefreshIndicator(
                         onRefresh: _onrefresh,
-                        child: Column(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
@@ -693,13 +824,13 @@ class _UserSearchPageState extends State<UserSearchPage> {
                                   : "No result",
                               style: TextStyle(
                                 color: Colors.grey[700],
-                                fontSize: 30,
+                                fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             const SpinKitThreeBounce(
                               color: Color.fromARGB(255, 97, 81, 188),
-                              size: 50,
+                              size: 30,
                             ),
                           ],
                         ),
@@ -737,11 +868,10 @@ class _UserSearchPageState extends State<UserSearchPage> {
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(20),
-                                      boxShadow: const [
+                                      boxShadow: [
                                         BoxShadow(
-                                          color: const Color.fromRGBO(
-                                              158, 158, 158, 1),
-                                          spreadRadius: -5,
+                                          color: lightbackgroundblue,
+                                          spreadRadius: -2,
                                           blurRadius: 5,
                                           offset: const Offset(0, 4),
                                         ),
@@ -753,31 +883,14 @@ class _UserSearchPageState extends State<UserSearchPage> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                GetStringUtils(user.username!)
-                                                    .capitalize(),
-                                                style: const TextStyle(
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              Text(
-                                                Provider.of<LanguageProvider>(
-                                                            context)
-                                                        .isTamil
-                                                    ? "ஐடி: ${user.staffId!}"
-                                                    : 'Staff Id: ${user.staffId!}',
-                                                style: const TextStyle(
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Colors.black54,
-                                                ),
-                                              ),
-                                            ],
+                                          Text(
+                                            GetStringUtils(user.username!)
+                                                .capitalize(),
+                                            style: TextStyle(
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.bold,
+                                              color: darkblue,
+                                            ),
                                           ),
                                           const SizedBox(
                                             height: 5,
@@ -880,7 +993,7 @@ class _UserEditPageState extends State<UserEditPage> {
               animationDuration: const Duration(milliseconds: 100),
               snackbarDuration: const Duration(milliseconds: 800),
               builder: (context) => ToastCard(
-                color: Colors.green,
+                color: alertgreen,
                 leading: const Icon(
                   Icons.done,
                   size: 28,
@@ -900,7 +1013,7 @@ class _UserEditPageState extends State<UserEditPage> {
             ).show(context);
           });
         }
-        Navigator.of(context).pop();
+        // Navigator.of(context).pop();
         Navigator.of(context).pop();
         Navigator.of(context).pop();
       }
@@ -914,7 +1027,7 @@ class _UserEditPageState extends State<UserEditPage> {
               animationDuration: const Duration(milliseconds: 700),
               snackbarDuration: const Duration(seconds: 2),
               builder: (context) => ToastCard(
-                color: Colors.red,
+                color: alertred,
                 leading: const Icon(
                   Icons.notification_important_outlined,
                   size: 28,
@@ -960,7 +1073,7 @@ class _UserEditPageState extends State<UserEditPage> {
               animationDuration: const Duration(milliseconds: 100),
               snackbarDuration: const Duration(milliseconds: 800),
               builder: (context) => ToastCard(
-                color: Colors.green,
+                color: alertgreen,
                 leading: const Icon(
                   Icons.done,
                   size: 28,
@@ -982,7 +1095,7 @@ class _UserEditPageState extends State<UserEditPage> {
         }
         Navigator.of(context).pop();
         Navigator.of(context).pop();
-        Navigator.of(context).pop();
+        // Navigator.of(context).pop();
       }
 
       if (response.statusCode != 200) {
@@ -994,7 +1107,7 @@ class _UserEditPageState extends State<UserEditPage> {
               animationDuration: const Duration(milliseconds: 700),
               snackbarDuration: const Duration(seconds: 2),
               builder: (context) => ToastCard(
-                color: Colors.red,
+                color: alertred,
                 leading: const Icon(
                   Icons.notification_important_outlined,
                   size: 28,
@@ -1024,646 +1137,1095 @@ class _UserEditPageState extends State<UserEditPage> {
   final box = GetStorage();
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.only(
-                // top: 50.0,
-                left: 15.0,
-                right: 15.0,
-                bottom: 20.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          overflow: TextOverflow.visible,
-                          Provider.of<LanguageProvider>(context).isTamil
-                              ? "பயனரைத் திருத்து"
-                              : "EDIT USER",
-                          style: GoogleFonts.manrope(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(
+              color: darkblue,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15),
               ),
             ),
-            Expanded(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(35.0),
-                  topRight: Radius.circular(35.0),
-                ),
-                child: Container(
-                  height: MediaQuery.of(context).size.height - 150,
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(229, 229, 229, 1),
-                  ),
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        right: 15.0,
-                        left: 15,
-                        top: 10,
-                        bottom: 10,
+            toolbarHeight: 70,
+            // backgroundColor: Colors.red,
+            titleSpacing: 0,
+            title: Text(
+              overflow: TextOverflow.visible,
+              Provider.of<LanguageProvider>(context).isTamil
+                  ? "பயனரைத் திருத்து"
+                  : "EDIT USER",
+              style: GoogleFonts.manrope(
+                color: darkblue,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          backgroundColor: lighterbackgroundblue,
+          body: useractiondis
+              ? Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        Provider.of<LanguageProvider>(context).isTamil
+                            ? "சேர்க்கப்படுகிறது"
+                            : "Adding data",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize:
+                              Provider.of<LanguageProvider>(context).isTamil
+                                  ? 17
+                                  : 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            Provider.of<LanguageProvider>(context).isTamil
-                                ? "முதல் பெயர்"
-                                : 'First Name',
-                            style: GoogleFonts.manrope(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SpinKitThreeBounce(
+                        color: const Color.fromARGB(255, 130, 111, 238),
+                        size: 30,
+                      ),
+                    ],
+                  ),
+                )
+              : Column(
+                  children: [
+                    // Container(
+                    //   padding: const EdgeInsets.only(
+                    //     // top: 50.0,
+                    //     left: 15.0,
+                    //     right: 15.0,
+                    //     bottom: 20.0,
+                    //   ),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: <Widget>[
+                    //       Padding(
+                    //         padding: const EdgeInsets.only(top: 10),
+                    //         child: Row(
+                    //           mainAxisAlignment: MainAxisAlignment.start,
+                    //           children: [
+                    //             GestureDetector(
+                    //               onTap: () {
+                    //                 Navigator.of(context).pop();
+                    //               },
+                    //               child: const Icon(
+                    //                 Icons.arrow_back,
+                    //                 color: Colors.white,
+                    //                 size: 30,
+                    //               ),
+                    //             ),
+                    //             const SizedBox(
+                    //               width: 10,
+                    //             ),
+                    //             Text(
+                    //               overflow: TextOverflow.visible,
+                    //               Provider.of<LanguageProvider>(context).isTamil
+                    //                   ? "பயனரைத் திருத்து"
+                    //                   : "EDIT USER",
+                    //               style: GoogleFonts.manrope(
+                    //                 color: Colors.white,
+                    //                 fontSize: 20,
+                    //                 fontWeight: FontWeight.bold,
+                    //               ),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    Expanded(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height - 150,
+                        decoration: BoxDecoration(
+                          color: lighterbackgroundblue,
+                        ),
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              right: 15.0,
+                              left: 15,
+                              top: 10,
+                              bottom: 10,
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Badconditionields(
-                            controller: firstNameController,
-                            hintText:
-                                Provider.of<LanguageProvider>(context).isTamil
-                                    ? "முதல் பெயர்"
-                                    : 'First Name',
-                          ),
-                          const SizedBox(height: 16.0),
-                          Text(
-                            Provider.of<LanguageProvider>(context).isTamil
-                                ? "கடைசி பெயர்"
-                                : 'Last Name',
-                            style: GoogleFonts.manrope(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Badconditionields(
-                            controller: lastNameController,
-                            hintText:
-                                Provider.of<LanguageProvider>(context).isTamil
-                                    ? "கடைசி பெயர்"
-                                    : 'Last Name',
-                          ),
-                          const SizedBox(height: 16.0),
-                          Text(
-                            Provider.of<LanguageProvider>(context).isTamil
-                                ? "பயனர் பெயர்"
-                                : 'UserName',
-                            style: GoogleFonts.manrope(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Badconditionields(
-                            controller: usernameController,
-                            hintText:
-                                Provider.of<LanguageProvider>(context).isTamil
-                                    ? "பயனர் பெயர்"
-                                    : 'Username',
-                          ),
-                          const SizedBox(height: 16.0),
-                          Text(
-                            Provider.of<LanguageProvider>(context).isTamil
-                                ? "தொலைபேசி எண்"
-                                : 'Phone Number',
-                            style: GoogleFonts.manrope(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Badconditionields(
-                            controller: phoneNumberController,
-                            hintText:
-                                Provider.of<LanguageProvider>(context).isTamil
-                                    ? "தொலைபேசி எண்"
-                                    : 'Phone Number',
-                          ),
-                          const SizedBox(height: 16.0),
-                          Text(
-                            Provider.of<LanguageProvider>(context).isTamil
-                                ? "பணியாளர் ஐடி"
-                                : 'Staff Id',
-                            style: GoogleFonts.manrope(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Badconditionields(
-                            controller: staffIdController,
-                            hintText:
-                                Provider.of<LanguageProvider>(context).isTamil
-                                    ? "பணியாளர் ஐடி"
-                                    : 'Staff Id',
-                          ),
-                          const SizedBox(height: 16.0),
-                          GestureDetector(
-                            onTap: () {
-                              if (usernameController.text.isEmpty ||
-                                  firstNameController.text.isEmpty ||
-                                  lastNameController.text.isEmpty ||
-                                  phoneNumberController.text.isEmpty ||
-                                  staffIdController.text.isEmpty) {
-                                setState(() {
-                                  DelightToastBar(
-                                    position: DelightSnackbarPosition.top,
-                                    autoDismiss: true,
-                                    animationDuration:
-                                        const Duration(milliseconds: 700),
-                                    snackbarDuration:
-                                        const Duration(seconds: 2),
-                                    builder: (context) => ToastCard(
-                                      color: Colors.red,
-                                      leading: const Icon(
-                                        Icons.notification_important_outlined,
-                                        size: 28,
-                                        color: Colors.white,
-                                      ),
-                                      title: Text(
-                                        _languageProvider.isTamil
-                                            ? "அனைத்து புலங்களையும் நிரப்பவும்"
-                                            : "fill all the fields",
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 14,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ).show(context);
-                                });
-                              } else {
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return Dialog(
-                                      backgroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(40.0),
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(40.0),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            top: 3,
-                                            left: 3,
-                                            right: 3,
-                                            bottom: 3,
-                                          ),
-                                          child: Container(
-                                            width: 150,
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius: BorderRadius.only(
-                                                bottomLeft: Radius.circular(37),
-                                                bottomRight:
-                                                    Radius.circular(37),
-                                                topLeft: Radius.circular(37),
-                                                topRight: Radius.circular(37),
-                                              ),
-                                            ),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 20.0),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  const SizedBox(
-                                                    height: 20,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  Provider.of<LanguageProvider>(context).isTamil
+                                      ? "முதல் பெயர்"
+                                      : 'First Name',
+                                  style: GoogleFonts.manrope(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: darkblue,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Badconditionields(
+                                  controller: firstNameController,
+                                  hintText:
+                                      Provider.of<LanguageProvider>(context)
+                                              .isTamil
+                                          ? "முதல் பெயர்"
+                                          : 'First Name',
+                                ),
+                                const SizedBox(height: 16.0),
+                                Text(
+                                  Provider.of<LanguageProvider>(context).isTamil
+                                      ? "கடைசி பெயர்"
+                                      : 'Last Name',
+                                  style: GoogleFonts.manrope(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: darkblue,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Badconditionields(
+                                  controller: lastNameController,
+                                  hintText:
+                                      Provider.of<LanguageProvider>(context)
+                                              .isTamil
+                                          ? "கடைசி பெயர்"
+                                          : 'Last Name',
+                                ),
+                                const SizedBox(height: 16.0),
+                                Text(
+                                  Provider.of<LanguageProvider>(context).isTamil
+                                      ? "பயனர் பெயர்"
+                                      : 'UserName',
+                                  style: GoogleFonts.manrope(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: darkblue,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Badconditionields(
+                                  controller: usernameController,
+                                  hintText:
+                                      Provider.of<LanguageProvider>(context)
+                                              .isTamil
+                                          ? "பயனர் பெயர்"
+                                          : 'Username',
+                                ),
+                                const SizedBox(height: 16.0),
+                                Text(
+                                  Provider.of<LanguageProvider>(context).isTamil
+                                      ? "தொலைபேசி எண்"
+                                      : 'Phone Number',
+                                  style: GoogleFonts.manrope(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: darkblue,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Badconditionields(
+                                  controller: phoneNumberController,
+                                  hintText:
+                                      Provider.of<LanguageProvider>(context)
+                                              .isTamil
+                                          ? "தொலைபேசி எண்"
+                                          : 'Phone Number',
+                                ),
+                                const SizedBox(height: 16.0),
+                                Text(
+                                  Provider.of<LanguageProvider>(context).isTamil
+                                      ? "பணியாளர் ஐடி"
+                                      : 'Staff Id',
+                                  style: GoogleFonts.manrope(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: darkblue,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Badconditionields(
+                                  controller: staffIdController,
+                                  hintText:
+                                      Provider.of<LanguageProvider>(context)
+                                              .isTamil
+                                          ? "பணியாளர் ஐடி"
+                                          : 'Staff Id',
+                                ),
+                                const SizedBox(height: 16.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          if (usernameController.text.isEmpty ||
+                                              firstNameController
+                                                  .text.isEmpty ||
+                                              lastNameController.text.isEmpty ||
+                                              phoneNumberController
+                                                  .text.isEmpty ||
+                                              staffIdController.text.isEmpty) {
+                                            setState(() {
+                                              DelightToastBar(
+                                                position:
+                                                    DelightSnackbarPosition.top,
+                                                autoDismiss: true,
+                                                animationDuration:
+                                                    const Duration(
+                                                        milliseconds: 700),
+                                                snackbarDuration:
+                                                    const Duration(seconds: 2),
+                                                builder: (context) => ToastCard(
+                                                  color: alertred,
+                                                  leading: const Icon(
+                                                    Icons
+                                                        .notification_important_outlined,
+                                                    size: 28,
+                                                    color: Colors.white,
                                                   ),
-                                                  Text(
-                                                    Provider.of<LanguageProvider>(
-                                                                context)
-                                                            .isTamil
-                                                        ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
-                                                        : "Are you sure?",
-                                                    style: GoogleFonts.manrope(
-                                                      color: Colors.black,
-                                                      fontSize:
-                                                          Provider.of<LanguageProvider>(
-                                                                      context)
-                                                                  .isTamil
-                                                              ? 19
-                                                              : 23,
+                                                  title: Text(
+                                                    _languageProvider.isTamil
+                                                        ? "அனைத்து புலங்களையும் நிரப்பவும்"
+                                                        : "fill all the fields",
+                                                    style: const TextStyle(
                                                       fontWeight:
-                                                          FontWeight.w500,
+                                                          FontWeight.w700,
+                                                      fontSize: 14,
+                                                      color: Colors.white,
                                                     ),
                                                   ),
-                                                  const SizedBox(
-                                                    height: 20,
+                                                ),
+                                              ).show(context);
+                                            });
+                                          } else {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return
+                                                    // Dialog(
+                                                    //   backgroundColor: Colors.white,
+                                                    //   shape: RoundedRectangleBorder(
+                                                    //     borderRadius:
+                                                    //         BorderRadius.circular(15.0),
+                                                    //   ),
+                                                    //   child: ClipRRect(
+                                                    //     borderRadius:
+                                                    //         BorderRadius.circular(15.0),
+                                                    //     child: Padding(
+                                                    //       padding: const EdgeInsets.only(
+                                                    //         top: 3,
+                                                    //         left: 3,
+                                                    //         right: 3,
+                                                    //         bottom: 3,
+                                                    //       ),
+                                                    //       child: Container(
+                                                    //         width: 150,
+                                                    //         decoration:
+                                                    //             const BoxDecoration(
+                                                    //           color: Colors.white,
+                                                    //           // borderRadius:
+                                                    //           //     BorderRadius.only(
+                                                    //           //   bottomLeft:
+                                                    //           //       Radius.circular(37),
+                                                    //           //   bottomRight:
+                                                    //           //       Radius.circular(37),
+                                                    //           //   topLeft:
+                                                    //           //       Radius.circular(37),
+                                                    //           //   topRight:
+                                                    //           //       Radius.circular(37),
+                                                    //           // ),
+                                                    //         ),
+                                                    //         child: Padding(
+                                                    //           padding: const EdgeInsets
+                                                    //               .symmetric(
+                                                    //               horizontal: 20.0),
+                                                    //           child: Column(
+                                                    //             mainAxisSize:
+                                                    //                 MainAxisSize.min,
+                                                    //             crossAxisAlignment:
+                                                    //                 CrossAxisAlignment
+                                                    //                     .center,
+                                                    //             children: [
+                                                    //               const SizedBox(
+                                                    //                 height: 20,
+                                                    //               ),
+                                                    //               Text(
+                                                    //                 Provider.of<LanguageProvider>(
+                                                    //                             context)
+                                                    //                         .isTamil
+                                                    //                     ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
+                                                    //                     : "Are you sure?",
+                                                    //                 style: GoogleFonts
+                                                    //                     .manrope(
+                                                    //                   color: Colors.black,
+                                                    //                   fontSize: Provider.of<
+                                                    //                                   LanguageProvider>(
+                                                    //                               context)
+                                                    //                           .isTamil
+                                                    //                       ? 19
+                                                    //                       : 23,
+                                                    //                   fontWeight:
+                                                    //                       FontWeight.w500,
+                                                    //                 ),
+                                                    //               ),
+                                                    //               const SizedBox(
+                                                    //                 height: 20,
+                                                    //               ),
+                                                    //               Row(
+                                                    //                 mainAxisAlignment:
+                                                    //                     MainAxisAlignment
+                                                    //                         .spaceEvenly,
+                                                    //                 children: [
+                                                    //                   OutlinedButton(
+                                                    //                     style:
+                                                    //                         OutlinedButton
+                                                    //                             .styleFrom(
+                                                    //                       padding:
+                                                    //                           const EdgeInsets
+                                                    //                               .symmetric(
+                                                    //                         vertical: 8,
+                                                    //                         horizontal:
+                                                    //                             32,
+                                                    //                       ),
+                                                    //                       foregroundColor:
+                                                    //                           Colors
+                                                    //                               .black87,
+                                                    //                       shape:
+                                                    //                           RoundedRectangleBorder(
+                                                    //                         borderRadius:
+                                                    //                             BorderRadius
+                                                    //                                 .circular(
+                                                    //                                     5),
+                                                    //                       ),
+                                                    //                       side:
+                                                    //                           const BorderSide(
+                                                    //                         color: Colors
+                                                    //                             .black87,
+                                                    //                       ),
+                                                    //                     ),
+                                                    //                     child: Text(
+                                                    //                       Provider.of<LanguageProvider>(
+                                                    //                                   context)
+                                                    //                               .isTamil
+                                                    //                           ? "இல்லை"
+                                                    //                           : "No",
+                                                    //                       style: GoogleFonts.manrope(
+                                                    //                           color: Colors
+                                                    //                               .black87,
+                                                    //                           fontWeight:
+                                                    //                               FontWeight
+                                                    //                                   .w500,
+                                                    //                           fontSize:
+                                                    //                               Provider.of<LanguageProvider>(context).isTamil
+                                                    //                                   ? 12
+                                                    //                                   : 15),
+                                                    //                     ),
+                                                    //                     onPressed: () {
+                                                    //                       Navigator.of(
+                                                    //                               context)
+                                                    //                           .pop();
+                                                    //                     },
+                                                    //                   ),
+                                                    //                   ElevatedButton(
+                                                    //                     style:
+                                                    //                         ButtonStyle(
+                                                    //                       padding:
+                                                    //                           WidgetStatePropertyAll(
+                                                    //                         EdgeInsets
+                                                    //                             .symmetric(
+                                                    //                           vertical: 8,
+                                                    //                           // horizontal:
+                                                    //                           //     32,
+                                                    //                         ),
+                                                    //                       ),
+                                                    //                       backgroundColor:
+                                                    //                           WidgetStatePropertyAll(
+                                                    //                         paleblue,
+                                                    //                       ),
+                                                    //                       shape:
+                                                    //                           WidgetStatePropertyAll(
+                                                    //                         RoundedRectangleBorder(
+                                                    //                           borderRadius:
+                                                    //                               BorderRadius
+                                                    //                                   .all(
+                                                    //                             Radius
+                                                    //                                 .circular(
+                                                    //                                     5),
+                                                    //                           ),
+                                                    //                         ),
+                                                    //                       ),
+                                                    //                     ),
+                                                    //                     child: const Icon(
+                                                    //                       Icons.check,
+                                                    //                       color: Colors
+                                                    //                           .white,
+                                                    //                     ),
+                                                    //                     onPressed: () {
+                                                    // final updatedUser =
+                                                    //     AllUsersModel(
+                                                    //   id: widget
+                                                    //       .user.id,
+                                                    //   username:
+                                                    //       usernameController
+                                                    //           .text,
+                                                    //   firstName:
+                                                    //       firstNameController
+                                                    //           .text,
+                                                    //   lastName:
+                                                    //       lastNameController
+                                                    //           .text,
+                                                    //   phoneNumber: int
+                                                    //       .tryParse(
+                                                    //           phoneNumberController
+                                                    //               .text),
+                                                    //   staffId:
+                                                    //       staffIdController
+                                                    //           .text,
+                                                    // );
+                                                    // updateUser(
+                                                    //     updatedUser);
+                                                    //                       setState(() {
+                                                    //                         useractiondis =
+                                                    //                             true;
+                                                    //                       });
+                                                    //                     },
+                                                    //                   ),
+                                                    //                 ],
+                                                    //               ),
+                                                    //               const SizedBox(
+                                                    //                 height: 20,
+                                                    //               ),
+                                                    //             ],
+                                                    //           ),
+                                                    //         ),
+                                                    //       ),
+                                                    //     ),
+                                                    //   ),
+                                                    // );
+                                                    Dialog(
+                                                  backgroundColor: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
                                                   ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      OutlinedButton(
-                                                        style: OutlinedButton
-                                                            .styleFrom(
+                                                  child: ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                        top: 3,
+                                                        left: 3,
+                                                        right: 3,
+                                                        bottom: 3,
+                                                      ),
+                                                      child: Container(
+                                                        width: 150,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          color: Colors.white,
+                                                        ),
+                                                        child: Padding(
                                                           padding:
                                                               const EdgeInsets
                                                                   .symmetric(
-                                                            vertical: 8,
-                                                            horizontal: 32,
+                                                            horizontal: 20.0,
+                                                            vertical: 20,
                                                           ),
-                                                          foregroundColor:
-                                                              Colors.black87,
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        5),
-                                                          ),
-                                                          side:
-                                                              const BorderSide(
-                                                            color:
-                                                                Colors.black87,
-                                                          ),
-                                                        ),
-                                                        child: Text(
-                                                          Provider.of<LanguageProvider>(
-                                                                      context)
-                                                                  .isTamil
-                                                              ? "இல்லை"
-                                                              : "No",
-                                                          style: GoogleFonts.manrope(
-                                                              color: Colors
-                                                                  .black87,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: Provider.of<
-                                                                              LanguageProvider>(
-                                                                          context)
-                                                                      .isTamil
-                                                                  ? 12
-                                                                  : 15),
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                        },
-                                                      ),
-                                                      ElevatedButton(
-                                                        style:
-                                                            const ButtonStyle(
-                                                          padding:
-                                                              WidgetStatePropertyAll(
-                                                            EdgeInsets
-                                                                .symmetric(
-                                                              vertical: 8,
-                                                              horizontal: 32,
-                                                            ),
-                                                          ),
-                                                          backgroundColor:
-                                                              WidgetStatePropertyAll(
-                                                                  Color
-                                                                      .fromRGBO(
-                                                                          130,
-                                                                          204,
-                                                                          146,
-                                                                          1)),
-                                                          shape:
-                                                              WidgetStatePropertyAll(
-                                                            RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .all(
-                                                                Radius.circular(
-                                                                    5),
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              Text(
+                                                                Provider.of<LanguageProvider>(
+                                                                            context)
+                                                                        .isTamil
+                                                                    ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
+                                                                    : "Are you sure?",
+                                                                style:
+                                                                    GoogleFonts
+                                                                        .manrope(
+                                                                  color:
+                                                                      darkblue,
+                                                                  fontSize:
+                                                                      Provider.of<LanguageProvider>(context)
+                                                                              .isTamil
+                                                                          ? 19
+                                                                          : 23,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
                                                               ),
-                                                            ),
+                                                              const SizedBox(
+                                                                height: 30,
+                                                              ),
+                                                              IntrinsicHeight(
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceEvenly,
+                                                                  children: [
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.only(
+                                                                          left:
+                                                                              10,
+                                                                          right:
+                                                                              10,
+                                                                        ),
+                                                                        child:
+                                                                            Text(
+                                                                          Provider.of<LanguageProvider>(context).isTamil
+                                                                              ? "இல்லை"
+                                                                              : "No",
+                                                                          style: TextStyle(
+                                                                              color: Colors.red,
+                                                                              fontWeight: FontWeight.w500,
+                                                                              fontSize: Provider.of<LanguageProvider>(context).isTamil ? 14 : 17),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    VerticalDivider(
+                                                                      color: Colors
+                                                                          .grey
+                                                                          .withOpacity(
+                                                                              0.5),
+                                                                      thickness:
+                                                                          1,
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () {
+                                                                        final updatedUser =
+                                                                            AllUsersModel(
+                                                                          id: widget
+                                                                              .user
+                                                                              .id,
+                                                                          username:
+                                                                              usernameController.text,
+                                                                          firstName:
+                                                                              firstNameController.text,
+                                                                          lastName:
+                                                                              lastNameController.text,
+                                                                          phoneNumber:
+                                                                              int.tryParse(phoneNumberController.text),
+                                                                          staffId:
+                                                                              staffIdController.text,
+                                                                        );
+                                                                        updateUser(
+                                                                            updatedUser);
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                        setState(
+                                                                            () {
+                                                                          useractiondis =
+                                                                              true;
+                                                                        });
+                                                                      },
+                                                                      child:
+                                                                          Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.only(
+                                                                          left:
+                                                                              10,
+                                                                          right:
+                                                                              10,
+                                                                        ),
+                                                                        child:
+                                                                            Text(
+                                                                          Provider.of<LanguageProvider>(context).isTamil
+                                                                              ? "ஆம்"
+                                                                              : "yes",
+                                                                          style: TextStyle(
+                                                                              color: paleblue,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: Provider.of<LanguageProvider>(context).isTamil ? 14 : 17),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
                                                         ),
-                                                        child: const Icon(
-                                                          Icons.check,
-                                                          color: Colors.white,
-                                                        ),
-                                                        onPressed: () {
-                                                          final updatedUser =
-                                                              AllUsersModel(
-                                                            id: widget.user.id,
-                                                            username:
-                                                                usernameController
-                                                                    .text,
-                                                            firstName:
-                                                                firstNameController
-                                                                    .text,
-                                                            lastName:
-                                                                lastNameController
-                                                                    .text,
-                                                            phoneNumber:
-                                                                int.tryParse(
-                                                                    phoneNumberController
-                                                                        .text),
-                                                            staffId:
-                                                                staffIdController
-                                                                    .text,
-                                                          );
-                                                          updateUser(
-                                                              updatedUser);
-                                                          setState(() {
-                                                            useractiondis =
-                                                                true;
-                                                          });
-                                                        },
                                                       ),
-                                                    ],
+                                                    ),
                                                   ),
-                                                  const SizedBox(
-                                                    height: 20,
+                                                );
+                                              },
+                                            );
+                                          }
+                                        },
+                                        child: Expanded(
+                                          child: Container(
+                                            height: 50,
+                                            // width: double.maxFinite,
+                                            decoration: const BoxDecoration(
+                                              color: const Color.fromRGBO(
+                                                  130, 204, 146, 1),
+                                              borderRadius:
+                                                  const BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                            ),
+                                            child: Center(
+                                              child: Expanded(
+                                                child: Text(
+                                                  Provider.of<LanguageProvider>(
+                                                              context)
+                                                          .isTamil
+                                                      ? "புதுப்பிக்க"
+                                                      : "Update",
+                                                  style: GoogleFonts.manrope(
+                                                    color: Colors.white,
+                                                    fontSize: 17,
                                                   ),
-                                                ],
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    );
-                                  },
-                                );
-                              }
-                            },
-                            child: Container(
-                              height: 50,
-                              width: double.maxFinite,
-                              decoration: const BoxDecoration(
-                                color: const Color.fromRGBO(130, 204, 146, 1),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  Provider.of<LanguageProvider>(context).isTamil
-                                      ? "புதுப்பிக்க"
-                                      : "Update",
-                                  style: GoogleFonts.manrope(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          Padding(
-                            padding: const EdgeInsets.only(
-                              right: 8,
-                              left: 8,
-                            ),
-                            child: Divider(
-                              height: 30,
-                              thickness: 3,
-                              color: Colors.grey[400],
-                            ),
-                          ),
-                          // const SizedBox(
-                          //   height: 16,
-                          // ),
-                          GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Dialog(
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(40.0),
                                     ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(40.0),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          top: 3,
-                                          left: 3,
-                                          right: 3,
-                                          bottom: 3,
-                                        ),
-                                        child: Container(
-                                          width: 150,
-                                          decoration: const BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.only(
-                                              bottomLeft: Radius.circular(37),
-                                              bottomRight: Radius.circular(37),
-                                              topLeft: Radius.circular(37),
-                                              topRight: Radius.circular(37),
-                                            ),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                const SizedBox(
-                                                  height: 20,
+
+                                    // Padding(
+                                    //   padding: const EdgeInsets.only(
+                                    //     right: 8,
+                                    //     left: 8,
+                                    //   ),
+                                    //   child: Divider(
+                                    //     height: 30,
+                                    //     thickness: 3,
+                                    //     color: Colors.grey[400],
+                                    //   ),
+                                    // ),
+                                    // const SizedBox(
+                                    //   height: 16,
+                                    // ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return
+                                                  // Dialog(
+                                                  //   backgroundColor: Colors.white,
+                                                  //   shape: RoundedRectangleBorder(
+                                                  //     borderRadius:
+                                                  //         BorderRadius.circular(15.0),
+                                                  //   ),
+                                                  //   child: ClipRRect(
+                                                  //     borderRadius:
+                                                  //         BorderRadius.circular(15.0),
+                                                  //     child: Padding(
+                                                  //       padding: const EdgeInsets.only(
+                                                  //         top: 3,
+                                                  //         left: 3,
+                                                  //         right: 3,
+                                                  //         bottom: 3,
+                                                  //       ),
+                                                  //       child: Container(
+                                                  //         width: 150,
+                                                  //         // decoration: const BoxDecoration(
+                                                  //         //   color: Colors.white,
+                                                  //         //   borderRadius:
+                                                  //         //       BorderRadius.only(
+                                                  //         //     bottomLeft:
+                                                  //         //         Radius.circular(37),
+                                                  //         //     bottomRight:
+                                                  //         //         Radius.circular(37),
+                                                  //         //     topLeft:
+                                                  //         //         Radius.circular(37),
+                                                  //         //     topRight:
+                                                  //         //         Radius.circular(37),
+                                                  //         //   ),
+                                                  //         // ),
+                                                  //         child: Padding(
+                                                  //           padding: const EdgeInsets
+                                                  //               .symmetric(
+                                                  //               horizontal: 20.0),
+                                                  //           child: Column(
+                                                  //             mainAxisSize:
+                                                  //                 MainAxisSize.min,
+                                                  //             crossAxisAlignment:
+                                                  //                 CrossAxisAlignment
+                                                  //                     .center,
+                                                  //             children: [
+                                                  //               const SizedBox(
+                                                  //                 height: 20,
+                                                  //               ),
+                                                  //               Text(
+                                                  //                 Provider.of<LanguageProvider>(
+                                                  //                             context)
+                                                  //                         .isTamil
+                                                  //                     ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
+                                                  //                     : "Are you sure?",
+                                                  //                 style:
+                                                  //                     GoogleFonts.manrope(
+                                                  //                   color: Colors.black,
+                                                  //                   fontSize: Provider.of<
+                                                  //                                   LanguageProvider>(
+                                                  //                               context)
+                                                  //                           .isTamil
+                                                  //                       ? 19
+                                                  //                       : 23,
+                                                  //                   fontWeight:
+                                                  //                       FontWeight.w500,
+                                                  //                 ),
+                                                  //               ),
+                                                  //               const SizedBox(
+                                                  //                 height: 20,
+                                                  //               ),
+                                                  //               Row(
+                                                  //                 mainAxisAlignment:
+                                                  //                     MainAxisAlignment
+                                                  //                         .spaceEvenly,
+                                                  //                 children: [
+                                                  //                   OutlinedButton(
+                                                  //                     style:
+                                                  //                         OutlinedButton
+                                                  //                             .styleFrom(
+                                                  //                       padding:
+                                                  //                           const EdgeInsets
+                                                  //                               .symmetric(
+                                                  //                         vertical: 8,
+                                                  //                         horizontal: 32,
+                                                  //                       ),
+                                                  //                       foregroundColor:
+                                                  //                           Colors
+                                                  //                               .black87,
+                                                  //                       shape:
+                                                  //                           RoundedRectangleBorder(
+                                                  //                         borderRadius:
+                                                  //                             BorderRadius
+                                                  //                                 .circular(
+                                                  //                                     5),
+                                                  //                       ),
+                                                  //                       side:
+                                                  //                           const BorderSide(
+                                                  //                         color: Colors
+                                                  //                             .black87,
+                                                  //                       ),
+                                                  //                     ),
+                                                  //                     child: Text(
+                                                  //                       Provider.of<LanguageProvider>(
+                                                  //                                   context)
+                                                  //                               .isTamil
+                                                  //                           ? "இல்லை"
+                                                  //                           : "No",
+                                                  //                       style: GoogleFonts.manrope(
+                                                  //                           color: Colors
+                                                  //                               .black87,
+                                                  //                           fontWeight:
+                                                  //                               FontWeight
+                                                  //                                   .w500,
+                                                  //                           fontSize:
+                                                  //                               Provider.of<LanguageProvider>(context)
+                                                  //                                       .isTamil
+                                                  //                                   ? 12
+                                                  //                                   : 15),
+                                                  //                     ),
+                                                  //                     onPressed: () {
+                                                  //                       Navigator.of(
+                                                  //                               context)
+                                                  //                           .pop();
+                                                  //                     },
+                                                  //                   ),
+                                                  //                   ElevatedButton(
+                                                  //                     style: ButtonStyle(
+                                                  //                       padding:
+                                                  //                           WidgetStatePropertyAll(
+                                                  //                         EdgeInsets
+                                                  //                             .symmetric(
+                                                  //                           vertical: 8,
+                                                  //                           // horizontal:
+                                                  //                           //     32,
+                                                  //                         ),
+                                                  //                       ),
+                                                  //                       backgroundColor:
+                                                  //                           WidgetStatePropertyAll(
+                                                  //                         paleblue,
+                                                  //                       ),
+                                                  //                       shape:
+                                                  //                           WidgetStatePropertyAll(
+                                                  //                         RoundedRectangleBorder(
+                                                  //                           borderRadius:
+                                                  //                               BorderRadius
+                                                  //                                   .all(
+                                                  //                             Radius
+                                                  //                                 .circular(
+                                                  //                                     5),
+                                                  //                           ),
+                                                  //                         ),
+                                                  //                       ),
+                                                  //                     ),
+                                                  //                     child: const Icon(
+                                                  //                       Icons.check,
+                                                  //                       color:
+                                                  //                           Colors.white,
+                                                  //                     ),
+                                                  //                     onPressed: () {
+                                                  // deleteUser((widget
+                                                  //     .user.id!));
+                                                  // setState(() {
+                                                  //   useractiondis =
+                                                  //       true;
+                                                  // });
+                                                  //                     },
+                                                  //                   ),
+                                                  //                 ],
+                                                  //               ),
+                                                  //               const SizedBox(
+                                                  //                 height: 20,
+                                                  //               ),
+                                                  //             ],
+                                                  //           ),
+                                                  //         ),
+                                                  //       ),
+                                                  //     ),
+                                                  //   ),
+                                                  // );
+                                                  Dialog(
+                                                backgroundColor: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15.0),
                                                 ),
-                                                Text(
-                                                  Provider.of<LanguageProvider>(
-                                                              context)
-                                                          .isTamil
-                                                      ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
-                                                      : "Are you sure?",
-                                                  style: GoogleFonts.manrope(
-                                                    color: Colors.black,
-                                                    fontSize:
-                                                        Provider.of<LanguageProvider>(
-                                                                    context)
-                                                                .isTamil
-                                                            ? 19
-                                                            : 23,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                                const SizedBox(
-                                                  height: 20,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    OutlinedButton(
-                                                      style: OutlinedButton
-                                                          .styleFrom(
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15.0),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      top: 3,
+                                                      left: 3,
+                                                      right: 3,
+                                                      bottom: 3,
+                                                    ),
+                                                    child: Container(
+                                                      width: 150,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        color: Colors.white,
+                                                      ),
+                                                      child: Padding(
                                                         padding:
                                                             const EdgeInsets
                                                                 .symmetric(
-                                                          vertical: 8,
-                                                          horizontal: 32,
+                                                          horizontal: 20.0,
+                                                          vertical: 20,
                                                         ),
-                                                        foregroundColor:
-                                                            Colors.black87,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
-                                                        side: const BorderSide(
-                                                          color: Colors.black87,
-                                                        ),
-                                                      ),
-                                                      child: Text(
-                                                        Provider.of<LanguageProvider>(
-                                                                    context)
-                                                                .isTamil
-                                                            ? "இல்லை"
-                                                            : "No",
-                                                        style: GoogleFonts.manrope(
-                                                            color:
-                                                                Colors.black87,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: Provider.of<
-                                                                            LanguageProvider>(
-                                                                        context)
-                                                                    .isTamil
-                                                                ? 12
-                                                                : 15),
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                    ElevatedButton(
-                                                      style: const ButtonStyle(
-                                                        padding:
-                                                            WidgetStatePropertyAll(
-                                                          EdgeInsets.symmetric(
-                                                            vertical: 8,
-                                                            horizontal: 32,
-                                                          ),
-                                                        ),
-                                                        backgroundColor:
-                                                            WidgetStatePropertyAll(
-                                                                Color.fromRGBO(
-                                                                    130,
-                                                                    204,
-                                                                    146,
-                                                                    1)),
-                                                        shape:
-                                                            WidgetStatePropertyAll(
-                                                          RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(
-                                                              Radius.circular(
-                                                                  5),
+                                                        child: Column(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              Provider.of<LanguageProvider>(
+                                                                          context)
+                                                                      .isTamil
+                                                                  ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
+                                                                  : "Are you sure?",
+                                                              style: GoogleFonts
+                                                                  .manrope(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: Provider.of<LanguageProvider>(
+                                                                            context)
+                                                                        .isTamil
+                                                                    ? 19
+                                                                    : 23,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
                                                             ),
-                                                          ),
+                                                            const SizedBox(
+                                                              height: 30,
+                                                            ),
+                                                            IntrinsicHeight(
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceEvenly,
+                                                                children: [
+                                                                  GestureDetector(
+                                                                    onTap: () {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                    child:
+                                                                        Padding(
+                                                                      padding:
+                                                                          const EdgeInsets
+                                                                              .only(
+                                                                        left:
+                                                                            10,
+                                                                        right:
+                                                                            10,
+                                                                      ),
+                                                                      child:
+                                                                          Text(
+                                                                        Provider.of<LanguageProvider>(context).isTamil
+                                                                            ? "இல்லை"
+                                                                            : "No",
+                                                                        style: TextStyle(
+                                                                            color: Colors
+                                                                                .red,
+                                                                            fontWeight: FontWeight
+                                                                                .w500,
+                                                                            fontSize: Provider.of<LanguageProvider>(context).isTamil
+                                                                                ? 14
+                                                                                : 17),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  VerticalDivider(
+                                                                    color: Colors
+                                                                        .grey
+                                                                        .withOpacity(
+                                                                            0.5),
+                                                                    thickness:
+                                                                        1,
+                                                                  ),
+                                                                  GestureDetector(
+                                                                    onTap: () {
+                                                                      deleteUser((widget
+                                                                          .user
+                                                                          .id!));
+                                                                      setState(
+                                                                          () {
+                                                                        useractiondis =
+                                                                            true;
+                                                                      });
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                    },
+                                                                    child:
+                                                                        Padding(
+                                                                      padding:
+                                                                          const EdgeInsets
+                                                                              .only(
+                                                                        left:
+                                                                            10,
+                                                                        right:
+                                                                            10,
+                                                                      ),
+                                                                      child:
+                                                                          Text(
+                                                                        Provider.of<LanguageProvider>(context).isTamil
+                                                                            ? "ஆம்"
+                                                                            : "yes",
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                paleblue,
+                                                                            fontWeight: FontWeight
+                                                                                .bold,
+                                                                            fontSize: Provider.of<LanguageProvider>(context).isTamil
+                                                                                ? 14
+                                                                                : 17),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
                                                         ),
                                                       ),
-                                                      child: const Icon(
-                                                        Icons.check,
-                                                        color: Colors.white,
-                                                      ),
-                                                      onPressed: () {
-                                                        deleteUser(
-                                                            (widget.user.id!));
-                                                        setState(() {
-                                                          useractiondis = true;
-                                                        });
-                                                      },
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
-                                                const SizedBox(
-                                                  height: 20,
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: Container(
+                                          height: 50,
+                                          // width: double.maxFinite,
+                                          decoration: const BoxDecoration(
+                                            color: const Color.fromARGB(
+                                                215, 244, 67, 54),
+                                            borderRadius:
+                                                const BorderRadius.all(
+                                              Radius.circular(10),
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Expanded(
+                                              child: Text(
+                                                Provider.of<LanguageProvider>(
+                                                            context)
+                                                        .isTamil
+                                                    ? "நீக்க"
+                                                    : "Delete",
+                                                style: GoogleFonts.manrope(
+                                                  color: Colors.white,
+                                                  fontSize: 17,
                                                 ),
-                                              ],
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  );
-                                },
-                              );
-                            },
-                            child: Container(
-                              height: 50,
-                              width: double.maxFinite,
-                              decoration: const BoxDecoration(
-                                color: const Color.fromARGB(215, 244, 67, 54),
-                                borderRadius: const BorderRadius.all(
-                                  Radius.circular(20),
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  Provider.of<LanguageProvider>(context).isTamil
-                                      ? "நீக்க"
-                                      : "Delete",
-                                  style: GoogleFonts.manrope(
-                                    color: Colors.white,
-                                    fontSize: 17,
-                                  ),
-                                ),
-                              ),
+                                  ],
+                                )
+                              ],
                             ),
-                          )
-                        ],
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ),
-            ),
-          ],
         ),
       ),
     );

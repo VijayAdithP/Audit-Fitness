@@ -1,3 +1,4 @@
+import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,14 +29,14 @@ class UserAuditCards extends StatelessWidget {
           // height: 150,
           decoration: BoxDecoration(
             color: background,
-            boxShadow: [
-              BoxShadow(
-                offset: Offset.fromDirection(7, 1.0),
-                color: Colors.grey[500]!,
-              ),
-            ],
+            // boxShadow: [
+            //   BoxShadow(
+            //     offset: Offset.fromDirection(7, 1.0),
+            //     color: Colors.grey[500]!,
+            //   ),
+            // ],
             borderRadius: const BorderRadius.all(
-              Radius.circular(30),
+              Radius.circular(10),
             ),
           ),
           padding: const EdgeInsets.all(16.0),
@@ -48,7 +49,7 @@ class UserAuditCards extends StatelessWidget {
                   fontSize:
                       Provider.of<LanguageProvider>(context).isTamil ? 23 : 25,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: greyblue,
                 ),
               ),
               Text(
@@ -57,7 +58,7 @@ class UserAuditCards extends StatelessWidget {
                   fontSize:
                       Provider.of<LanguageProvider>(context).isTamil ? 13 : 15,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: greyblue,
                 ),
               ),
               Row(

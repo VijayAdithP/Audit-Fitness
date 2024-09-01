@@ -1,6 +1,8 @@
+import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
 class AuditCards extends StatelessWidget {
@@ -31,16 +33,16 @@ class AuditCards extends StatelessWidget {
           // height: MediaQuery.of(context).size.height / 2,
           decoration: BoxDecoration(
             color: background,
-            boxShadow: [
-              BoxShadow(
-                color: shadow!,
-                spreadRadius: -5,
-                blurRadius: 5,
-                offset: const Offset(0, 4),
-              ),
-            ],
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: shadow!,
+            //     spreadRadius: -5,
+            //     blurRadius: 5,
+            //     offset: const Offset(0, 4),
+            //   ),
+            // ],
             borderRadius: const BorderRadius.all(
-              Radius.circular(30),
+              Radius.circular(10),
             ),
           ),
           padding: const EdgeInsets.all(16.0),
@@ -53,6 +55,8 @@ class AuditCards extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontSize:
                       Provider.of<LanguageProvider>(context).isTamil ? 22 : 25,
+                  color: greyblue,
+                  // color: Colors.white,
                 ),
               ),
               Text(
@@ -60,6 +64,9 @@ class AuditCards extends StatelessWidget {
                 style: GoogleFonts.manrope(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
+                  color: greyblue,
+
+                  // color: Colors.white,
                 ),
               ),
               // Expanded(child: Container()),
@@ -71,7 +78,7 @@ class AuditCards extends StatelessWidget {
                     Container(
                       width: 50,
                       decoration: BoxDecoration(
-                        color: Colors.grey[300],
+                        color: Colors.white,
                         borderRadius: const BorderRadius.all(
                           Radius.circular(20),
                         ),
@@ -79,6 +86,7 @@ class AuditCards extends StatelessWidget {
                       child: Icon(
                         icon,
                         size: 30,
+                        color: greyblue,
                       ),
                     ),
                   ],

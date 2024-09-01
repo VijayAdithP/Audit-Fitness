@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:auditfitnesstest/models/admin%20specific/admin_main_area_model.dart';
 import 'package:auditfitnesstest/models/admin%20specific/admin_questions_model.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
@@ -8,6 +9,7 @@ import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/components/toast_card.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -40,6 +42,15 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
   final TextEditingController questionscontroller = TextEditingController();
   final TextEditingController tamilquestionscontroller =
       TextEditingController();
+  final SuggestionsController questionsSuggestioncontroller =
+      SuggestionsController();
+
+  final SuggestionsController tamilquestionsSuggestioncontroller =
+      SuggestionsController();
+  final FocusNode _questionsfocusNode = FocusNode();
+  final FocusNode _tamilquestionsfocusNode = FocusNode();
+  final FocusNode _questionsAheadfocusNode = FocusNode();
+  final FocusNode _tamilquestionsAheadfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -185,7 +196,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
               animationDuration: const Duration(milliseconds: 100),
               snackbarDuration: const Duration(milliseconds: 800),
               builder: (context) => ToastCard(
-                color: Colors.green,
+                color: alertgreen,
                 leading: const Icon(
                   Icons.done,
                   size: 28,
@@ -217,7 +228,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
               animationDuration: const Duration(milliseconds: 700),
               snackbarDuration: const Duration(seconds: 2),
               builder: (context) => ToastCard(
-                color: Colors.red,
+                color: alertred,
                 leading: const Icon(
                   Icons.notification_important_outlined,
                   size: 28,
@@ -249,101 +260,126 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        backgroundColor:
-            useractiondis ? Color.fromRGBO(229, 229, 229, 1) : Colors.black,
-        body: useractiondis
-            ? Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      Provider.of<LanguageProvider>(context).isTamil
-                          ? "சேர்க்கப்படுகிறது"
-                          : "Adding data",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: Provider.of<LanguageProvider>(context).isTamil
-                            ? 17
-                            : 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    SpinKitThreeBounce(
-                      color: const Color.fromARGB(255, 130, 111, 238),
-                      size: 30,
-                    ),
-                  ],
-                ),
-              )
-            : Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.only(
-                      // top: 50.0,
-                      left: 15.0,
-                      right: 15.0,
-                      bottom: 20.0,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                overflow: TextOverflow.visible,
-                                Provider.of<LanguageProvider>(context).isTamil
-                                    ? "கேள்விகள் மற்றும் \nபகுதிகளைச் சேர்க்கவும்"
-                                    : "ADD QUESTIONS AND AREAS",
-                                style: GoogleFonts.manrope(
-                                  color: Colors.white,
-                                  fontSize:
-                                      Provider.of<LanguageProvider>(context)
-                                              .isTamil
-                                          ? 17
-                                          : 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
+    return Container(
+      color: Colors.white,
+      child: SafeArea(
+        child: Scaffold(
+          resizeToAvoidBottomInset: true,
+          backgroundColor: lighterbackgroundblue,
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(
+              color: darkblue,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15),
+              ),
+            ),
+            toolbarHeight:
+                Provider.of<LanguageProvider>(context).isTamil ? 70 : 70,
+            // backgroundColor: Colors.red,
+            titleSpacing: 0,
+            title: Text(
+              overflow: TextOverflow.visible,
+              Provider.of<LanguageProvider>(context).isTamil
+                  ? "பகுதிகளைச் சேர்க்கவும்"
+                  : "ADD AREAS",
+              style: GoogleFonts.manrope(
+                color: darkblue,
+                fontWeight: FontWeight.bold,
+                fontSize:
+                    Provider.of<LanguageProvider>(context).isTamil ? 18 : 21,
+              ),
+            ),
+          ),
+          body: useractiondis
+              ? Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        Provider.of<LanguageProvider>(context).isTamil
+                            ? "சேர்க்கப்படுகிறது"
+                            : "Adding data",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize:
+                              Provider.of<LanguageProvider>(context).isTamil
+                                  ? 17
+                                  : 20,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(35.0),
-                        topRight: Radius.circular(35.0),
                       ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      SpinKitThreeBounce(
+                        color: const Color.fromARGB(255, 130, 111, 238),
+                        size: 30,
+                      ),
+                    ],
+                  ),
+                )
+              : Column(
+                  children: [
+                    // Container(
+                    //   padding: const EdgeInsets.only(
+                    //     // top: 50.0,
+                    //     left: 15.0,
+                    //     right: 15.0,
+                    //     bottom: 20.0,
+                    //   ),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: <Widget>[
+                    //       Padding(
+                    //         padding: const EdgeInsets.only(top: 10),
+                    //         child: Row(
+                    //           mainAxisAlignment: MainAxisAlignment.start,
+                    //           children: [
+                    //             GestureDetector(
+                    //               onTap: () {
+                    //                 Navigator.of(context).pop();
+                    //               },
+                    //               child: const Icon(
+                    //                 Icons.arrow_back,
+                    //                 color: Colors.white,
+                    //                 size: 30,
+                    //               ),
+                    //             ),
+                    //             const SizedBox(
+                    //               width: 10,
+                    //             ),
+                    //             Text(
+                    //               overflow: TextOverflow.visible,
+                    // Provider.of<LanguageProvider>(context).isTamil
+                    //     ? "கேள்விகள் மற்றும் \nபகுதிகளைச் சேர்க்கவும்"
+                    //     : "ADD QUESTIONS AND AREAS",
+                    //               style: GoogleFonts.manrope(
+                    //                 color: Colors.white,
+                    //                 fontSize:
+                    //                     Provider.of<LanguageProvider>(context)
+                    //                             .isTamil
+                    //                         ? 17
+                    //                         : 20,
+                    //                 fontWeight: FontWeight.bold,
+                    //               ),
+                    //             ),
+                    //           ],
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    Expanded(
                       child: Container(
                         height: MediaQuery.of(context).size.height - 150,
-                        decoration: const BoxDecoration(
-                          color: Color.fromRGBO(229, 229, 229, 1),
+                        decoration: BoxDecoration(
+                          color: lighterbackgroundblue,
                         ),
                         child: SingleChildScrollView(
                           child: Padding(
@@ -384,6 +420,23 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                 const SizedBox(height: 10),
                                 TypeAheadField(
                                   direction: VerticalDirection.down,
+                                  decorationBuilder: (context, child) =>
+                                      DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color: lightbackgroundblue,
+                                      border: Border.all(
+                                        color: CupertinoDynamicColor.resolve(
+                                          CupertinoColors.systemGrey4,
+                                          context,
+                                        ),
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: child,
+                                  ),
+                                  offset: Offset(0, 12),
+                                  constraints: BoxConstraints(maxHeight: 120),
                                   builder: (context, controller, focusNode) {
                                     return TextField(
                                       textInputAction: TextInputAction.done,
@@ -394,15 +447,19 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                         fillColor: Colors.white,
                                         enabledBorder: const OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
+                                              Radius.circular(10)),
                                           borderSide: BorderSide(
-                                              color: Colors.transparent),
+                                            color: Color.fromRGBO(
+                                                189, 189, 189, 1),
+                                          ),
                                         ),
                                         focusedBorder: const OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
+                                              Radius.circular(10)),
                                           borderSide: BorderSide(
-                                              color: Colors.transparent),
+                                            color: Color.fromRGBO(
+                                                189, 189, 189, 1),
+                                          ),
                                         ),
                                         border: InputBorder.none,
                                         hintText: Provider.of<LanguageProvider>(
@@ -437,7 +494,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                     Text(
                                       Provider.of<LanguageProvider>(context)
                                               .isTamil
-                                          ? "குறிப்பிட்ட பகுதி"
+                                          ? "பகுதி"
                                           : "Specific Area",
                                       style: GoogleFonts.manrope(
                                         fontSize: 23,
@@ -455,7 +512,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                   ],
                                 ),
                                 const SizedBox(height: 10),
-                                Badconditionields(
+                                softtextfield(
                                   controller: specificareacontroller,
                                   hintText:
                                       Provider.of<LanguageProvider>(context)
@@ -469,7 +526,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                     Text(
                                       Provider.of<LanguageProvider>(context)
                                               .isTamil
-                                          ? "தமிழ் குறிப்பிட்ட பகுதி"
+                                          ? "பகுதி தமிழில்"
                                           : "Tamil Specific Area",
                                       style: GoogleFonts.manrope(
                                         fontSize: 23,
@@ -487,7 +544,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                   ],
                                 ),
                                 const SizedBox(height: 10),
-                                Badconditionields(
+                                softtextfield(
                                   controller: tamilspecificareacontroller,
                                   hintText:
                                       Provider.of<LanguageProvider>(context)
@@ -505,10 +562,13 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Divider(
-                                          height: 30,
-                                          thickness: 3,
-                                          color: Colors.grey[400],
+                                        // Divider(
+                                        //   height: 30,
+                                        //   thickness: 3,
+                                        //   color: Colors.grey[400],
+                                        // ),
+                                        SizedBox(
+                                          height: 16,
                                         ),
                                         Text(
                                           Provider.of<LanguageProvider>(context)
@@ -522,41 +582,57 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                         ),
                                         const SizedBox(height: 10),
                                         Container(
+                                          height: 55,
                                           width: double.maxFinite,
                                           decoration: BoxDecoration(
                                             color: Colors.white,
+                                            border: Border.all(
+                                              color: Colors.grey[400]!,
+                                            ),
                                             borderRadius:
                                                 const BorderRadius.all(
-                                                    Radius.circular(15)),
+                                                    Radius.circular(10)),
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 12, horizontal: 16),
-                                            child: Text(question["question"]!,
-                                                style: GoogleFonts.manrope(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                )),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16),
+                                              child: Text(question["question"]!,
+                                                  style: GoogleFonts.manrope(
+                                                    fontSize: 16,
+                                                    // fontWeight: FontWeight.bold,
+                                                  )),
+                                            ),
                                           ),
                                         ),
                                         const SizedBox(height: 10),
                                         Container(
+                                          height: 55,
                                           width: double.maxFinite,
                                           decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey[400]!,
+                                            ),
                                             color: Colors.white,
                                             borderRadius:
                                                 const BorderRadius.all(
-                                                    Radius.circular(15)),
+                                                    Radius.circular(10)),
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 12, horizontal: 16),
-                                            child: Text(
-                                                question["question_tamil"]!,
-                                                style: GoogleFonts.manrope(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                )),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 16),
+                                              child: Text(
+                                                  question["question_tamil"]!,
+                                                  style: GoogleFonts.manrope(
+                                                    fontSize: 16,
+                                                    // fontWeight: FontWeight.bold,
+                                                  )),
+                                            ),
                                           ),
                                         ),
                                         const SizedBox(height: 10),
@@ -569,7 +645,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                               color: Color.fromRGBO(
                                                   229, 109, 91, 1),
                                               borderRadius: BorderRadius.all(
-                                                Radius.circular(20),
+                                                Radius.circular(10),
                                               ),
                                             ),
                                             child: Center(
@@ -587,13 +663,13 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                             ),
                                           ),
                                         ),
-                                        const SizedBox(
-                                          height: 16,
-                                        ),
-                                        Divider(
-                                          thickness: 3,
-                                          color: Colors.grey[400],
-                                        ),
+                                        // const SizedBox(
+                                        //   height: 16,
+                                        // ),
+                                        // Divider(
+                                        //   thickness: 3,
+                                        //   color: Colors.grey[400],
+                                        // ),
                                       ],
                                     );
                                   }).toList(),
@@ -625,26 +701,51 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                 ),
                                 const SizedBox(height: 10),
                                 TypeAheadField(
+                                  constraints: BoxConstraints(maxHeight: 120),
+                                  suggestionsController:
+                                      questionsSuggestioncontroller,
+                                  focusNode: _questionsAheadfocusNode,
                                   direction: VerticalDirection.up,
-                                  builder: (context, controller, focusNode) {
+                                  decorationBuilder: (context, child) =>
+                                      DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color: lightbackgroundblue,
+                                      border: Border.all(
+                                        color: CupertinoDynamicColor.resolve(
+                                          CupertinoColors.systemGrey4,
+                                          context,
+                                        ),
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: child,
+                                  ),
+                                  builder: (context, questionscontroller,
+                                      _questionsfocusNode) {
                                     return TextField(
+                                      maxLines: null,
                                       textInputAction: TextInputAction.done,
-                                      controller: controller,
-                                      focusNode: focusNode,
+                                      controller: questionscontroller,
+                                      focusNode: _questionsfocusNode,
                                       decoration: InputDecoration(
                                         filled: true,
                                         fillColor: Colors.white,
                                         enabledBorder: const OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
+                                              Radius.circular(10)),
                                           borderSide: BorderSide(
-                                              color: Colors.transparent),
+                                            color: Color.fromRGBO(
+                                                189, 189, 189, 1),
+                                          ),
                                         ),
                                         focusedBorder: const OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
+                                              Radius.circular(10)),
                                           borderSide: BorderSide(
-                                              color: Colors.transparent),
+                                            color: Color.fromRGBO(
+                                                189, 189, 189, 1),
+                                          ),
                                         ),
                                         border: InputBorder.none,
                                         hintText: Provider.of<LanguageProvider>(
@@ -675,25 +776,51 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                 ),
                                 const SizedBox(height: 10),
                                 TypeAheadField(
+                                  constraints: BoxConstraints(maxHeight: 120),
+                                  suggestionsController:
+                                      tamilquestionsSuggestioncontroller,
+                                  focusNode: _tamilquestionsAheadfocusNode,
                                   direction: VerticalDirection.up,
-                                  builder: (context, controller, focusNode) {
+                                  decorationBuilder: (context, child) =>
+                                      DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color: lightbackgroundblue,
+                                      border: Border.all(
+                                        color: CupertinoDynamicColor.resolve(
+                                          CupertinoColors.systemGrey4,
+                                          context,
+                                        ),
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: child,
+                                  ),
+                                  builder: (context, tamilquestionscontroller,
+                                      _tamilquestionsfocusNode) {
                                     return TextField(
-                                      controller: controller,
-                                      focusNode: focusNode,
+                                      textInputAction: TextInputAction.done,
+                                      maxLines: null,
+                                      controller: tamilquestionscontroller,
+                                      focusNode: _tamilquestionsfocusNode,
                                       decoration: InputDecoration(
                                         filled: true,
                                         fillColor: Colors.white,
                                         enabledBorder: const OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
+                                              Radius.circular(10)),
                                           borderSide: BorderSide(
-                                              color: Colors.transparent),
+                                            color: Color.fromRGBO(
+                                                189, 189, 189, 1),
+                                          ),
                                         ),
                                         focusedBorder: const OutlineInputBorder(
                                           borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
+                                              Radius.circular(10)),
                                           borderSide: BorderSide(
-                                              color: Colors.transparent),
+                                            color: Color.fromRGBO(
+                                                189, 189, 189, 1),
+                                          ),
                                         ),
                                         border: InputBorder.none,
                                         hintText: Provider.of<LanguageProvider>(
@@ -729,8 +856,17 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                             .text.isNotEmpty ||
                                         questionscontroller.text.isNotEmpty) {
                                       _addQuestion();
-                                      tamilquestionscontroller.clear();
                                       questionscontroller.clear();
+                                      _questionsfocusNode.unfocus();
+                                      tamilquestionscontroller.clear();
+                                      _tamilquestionsfocusNode.unfocus();
+
+                                      questionsSuggestioncontroller.close();
+                                      tamilquestionsSuggestioncontroller
+                                          .close();
+
+                                      _questionsAheadfocusNode.unfocus();
+                                      _tamilquestionsAheadfocusNode.unfocus();
                                     } else {
                                       setState(() {
                                         DelightToastBar(
@@ -739,7 +875,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                           snackbarDuration:
                                               Durations.extralong4,
                                           builder: (context) => ToastCard(
-                                            color: Colors.red,
+                                            color: alertred,
                                             leading: const Icon(
                                               Icons
                                                   .notification_important_outlined,
@@ -764,8 +900,8 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                   child: Container(
                                     height: 50,
                                     width: double.maxFinite,
-                                    decoration: const BoxDecoration(
-                                      color: Color.fromRGBO(229, 184, 91, 1),
+                                    decoration: BoxDecoration(
+                                      color: lightblue,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(20),
                                       ),
@@ -777,7 +913,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                             ? "கேள்விகளைச் சேர்க்கவும்"
                                             : "Add Questions",
                                         style: GoogleFonts.manrope(
-                                          color: Colors.black,
+                                          color: Colors.white,
                                           fontSize: 17,
                                         ),
                                       ),
@@ -822,7 +958,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                           snackbarDuration:
                                               Durations.extralong4,
                                           builder: (context) => ToastCard(
-                                            color: Colors.red,
+                                            color: alertred,
                                             leading: const Icon(
                                               Icons
                                                   .notification_important_outlined,
@@ -846,15 +982,198 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                       showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
-                                          return Dialog(
+                                          return
+
+                                              // Dialog(
+                                              //   backgroundColor: Colors.white,
+                                              //   shape: RoundedRectangleBorder(
+                                              //     borderRadius:
+                                              //         BorderRadius.circular(15.0),
+                                              //   ),
+                                              //   child: ClipRRect(
+                                              //     borderRadius:
+                                              //         BorderRadius.circular(15.0),
+                                              //     child: Padding(
+                                              //       padding: const EdgeInsets.only(
+                                              //         top: 3,
+                                              //         left: 3,
+                                              //         right: 3,
+                                              //         bottom: 3,
+                                              //       ),
+                                              //       child: Container(
+                                              //         width: 150,
+                                              //         decoration:
+                                              //             const BoxDecoration(
+                                              //           color: Colors.white,
+                                              //           borderRadius:
+                                              //               BorderRadius.only(
+                                              //             bottomLeft:
+                                              //                 Radius.circular(37),
+                                              //             bottomRight:
+                                              //                 Radius.circular(37),
+                                              //             topLeft:
+                                              //                 Radius.circular(37),
+                                              //             topRight:
+                                              //                 Radius.circular(37),
+                                              //           ),
+                                              //         ),
+                                              //         child: Padding(
+                                              //           padding: const EdgeInsets
+                                              //               .symmetric(
+                                              //               horizontal: 20.0),
+                                              //           child: Column(
+                                              //             mainAxisSize:
+                                              //                 MainAxisSize.min,
+                                              //             crossAxisAlignment:
+                                              //                 CrossAxisAlignment
+                                              //                     .center,
+                                              //             children: [
+                                              //               const SizedBox(
+                                              //                 height: 20,
+                                              //               ),
+                                              //               Text(
+                                              //                 Provider.of<LanguageProvider>(
+                                              //                             context)
+                                              //                         .isTamil
+                                              //                     ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
+                                              //                     : "Are you sure?",
+                                              //                 style: GoogleFonts
+                                              //                     .manrope(
+                                              //                   color: Colors.black,
+                                              //                   fontSize: Provider.of<
+                                              //                                   LanguageProvider>(
+                                              //                               context)
+                                              //                           .isTamil
+                                              //                       ? 19
+                                              //                       : 23,
+                                              //                   fontWeight:
+                                              //                       FontWeight.w500,
+                                              //                 ),
+                                              //               ),
+                                              //               const SizedBox(
+                                              //                 height: 20,
+                                              //               ),
+                                              //               Row(
+                                              //                 mainAxisAlignment:
+                                              //                     MainAxisAlignment
+                                              //                         .spaceEvenly,
+                                              //                 children: [
+                                              //                   OutlinedButton(
+                                              //                     style:
+                                              //                         OutlinedButton
+                                              //                             .styleFrom(
+                                              //                       padding:
+                                              //                           const EdgeInsets
+                                              //                               .symmetric(
+                                              //                         vertical: 8,
+                                              //                         horizontal:
+                                              //                             32,
+                                              //                       ),
+                                              //                       foregroundColor:
+                                              //                           Colors
+                                              //                               .black87,
+                                              //                       shape:
+                                              //                           RoundedRectangleBorder(
+                                              //                         borderRadius:
+                                              //                             BorderRadius
+                                              //                                 .circular(
+                                              //                                     5),
+                                              //                       ),
+                                              //                       side:
+                                              //                           const BorderSide(
+                                              //                         color: Colors
+                                              //                             .black87,
+                                              //                       ),
+                                              //                     ),
+                                              //                     child: Text(
+                                              //                       Provider.of<LanguageProvider>(
+                                              //                                   context)
+                                              //                               .isTamil
+                                              //                           ? "இல்லை"
+                                              //                           : "No",
+                                              //                       style: GoogleFonts.manrope(
+                                              //                           color: Colors
+                                              //                               .black87,
+                                              //                           fontWeight:
+                                              //                               FontWeight
+                                              //                                   .w500,
+                                              //                           fontSize:
+                                              //                               Provider.of<LanguageProvider>(context).isTamil
+                                              //                                   ? 12
+                                              //                                   : 15),
+                                              //                     ),
+                                              //                     onPressed: () {
+                                              //                       Navigator.of(
+                                              //                               context)
+                                              //                           .pop();
+                                              //                     },
+                                              //                   ),
+                                              //                   ElevatedButton(
+                                              //                     style:
+                                              //                         ButtonStyle(
+                                              //                       padding:
+                                              //                           WidgetStatePropertyAll(
+                                              //                         EdgeInsets
+                                              //                             .symmetric(
+                                              //                           vertical: 8,
+                                              //                           // horizontal:
+                                              //                           //     32,
+                                              //                         ),
+                                              //                       ),
+                                              //                       backgroundColor:
+                                              //                           WidgetStatePropertyAll(
+                                              //                         paleblue,
+                                              //                       ),
+                                              //                       shape:
+                                              //                           WidgetStatePropertyAll(
+                                              //                         RoundedRectangleBorder(
+                                              //                           borderRadius:
+                                              //                               BorderRadius
+                                              //                                   .all(
+                                              //                             Radius
+                                              //                                 .circular(
+                                              //                                     5),
+                                              //                           ),
+                                              //                         ),
+                                              //                       ),
+                                              //                     ),
+                                              //                     child: const Icon(
+                                              //                       Icons.check,
+                                              //                       color: Colors
+                                              //                           .white,
+                                              //                     ),
+                                              //                     onPressed: () {
+                                              //                       _submitData();
+                                              //                       Navigator.of(
+                                              //                               context)
+                                              //                           .pop();
+                                              //                       setState(() {
+                                              //                         useractiondis =
+                                              //                             true;
+                                              //                       });
+                                              //                     },
+                                              //                   ),
+                                              //                 ],
+                                              //               ),
+                                              //               const SizedBox(
+                                              //                 height: 20,
+                                              //               ),
+                                              //             ],
+                                              //           ),
+                                              //         ),
+                                              //       ),
+                                              //     ),
+                                              //   ),
+                                              // );
+                                              Dialog(
                                             backgroundColor: Colors.white,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(40.0),
+                                                  BorderRadius.circular(15.0),
                                             ),
                                             child: ClipRRect(
                                               borderRadius:
-                                                  BorderRadius.circular(40.0),
+                                                  BorderRadius.circular(15.0),
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
                                                   top: 3,
@@ -867,22 +1186,13 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                                   decoration:
                                                       const BoxDecoration(
                                                     color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(37),
-                                                      bottomRight:
-                                                          Radius.circular(37),
-                                                      topLeft:
-                                                          Radius.circular(37),
-                                                      topRight:
-                                                          Radius.circular(37),
-                                                    ),
                                                   ),
                                                   child: Padding(
                                                     padding: const EdgeInsets
                                                         .symmetric(
-                                                        horizontal: 20.0),
+                                                      horizontal: 20.0,
+                                                      vertical: 20,
+                                                    ),
                                                     child: Column(
                                                       mainAxisSize:
                                                           MainAxisSize.min,
@@ -890,9 +1200,6 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                                           CrossAxisAlignment
                                                               .center,
                                                       children: [
-                                                        const SizedBox(
-                                                          height: 20,
-                                                        ),
                                                         Text(
                                                           Provider.of<LanguageProvider>(
                                                                       context)
@@ -909,121 +1216,92 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                                                 ? 19
                                                                 : 23,
                                                             fontWeight:
-                                                                FontWeight.w500,
+                                                                FontWeight.bold,
                                                           ),
                                                         ),
                                                         const SizedBox(
-                                                          height: 20,
+                                                          height: 30,
                                                         ),
-                                                        Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceEvenly,
-                                                          children: [
-                                                            OutlinedButton(
-                                                              style:
-                                                                  OutlinedButton
-                                                                      .styleFrom(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .symmetric(
-                                                                  vertical: 8,
-                                                                  horizontal:
-                                                                      32,
-                                                                ),
-                                                                foregroundColor:
-                                                                    Colors
-                                                                        .black87,
-                                                                shape:
-                                                                    RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              5),
-                                                                ),
-                                                                side:
-                                                                    const BorderSide(
-                                                                  color: Colors
-                                                                      .black87,
-                                                                ),
-                                                              ),
-                                                              child: Text(
-                                                                Provider.of<LanguageProvider>(
-                                                                            context)
-                                                                        .isTamil
-                                                                    ? "இல்லை"
-                                                                    : "No",
-                                                                style: GoogleFonts.manrope(
-                                                                    color: Colors
-                                                                        .black87,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    fontSize:
-                                                                        Provider.of<LanguageProvider>(context).isTamil
-                                                                            ? 12
-                                                                            : 15),
-                                                              ),
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                              },
-                                                            ),
-                                                            ElevatedButton(
-                                                              style:
-                                                                  const ButtonStyle(
-                                                                padding:
-                                                                    WidgetStatePropertyAll(
-                                                                  EdgeInsets
-                                                                      .symmetric(
-                                                                    vertical: 8,
-                                                                    horizontal:
-                                                                        32,
+                                                        IntrinsicHeight(
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceEvenly,
+                                                            children: [
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                },
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                    left: 10,
+                                                                    right: 10,
                                                                   ),
-                                                                ),
-                                                                backgroundColor:
-                                                                    WidgetStatePropertyAll(
-                                                                  Color
-                                                                      .fromRGBO(
-                                                                          130,
-                                                                          204,
-                                                                          146,
-                                                                          1),
-                                                                ),
-                                                                shape:
-                                                                    WidgetStatePropertyAll(
-                                                                  RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .all(
-                                                                      Radius
-                                                                          .circular(
-                                                                              5),
-                                                                    ),
+                                                                  child: Text(
+                                                                    Provider.of<LanguageProvider>(context)
+                                                                            .isTamil
+                                                                        ? "இல்லை"
+                                                                        : "No",
+                                                                    style: TextStyle(
+                                                                        color: Colors
+                                                                            .red,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        fontSize: Provider.of<LanguageProvider>(context).isTamil
+                                                                            ? 14
+                                                                            : 17),
                                                                   ),
                                                                 ),
                                                               ),
-                                                              child: const Icon(
-                                                                Icons.check,
+                                                              VerticalDivider(
                                                                 color: Colors
-                                                                    .white,
+                                                                    .grey
+                                                                    .withOpacity(
+                                                                        0.5),
+                                                                thickness: 1,
                                                               ),
-                                                              onPressed: () {
-                                                                _submitData();
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
-                                                                setState(() {
-                                                                  useractiondis =
-                                                                      true;
-                                                                });
-                                                              },
-                                                            ),
-                                                          ],
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 20,
+                                                              GestureDetector(
+                                                                onTap: () {
+                                                                  _submitData();
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pop();
+                                                                  setState(() {
+                                                                    useractiondis =
+                                                                        true;
+                                                                  });
+                                                                },
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                    left: 10,
+                                                                    right: 10,
+                                                                  ),
+                                                                  child: Text(
+                                                                    Provider.of<LanguageProvider>(context)
+                                                                            .isTamil
+                                                                        ? "ஆம்"
+                                                                        : "yes",
+                                                                    style: TextStyle(
+                                                                        color:
+                                                                            paleblue,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        fontSize: Provider.of<LanguageProvider>(context).isTamil
+                                                                            ? 14
+                                                                            : 17),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -1039,8 +1317,8 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                   child: Container(
                                     height: 50,
                                     width: double.maxFinite,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.black,
+                                    decoration: BoxDecoration(
+                                      color: greyblue,
                                       borderRadius: BorderRadius.all(
                                         Radius.circular(20),
                                       ),
@@ -1068,9 +1346,9 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+        ),
       ),
     );
   }

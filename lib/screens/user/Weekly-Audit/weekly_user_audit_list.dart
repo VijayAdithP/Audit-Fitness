@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/models/admin%20specific/weekly%20models/user_weekly_tasks_model.dart';
 import 'package:auditfitnesstest/screens/user/Weekly-Audit/weekly_audit_submit_page.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -94,168 +96,189 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: isLoading
-          ? const Color.fromRGBO(229, 229, 228, 1)
-          : const Color.fromARGB(255, 130, 111, 238),
+      color: Colors.white,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: isLoading
-              ? const Color.fromRGBO(229, 229, 228, 1)
-              : const Color.fromARGB(255, 130, 111, 238),
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(
+              color: darkblue,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15),
+              ),
+            ),
+            // toolbarHeight: 70,
+            // backgroundColor: Colors.red,
+            titleSpacing: 0,
+            title: Text(
+              overflow: TextOverflow.visible,
+              Provider.of<LanguageProvider>(context).isTamil
+                  ? "வார வேலைகள்"
+                  : "PENDING WEEKLY AUDIT",
+              style: TextStyle(
+                color: darkblue,
+                fontWeight: FontWeight.bold,
+                fontSize:
+                    Provider.of<LanguageProvider>(context).isTamil ? 18 : 21,
+              ),
+            ),
+          ),
+          backgroundColor:
+              isLoading ? lighterbackgroundblue : lighterbackgroundblue,
           body: isLoading
               ? const Center(
                   child: SpinKitThreeBounce(
                     color: const Color.fromARGB(255, 130, 111, 238),
-                    size: 40,
+                    size: 30,
                   ),
                 )
               : Column(
                   children: [
-                    Container(
-                      padding: const EdgeInsets.only(
-                        top: 10.0,
-                        left: 15.0,
-                        right: 15.0,
-                        bottom: 10.0,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.black,
-                                  size: 30,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return SimpleDialog(
-                                          backgroundColor: const Color.fromRGBO(
-                                              46, 46, 46, 1),
-                                          contentPadding:
-                                              const EdgeInsets.all(20),
-                                          title: Column(
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  Provider.of<LanguageProvider>(
-                                                              context)
-                                                          .isTamil
-                                                      ? "தகவல்"
-                                                      : "INFO",
-                                                  style: const TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.blueAccent,
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  textAlign: TextAlign.center,
-                                                  Provider.of<LanguageProvider>(
-                                                              context)
-                                                          .isTamil
-                                                      ? "நிலுவையில் உள்ள வேலைகள்"
-                                                      : "Pending weekly audits",
-                                                  style: const TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          children: [
-                                            Text(
-                                              Provider.of<LanguageProvider>(
-                                                          context)
-                                                      .isTamil
-                                                  ? "உங்களிடம் நிலுவையில் உள்ள வேலைகள் இதோ, நிர்ணயிக்கப்பட்ட காலக்கெடுவிற்கு முன் அவற்றை முடிக்கவும்"
-                                                  : "Here are the pending audits you have, Complete them before the set deadline",
-                                              style: const TextStyle(
-                                                fontSize: 17,
-                                                // fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                },
-                                child: const Icon(Icons.info,
-                                    size: 25, color: Colors.black),
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            overflow: TextOverflow.visible,
-                            Provider.of<LanguageProvider>(context).isTamil
-                                ? "வாராந்திர வேலைகள்"
-                                : "PENDING WEEKLY AUDIT",
-                            style: GoogleFonts.manrope(
-                              color: Colors.black,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   padding: const EdgeInsets.only(
+                    //     top: 10.0,
+                    //     left: 15.0,
+                    //     right: 15.0,
+                    //     bottom: 10.0,
+                    //   ),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: <Widget>[
+                    //       Row(
+                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         children: [
+                    //           GestureDetector(
+                    //             onTap: () {
+                    //               Navigator.of(context).pop();
+                    //             },
+                    //             child: const Icon(
+                    //               Icons.arrow_back,
+                    //               color: Colors.black,
+                    //               size: 30,
+                    //             ),
+                    //           ),
+                    //           GestureDetector(
+                    //             onTap: () {
+                    //               showDialog(
+                    //                   context: context,
+                    //                   builder: (context) {
+                    //                     return SimpleDialog(
+                    //                       backgroundColor: const Color.fromRGBO(
+                    //                           46, 46, 46, 1),
+                    //                       contentPadding:
+                    //                           const EdgeInsets.all(20),
+                    //                       title: Column(
+                    //                         children: [
+                    //                           Align(
+                    //                             alignment: Alignment.center,
+                    //                             child: Text(
+                    //                               Provider.of<LanguageProvider>(
+                    //                                           context)
+                    //                                       .isTamil
+                    //                                   ? "தகவல்"
+                    //                                   : "INFO",
+                    //                               style: const TextStyle(
+                    //                                 fontSize: 20,
+                    //                                 fontWeight: FontWeight.bold,
+                    //                                 color: Colors.blueAccent,
+                    //                               ),
+                    //                             ),
+                    //                           ),
+                    //                           const SizedBox(
+                    //                             height: 5,
+                    //                           ),
+                    //                           Align(
+                    //                             alignment: Alignment.center,
+                    //                             child: Text(
+                    //                               textAlign: TextAlign.center,
+                    //                               Provider.of<LanguageProvider>(
+                    //                                           context)
+                    //                                       .isTamil
+                    //                                   ? "நிலுவையில் உள்ள வேலைகள்"
+                    //                                   : "Pending weekly audits",
+                    //                               style: const TextStyle(
+                    //                                 fontSize: 17,
+                    //                                 fontWeight: FontWeight.bold,
+                    //                                 color: Colors.white,
+                    //                               ),
+                    //                             ),
+                    //                           ),
+                    //                         ],
+                    //                       ),
+                    //                       children: [
+                    //                         Text(
+                    //                           Provider.of<LanguageProvider>(
+                    //                                       context)
+                    //                                   .isTamil
+                    //                               ? "உங்களிடம் நிலுவையில் உள்ள வேலைகள் இதோ, நிர்ணயிக்கப்பட்ட காலக்கெடுவிற்கு முன் அவற்றை முடிக்கவும்"
+                    //                               : "Here are the pending audits you have, Complete them before the set deadline",
+                    //                           style: const TextStyle(
+                    //                             fontSize: 17,
+                    //                             // fontWeight: FontWeight.bold,
+                    //                             color: Colors.white,
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     );
+                    //                   });
+                    //             },
+                    //             child: const Icon(Icons.info,
+                    //                 size: 25, color: Colors.black),
+                    //           )
+                    //         ],
+                    //       ),
+                    //       const SizedBox(
+                    //         height: 5,
+                    //       ),
+                    //       Text(
+                    //         overflow: TextOverflow.visible,
+                    //         Provider.of<LanguageProvider>(context).isTamil
+                    //             ? "வாராந்திர வேலைகள்"
+                    //             : "PENDING WEEKLY AUDIT",
+                    //         style: GoogleFonts.manrope(
+                    //           color: Colors.black,
+                    //           fontSize: 30,
+                    //           fontWeight: FontWeight.bold,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     Expanded(
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(37.0),
-                          topRight: Radius.circular(37.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: lighterbackgroundblue,
+                          // borderRadius: BorderRadius.only(
+                          //   topLeft: Radius.circular(37.0),
+                          //   topRight: Radius.circular(37.0),
+                          // ),
                         ),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Color.fromRGBO(229, 229, 228, 1),
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(37.0),
-                              topRight: Radius.circular(37.0),
-                            ),
-                          ),
-                          child: RefreshIndicator(
-                            onRefresh: _refreshTasks,
-                            child: weeklyTasks.isEmpty
-                                ? Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        Provider.of<LanguageProvider>(context)
-                                                .isTamil
-                                            ? "தற்போது \nகாலியாக உள்ளது"
-                                            : "Currently empty",
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: Colors.grey[700],
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                        child: RefreshIndicator(
+                          onRefresh: _refreshTasks,
+                          child: weeklyTasks.isEmpty
+                              ? Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      Provider.of<LanguageProvider>(context)
+                                              .isTamil
+                                          ? "தற்போது \nகாலியாக உள்ளது"
+                                          : "Currently empty",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: Colors.grey[700],
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                  )
-                                : ListView.builder(
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ListView.builder(
                                     padding: EdgeInsets.zero,
                                     itemCount: weeklyTasks.length,
                                     itemBuilder: (context, index) {
@@ -293,24 +316,25 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
                                           );
                                         },
                                         child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                                          padding: const EdgeInsets.all(10.0),
                                           child: Container(
                                             height: 120,
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
+                                            decoration: BoxDecoration(
+                                              // color: HexColor("#228aba"),
+                                              color: paleblue,
                                               borderRadius:
                                                   const BorderRadius.all(
-                                                Radius.circular(30),
+                                                Radius.circular(10),
                                               ),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: const Color.fromRGBO(
-                                                      158, 158, 158, 1),
-                                                  spreadRadius: -5,
-                                                  blurRadius: 5,
-                                                  offset: const Offset(0, 4),
-                                                ),
-                                              ],
+                                              // boxShadow: [
+                                              //   BoxShadow(
+                                              //     color: const Color.fromRGBO(
+                                              //         158, 158, 158, 1),
+                                              //     spreadRadius: -5,
+                                              //     blurRadius: 5,
+                                              //     offset: const Offset(0, 4),
+                                              //   ),
+                                              // ],
                                             ),
                                             padding: const EdgeInsets.all(16.0),
                                             child: Column(
@@ -322,9 +346,11 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
                                                           .weeklyTaskId ??
                                                       'No Task ID',
                                                   style: GoogleFonts.manrope(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 25,
-                                                  ),
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 25,
+                                                      color:
+                                                          lighterbackgroundblue),
                                                 ),
                                                 // const SizedBox(height: 10),
                                                 Text(
@@ -333,9 +359,10 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
                                                           .weekNumber!,
                                                       weeklyTasks[index].year!),
                                                   style: GoogleFonts.manrope(
-                                                    fontWeight: FontWeight.w700,
+                                                    fontWeight: FontWeight.w500,
                                                     fontSize: 15,
-                                                    color: Colors.grey[700],
+                                                    color:
+                                                        lighterbackgroundblue,
                                                   ),
                                                 ),
                                                 const Expanded(
@@ -348,7 +375,7 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
                                       );
                                     },
                                   ),
-                          ),
+                                ),
                         ),
                       ),
                     ),

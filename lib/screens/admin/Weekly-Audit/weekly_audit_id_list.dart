@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/models/admin%20specific/weekly%20models/weekly_task_id_module.dart';
 import 'package:auditfitnesstest/screens/admin/Weekly-Audit/weekly_audit_id_submission_page.dart';
@@ -89,139 +90,163 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: isLoading
-          ? const Color.fromRGBO(229, 229, 228, 1)
-          : const Color.fromRGBO(229, 229, 228, 1),
+      color: Colors.white,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: isLoading
-              ? const Color.fromRGBO(229, 229, 228, 1)
-              : const Color.fromRGBO(229, 229, 228, 1),
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            iconTheme: IconThemeData(
+              color: darkblue,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15),
+              ),
+            ),
+            toolbarHeight: 70,
+            // backgroundColor: Colors.red,
+            titleSpacing: 0,
+            title: Text(
+              overflow: TextOverflow.visible,
+              Provider.of<LanguageProvider>(context).isTamil
+                  ? "நிர்வாக வேலை"
+                  : "Recent weekly audit id's",
+              style: GoogleFonts.manrope(
+                color: darkblue,
+                fontWeight: FontWeight.bold,
+                fontSize:
+                    Provider.of<LanguageProvider>(context).isTamil ? 18 : 21,
+              ),
+            ),
+          ),
+          backgroundColor:
+              isLoading ? lighterbackgroundblue : lighterbackgroundblue,
           body: isLoading
               ? const Center(
                   child: SpinKitThreeBounce(
                     color: Color.fromARGB(255, 97, 81, 188),
-                    size: 50,
+                    size: 30,
                   ),
                 )
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.only(
-                        // top: 50.0,
-                        left: 20.0,
-                        right: 20.0,
-                        bottom: 10.0,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.black,
-                                  size: 30,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return SimpleDialog(
-                                          backgroundColor: const Color.fromRGBO(
-                                              46, 46, 46, 1),
-                                          contentPadding:
-                                              const EdgeInsets.all(20),
-                                          title: Column(
-                                            children: [
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  Provider.of<LanguageProvider>(
-                                                              context)
-                                                          .isTamil
-                                                      ? "தகவல்"
-                                                      : "INFO",
-                                                  style: const TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.blueAccent,
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
-                                              Align(
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  textAlign: TextAlign.center,
-                                                  Provider.of<LanguageProvider>(
-                                                              context)
-                                                          .isTamil
-                                                      ? "சில வாராந்திர வேலை ஐடிகள்"
-                                                      : "Recent weekly audit id's",
-                                                  style: const TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          children: [
-                                            Text(
-                                              Provider.of<LanguageProvider>(
-                                                          context)
-                                                      .isTamil
-                                                  ? "மிகச் சமீபத்திய வாராந்திர வேலைகள் அனைத்து பலவீனமான வேலை களையும் பார்க்க, தேடல் பட்டியில் தட்டவும்"
-                                                  : "The most recent weekly audits are listed here to view all weekly audits tap on the search bar",
-                                              style: const TextStyle(
-                                                fontSize: 17,
-                                                // fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      });
-                                },
-                                child: const Icon(
-                                  Icons.info,
-                                  size: 25,
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            overflow: TextOverflow.visible,
-                            Provider.of<LanguageProvider>(context).isTamil
-                                ? "சில வாராந்திர வேலை ஐடிகள்"
-                                : "RECENT WEEKLY AUDIT IDs",
-                            style: GoogleFonts.manrope(
-                              color: Colors.black,
-                              fontSize:
-                                  Provider.of<LanguageProvider>(context).isTamil
-                                      ? 28
-                                      : 35,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   padding: const EdgeInsets.only(
+                    //     // top: 50.0,
+                    //     left: 20.0,
+                    //     right: 20.0,
+                    //     bottom: 10.0,
+                    //   ),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: <Widget>[
+                    //       Row(
+                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         children: [
+                    //           GestureDetector(
+                    //             onTap: () {
+                    //               Navigator.of(context).pop();
+                    //             },
+                    //             child: const Icon(
+                    //               Icons.arrow_back,
+                    //               color: Colors.black,
+                    //               size: 30,
+                    //             ),
+                    //           ),
+                    //           GestureDetector(
+                    //             onTap: () {
+                    //               showDialog(
+                    //                   context: context,
+                    //                   builder: (context) {
+                    //                     return SimpleDialog(
+                    //                       backgroundColor: const Color.fromRGBO(
+                    //                           46, 46, 46, 1),
+                    //                       contentPadding:
+                    //                           const EdgeInsets.all(20),
+                    //                       title: Column(
+                    //                         children: [
+                    //                           Align(
+                    //                             alignment: Alignment.center,
+                    //                             child: Text(
+                    //                               Provider.of<LanguageProvider>(
+                    //                                           context)
+                    //                                       .isTamil
+                    //                                   ? "தகவல்"
+                    //                                   : "INFO",
+                    //                               style: const TextStyle(
+                    //                                 fontSize: 20,
+                    //                                 fontWeight: FontWeight.bold,
+                    //                                 color: Colors.blueAccent,
+                    //                               ),
+                    //                             ),
+                    //                           ),
+                    //                           const SizedBox(
+                    //                             height: 5,
+                    //                           ),
+                    //                           Align(
+                    //                             alignment: Alignment.center,
+                    //                             child: Text(
+                    //                               textAlign: TextAlign.center,
+                    //                               Provider.of<LanguageProvider>(
+                    //                                           context)
+                    //                                       .isTamil
+                    //                                   ? "சில வாராந்திர வேலை ஐடிகள்"
+                    //                                   : "Recent weekly audit id's",
+                    //                               style: const TextStyle(
+                    //                                 fontSize: 17,
+                    //                                 fontWeight: FontWeight.bold,
+                    //                                 color: Colors.white,
+                    //                               ),
+                    //                             ),
+                    //                           ),
+                    //                         ],
+                    //                       ),
+                    //                       children: [
+                    //                         Text(
+                    //                           Provider.of<LanguageProvider>(
+                    //                                       context)
+                    //                                   .isTamil
+                    //                               ? "மிகச் சமீபத்திய வாராந்திர வேலைகள் அனைத்து பலவீனமான வேலை களையும் பார்க்க, தேடல் பட்டியில் தட்டவும்"
+                    //                               : "The most recent weekly audits are listed here to view all weekly audits tap on the search bar",
+                    //                           style: const TextStyle(
+                    //                             fontSize: 17,
+                    //                             // fontWeight: FontWeight.bold,
+                    //                             color: Colors.white,
+                    //                           ),
+                    //                         ),
+                    //                       ],
+                    //                     );
+                    //                   });
+                    //             },
+                    //             child: const Icon(
+                    //               Icons.info,
+                    //               size: 25,
+                    //             ),
+                    //           )
+                    //         ],
+                    //       ),
+                    //       const SizedBox(
+                    //         height: 5,
+                    //       ),
+                    //       Text(
+                    //         overflow: TextOverflow.visible,
+                    //         Provider.of<LanguageProvider>(context).isTamil
+                    //             ? "சில வாராந்திர வேலை ஐடிகள்"
+                    //             : "RECENT WEEKLY AUDIT IDs",
+                    //         style: GoogleFonts.manrope(
+                    //           color: Colors.black,
+                    //           fontSize:
+                    //               Provider.of<LanguageProvider>(context).isTamil
+                    //                   ? 28
+                    //                   : 35,
+                    //           fontWeight: FontWeight.bold,
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     Expanded(
                       child: ClipRRect(
                         borderRadius: const BorderRadius.only(
@@ -229,8 +254,8 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                           topRight: Radius.circular(37.0),
                         ),
                         child: Container(
-                          decoration: const BoxDecoration(
-                            color: Color.fromRGBO(229, 229, 228, 1),
+                          decoration: BoxDecoration(
+                            color: lighterbackgroundblue,
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(37.0),
                               topRight: Radius.circular(37.0),
@@ -314,56 +339,74 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                 ),
                                 child: Hero(
                                   tag: "Task search bar",
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SearchAllWeeklyTaks(),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 25, vertical: 15),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(40),
-                                      ),
-                                      height: 60,
-                                      width: MediaQuery.of(context).size.width,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          const Icon(
-                                            Icons.search,
-                                            size: 25,
-                                            color: Colors.black54,
+                                  child: Material(
+                                    elevation: 1,
+                                    shadowColor: lightbackgroundblue,
+                                    borderRadius: BorderRadius.circular(40),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SearchAllWeeklyTaks(),
                                           ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            Provider.of<LanguageProvider>(
-                                                        context)
-                                                    .isTamil
-                                                ? "பணி ஐடி"
-                                                : 'Search by task id',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              fontSize:
-                                                  Provider.of<LanguageProvider>(
-                                                              context)
-                                                          .isTamil
-                                                      ? 16
-                                                      : 18,
-                                              color: Colors.black54,
-                                              fontWeight: FontWeight.bold,
+                                        );
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 25, vertical: 15),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(40),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: const Color.fromRGBO(
+                                                  158, 158, 158, 1),
+                                              spreadRadius: -5,
+                                              blurRadius: 5,
+                                              // offset:
+                                              // const Offset(0, 4),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
+                                        height: 60,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Icon(
+                                              Icons.search,
+                                              size: 25,
+                                              color: darkblue.withOpacity(0.6),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              Provider.of<LanguageProvider>(
+                                                          context)
+                                                      .isTamil
+                                                  ? "பணி ஐடி"
+                                                  : 'Search by taskId',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                fontSize:
+                                                    Provider.of<LanguageProvider>(
+                                                                context)
+                                                            .isTamil
+                                                        ? 16
+                                                        : 18,
+                                                color:
+                                                    darkblue.withOpacity(0.6),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -434,12 +477,11 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                                   bottom: 10,
                                                 ),
                                                 child: Container(
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    color: Colors.white,
+                                                  decoration: BoxDecoration(
+                                                    color: paleblue,
                                                     borderRadius:
                                                         BorderRadius.all(
-                                                      Radius.circular(30),
+                                                      Radius.circular(15),
                                                     ),
                                                     boxShadow: [
                                                       BoxShadow(
@@ -448,8 +490,8 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                                             158, 158, 158, 1),
                                                         spreadRadius: -5,
                                                         blurRadius: 5,
-                                                        offset:
-                                                            const Offset(0, 4),
+                                                        // offset:
+                                                        // const Offset(0, 4),
                                                       ),
                                                     ],
                                                   ),
@@ -469,6 +511,8 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 25,
+                                                          color:
+                                                              lighterbackgroundblue,
                                                         ),
                                                       ),
                                                       Text(
@@ -484,7 +528,7 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                                               FontWeight.w700,
                                                           fontSize: 15,
                                                           color:
-                                                              Colors.grey[700],
+                                                              Colors.grey[200],
                                                         ),
                                                       ),
                                                       Align(
@@ -509,9 +553,10 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                                                           20),
                                                                 ),
                                                               ),
-                                                              child: const Icon(
+                                                              child: Icon(
                                                                 Icons.add,
                                                                 size: 30,
+                                                                color: darkblue,
                                                               ),
                                                             ),
                                                           ],
@@ -622,10 +667,10 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromRGBO(229, 229, 228, 1),
+      color: Colors.white,
       child: SafeArea(
         child: Scaffold(
-          backgroundColor: Color.fromRGBO(229, 229, 228, 1),
+          backgroundColor: lighterbackgroundblue,
           // appBar: AppBar(
           //   title: const Text('User Search'),
           // ),
@@ -637,6 +682,8 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                 child: Hero(
                   tag: "Task search bar",
                   child: Material(
+                    elevation: 1,
+                    shadowColor: lightbackgroundblue,
                     borderRadius: BorderRadius.circular(40),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(40),
@@ -646,11 +693,20 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(40),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color.fromRGBO(158, 158, 158, 1),
+                              spreadRadius: -5,
+                              blurRadius: 5,
+                              // offset:
+                              // const Offset(0, 4),
+                            ),
+                          ],
                         ),
                         child: TextField(
                           textInputAction: TextInputAction.done,
                           maxLines: null,
-                          expands: true,
+                          // expands: true,
                           controller: _searchController,
                           decoration: InputDecoration(
                             prefixIcon: Padding(
@@ -659,12 +715,12 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                                 onTap: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: const Padding(
+                                child: Padding(
                                   padding: const EdgeInsets.only(left: 20.0),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.arrow_back,
                                     size: 25,
-                                    color: Colors.black54,
+                                    color: darkblue.withOpacity(0.6),
                                   ),
                                 ),
                               ),
@@ -692,9 +748,9 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                                 Provider.of<LanguageProvider>(context).isTamil
                                     ? "பணி ஐடி"
                                     : "Search by taskId",
-                            hintStyle: const TextStyle(
+                            hintStyle: TextStyle(
                               fontSize: 18,
-                              color: Colors.black54,
+                              color: darkblue.withOpacity(0.6),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -706,7 +762,7 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
               ),
               Expanded(
                 child: _filteredTasks.isEmpty
-                    ? Column(
+                    ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
@@ -715,13 +771,16 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                                 : "No Result",
                             style: TextStyle(
                               color: Colors.grey[700],
-                              fontSize: 30,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
                           const SpinKitThreeBounce(
                             color: Color.fromARGB(255, 97, 81, 188),
-                            size: 40,
+                            size: 30,
                           ),
                         ],
                       )
@@ -751,23 +810,28 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                               );
                             },
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.only(
+                                right: 10.0,
+                                left: 10,
+                                top: 10,
+                                bottom: 10,
+                              ),
                               child: Container(
-                                height: 120,
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
+                                // height: 120,
+                                decoration: BoxDecoration(
+                                  color: lightbackgroundblue,
                                   borderRadius: BorderRadius.all(
-                                    Radius.circular(30),
+                                    Radius.circular(15),
                                   ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: const Color.fromRGBO(
-                                          158, 158, 158, 1),
-                                      spreadRadius: -5,
-                                      blurRadius: 5,
-                                      offset: const Offset(0, 4),
-                                    ),
-                                  ],
+                                  // boxShadow: [
+                                  //   BoxShadow(
+                                  //     color: const Color.fromRGBO(
+                                  //         158, 158, 158, 1),
+                                  //     spreadRadius: -5,
+                                  //     blurRadius: 5,
+                                  //     offset: const Offset(0, 4),
+                                  //   ),
+                                  // ],
                                 ),
                                 padding: const EdgeInsets.all(16.0),
                                 child: Column(
@@ -779,6 +843,7 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                                       style: GoogleFonts.manrope(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 25,
+                                        color: darkblue,
                                       ),
                                     ),
                                     Text(
@@ -788,11 +853,14 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                                       style: GoogleFonts.manrope(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 15,
-                                        color: Colors.grey[700],
+                                        color: darkblue,
                                       ),
                                     ),
-                                    const Expanded(
-                                      child: SizedBox(height: 10),
+                                    // const Expanded(
+                                    //   child: SizedBox(height: 10),
+                                    // ),
+                                    SizedBox(
+                                      height: 10,
                                     ),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
@@ -800,15 +868,16 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                                         Container(
                                           width: 50,
                                           decoration: BoxDecoration(
-                                            color: Colors.grey[300],
+                                            color: Colors.white,
                                             borderRadius:
                                                 const BorderRadius.all(
                                               Radius.circular(20),
                                             ),
                                           ),
-                                          child: const Icon(
+                                          child: Icon(
                                             Icons.add,
                                             size: 30,
+                                            color: darkblue,
                                           ),
                                         ),
                                       ],
