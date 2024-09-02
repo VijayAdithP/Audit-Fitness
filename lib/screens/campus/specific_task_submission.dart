@@ -301,6 +301,7 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
+                color: greyblue,
               ),
             ),
             const SizedBox(
@@ -348,8 +349,8 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
                       Provider.of<LanguageProvider>(context).isTamil
                           ? "பார்க்க அழுத்தவும்"
                           : "Tap To View",
-                      style: const TextStyle(
-                        color: Colors.black,
+                      style: TextStyle(
+                        color: darkblue,
                         fontSize: 17,
                       ),
                     ),
@@ -1029,8 +1030,7 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
                                                                       .isTamil
                                                                   ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
                                                                   : "Are you sure?",
-                                                              style: GoogleFonts
-                                                                  .manrope(
+                                                              style: TextStyle(
                                                                 color: Colors
                                                                     .black,
                                                                 fontSize: Provider.of<LanguageProvider>(

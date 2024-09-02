@@ -43,7 +43,7 @@ class Badconditionields extends StatelessWidget {
         ),
         border: InputBorder.none,
         hintText: hintText,
-        hintStyle: GoogleFonts.manrope(
+        hintStyle: TextStyle(
           fontWeight: FontWeight.w500,
         ),
       ),
@@ -88,7 +88,7 @@ class softtextfield extends StatelessWidget {
         ),
         border: InputBorder.none,
         hintText: hintText,
-        hintStyle: GoogleFonts.manrope(
+        hintStyle: TextStyle(
           fontWeight: FontWeight.w500,
         ),
       ),

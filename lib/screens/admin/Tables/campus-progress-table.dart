@@ -413,18 +413,15 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
                   fit: StackFit.expand,
                   children: [
                     sfgridwidget(),
-                    BackdropFilter(
-                      filter: ui.ImageFilter.blur(
-                        sigmaX: 8.0,
-                        sigmaY: 8.0,
-                      ),
-                      child: Positioned.fill(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: SpinKitThreeBounce(
-                            color: Color.fromARGB(255, 97, 81, 188),
-                            size: 30,
-                          ),
+                    Positioned.fill(
+                      child: BackdropFilter(
+                        filter: ui.ImageFilter.blur(
+                          sigmaX: 8.0,
+                          sigmaY: 8.0,
+                        ),
+                        child: SpinKitThreeBounce(
+                          color: Color.fromARGB(255, 97, 81, 188),
+                          size: 30,
                         ),
                       ),
                     ),

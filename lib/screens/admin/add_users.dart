@@ -156,7 +156,7 @@ class _AddUsersState extends State<AddUsers> {
               Provider.of<LanguageProvider>(context).isTamil
                   ? "நிர்வாக டாஷ்போர்டு"
                   : "ADD USER",
-              style: GoogleFonts.manrope(
+              style: TextStyle(
                 color: darkblue,
                 fontWeight: FontWeight.bold,
                 fontSize:
@@ -246,7 +246,7 @@ class _AddUsersState extends State<AddUsers> {
                                               .isTamil
                                           ? "முதல் பெயர்"
                                           : 'First Name',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                         color: greyblue,
@@ -254,7 +254,7 @@ class _AddUsersState extends State<AddUsers> {
                                     ),
                                     Text(
                                       '*',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.red,
                                         fontSize: 20,
@@ -281,7 +281,7 @@ class _AddUsersState extends State<AddUsers> {
                                               .isTamil
                                           ? "கடைசி பெயர்"
                                           : 'Last Name',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                         color: greyblue,
@@ -289,7 +289,7 @@ class _AddUsersState extends State<AddUsers> {
                                     ),
                                     Text(
                                       '*',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.red,
                                         fontSize: 20,
@@ -316,7 +316,7 @@ class _AddUsersState extends State<AddUsers> {
                                               .isTamil
                                           ? "பயனர் பெயர்"
                                           : 'UserName',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                         color: greyblue,
@@ -324,7 +324,7 @@ class _AddUsersState extends State<AddUsers> {
                                     ),
                                     Text(
                                       '*',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.red,
                                         fontSize: 20,
@@ -351,7 +351,7 @@ class _AddUsersState extends State<AddUsers> {
                                               .isTamil
                                           ? "தொலைபேசி எண்"
                                           : 'Phone Number',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                         color: greyblue,
@@ -359,7 +359,7 @@ class _AddUsersState extends State<AddUsers> {
                                     ),
                                     Text(
                                       '*',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.red,
                                         fontSize: 20,
@@ -404,7 +404,7 @@ class _AddUsersState extends State<AddUsers> {
                                                 .isTamil
                                             ? "தொலைபேசி எண்"
                                             : 'Phone Number',
-                                    hintStyle: GoogleFonts.manrope(
+                                    hintStyle: TextStyle(
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -426,7 +426,7 @@ class _AddUsersState extends State<AddUsers> {
                                               .isTamil
                                           ? "பணியாளர் ஐடி"
                                           : 'Staff Id',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                         color: greyblue,
@@ -434,7 +434,7 @@ class _AddUsersState extends State<AddUsers> {
                                     ),
                                     Text(
                                       '*',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.red,
                                         fontSize: 20,
@@ -461,7 +461,7 @@ class _AddUsersState extends State<AddUsers> {
                                               .isTamil
                                           ? "கடவுச்சொல்"
                                           : 'Password',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                         color: greyblue,
@@ -469,7 +469,7 @@ class _AddUsersState extends State<AddUsers> {
                                     ),
                                     Text(
                                       '*',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.red,
                                         fontSize: 20,
@@ -498,7 +498,7 @@ class _AddUsersState extends State<AddUsers> {
                                               .isTamil
                                           ? "பாத்திரங்கள்"
                                           : 'Role',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                         color: greyblue,
@@ -506,7 +506,7 @@ class _AddUsersState extends State<AddUsers> {
                                     ),
                                     Text(
                                       '*',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.red,
                                         fontSize: 20,
@@ -540,7 +540,7 @@ class _AddUsersState extends State<AddUsers> {
                                         Radius.circular(15),
                                       ),
                                       dropdownColor: Colors.white,
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontSize: 17,
                                         color: greyblue,
                                       ),
@@ -561,7 +561,7 @@ class _AddUsersState extends State<AddUsers> {
                                                     .isTamil
                                                 ? "நிர்வாகம்"
                                                 : 'Admin',
-                                            style: GoogleFonts.manrope(
+                                            style: TextStyle(
                                               color: Colors.grey[800],
                                             ),
                                           ),
@@ -574,7 +574,7 @@ class _AddUsersState extends State<AddUsers> {
                                                     .isTamil
                                                 ? "பயனர்"
                                                 : 'User',
-                                            style: GoogleFonts.manrope(
+                                            style: TextStyle(
                                               color: Colors.grey[800],
                                             ),
                                           ),
@@ -587,7 +587,7 @@ class _AddUsersState extends State<AddUsers> {
                                                     .isTamil
                                                 ? "வளாகம்"
                                                 : 'Campus',
-                                            style: GoogleFonts.manrope(
+                                            style: TextStyle(
                                               color: Colors.grey[800],
                                             ),
                                           ),
@@ -834,8 +834,7 @@ class _AddUsersState extends State<AddUsers> {
                                                                   .isTamil
                                                               ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
                                                               : "Are you sure?",
-                                                          style: GoogleFonts
-                                                              .manrope(
+                                                          style: TextStyle(
                                                             color: Colors.black,
                                                             fontSize: Provider.of<
                                                                             LanguageProvider>(
@@ -977,8 +976,8 @@ class _AddUsersState extends State<AddUsers> {
                                   child: Container(
                                     height: 50,
                                     width: double.maxFinite,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.black,
+                                    decoration:   BoxDecoration(
+                                      color: darkblue,
                                       borderRadius: const BorderRadius.all(
                                         Radius.circular(20),
                                       ),
@@ -989,7 +988,7 @@ class _AddUsersState extends State<AddUsers> {
                                                 .isTamil
                                             ? "சேர்க்க"
                                             : "Add",
-                                        style: GoogleFonts.manrope(
+                                        style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 17,
                                         ),

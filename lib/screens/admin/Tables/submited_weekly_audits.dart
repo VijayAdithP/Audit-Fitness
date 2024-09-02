@@ -85,7 +85,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
       selectedWeek = _formatWeek(selectedDate);
     }
     weekOfMonth = _getWeekOfMonth(widget.predate!);
-    printWeekRange(int.parse(selectedWeek), year);
+    // printWeekRange(int.parse(selectedWeek), year);
 
     fetchData();
     // _reportDataSource = ReportDataSource(context: context, reports: reports);
@@ -206,12 +206,13 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
       ));
 
       if (response.statusCode == 200) {
-        print(response.body);
+        // print(response.body);
         if (mounted) {
           setState(() {
             reports = (jsonDecode(response.body) as List)
                 .map((json) => NewWeeklyReport.fromJson(json))
                 .toList();
+            // print('Fetched reports: ${reports.length}');
             auditsDataJson = reports.map((report) => report.toJson()).toList();
             // Calculating the total valid observations
             totalObservations = reports.fold(
@@ -564,7 +565,14 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                                   .specificAreas?[specificAreaIndex]
                                   .auditDate ??
                               'No data';
-
+                          // print(specificArea);
+                          // print(reportObservation);
+                          // print(auditdate);
+                          // print(taskid);
+                          // print(specificArea);
+                          // print(reportObservation);
+                          // print(mainAreaIndex);
+                          // print(mainArea);
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -740,18 +748,15 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
                   fit: StackFit.expand,
                   children: [
                     sfdatagridwidget(),
-                    BackdropFilter(
-                      filter: ui.ImageFilter.blur(
-                        sigmaX: 8.0,
-                        sigmaY: 8.0,
-                      ),
-                      child: Positioned.fill(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: SpinKitThreeBounce(
-                            color: Color.fromARGB(255, 97, 81, 188),
-                            size: 30,
-                          ),
+                    Positioned.fill(
+                      child: BackdropFilter(
+                        filter: ui.ImageFilter.blur(
+                          sigmaX: 8.0,
+                          sigmaY: 8.0,
+                        ),
+                        child: SpinKitThreeBounce(
+                          color: Color.fromARGB(255, 97, 81, 188),
+                          size: 30,
                         ),
                       ),
                     ),
@@ -1060,15 +1065,36 @@ class ReportDataSource extends DataGridSource {
     }
 
     // Print statements for debugging
-    print('Images Value: $imagesValue');
-    print('Contains "bad": $containsBad');
-    print('Button Text: $buttonText');
+    // print('Images Value: $imagesValue');
+    // print('Contains "bad": $containsBad');
+    // print('Button Text: $buttonText');
 
     // If a button should be shown
     if (buttonText == 'View Images') {
+      int mainAreaIndex = 0;
+      int specificAreaIndex = 0;
+      int totalSpecificAreas = 0;
+
+      for (int i = 0; i < reports.length; i++) {
+        int specificAreasCount = reports[i].specificAreas!.length;
+        if (rowIndex < totalSpecificAreas + specificAreasCount) {
+          mainAreaIndex = i;
+          specificAreaIndex = rowIndex - totalSpecificAreas;
+          break;
+        }
+        totalSpecificAreas += specificAreasCount;
+      }
+
       // Calculate indices
-      int mainAreaIndex = rowIndex ~/ reports.first.specificAreas!.length;
-      int specificAreaIndex = rowIndex % reports.first.specificAreas!.length;
+      // int mainAreaIndex = rowIndex ~/ reports.first.specificAreas!.length;
+      // int specificAreaIndex = rowIndex % reports.first.specificAreas!.length;
+
+      // print(imagesValue);
+      // print(reports[mainAreaIndex].mainArea ?? 'Unknown');
+      // print(reports[mainAreaIndex].taskId ?? 'Unknown');
+      // print(mainAreaIndex);
+      // print(specificAreaIndex);
+      // print(object);
 
       return ConstrainedBox(
         constraints: const BoxConstraints(
@@ -1076,6 +1102,13 @@ class ReportDataSource extends DataGridSource {
         ),
         child: TextButton(
           onPressed: () {
+            // if (mainAreaIndex >= 0 && mainAreaIndex < reports.length) {
+            //   print(reports[mainAreaIndex].mainArea);
+            // } else {
+            //   print('Invalid index: $mainAreaIndex');
+            // }
+
+            // print(reports[mainAreaIndex].mainArea);
             onShowImageDialog(
               context,
               imagesValue,

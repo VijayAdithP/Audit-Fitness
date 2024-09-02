@@ -1161,7 +1161,7 @@ class _UserEditPageState extends State<UserEditPage> {
               Provider.of<LanguageProvider>(context).isTamil
                   ? "பயனரைத் திருத்து"
                   : "EDIT USER",
-              style: GoogleFonts.manrope(
+              style: TextStyle(
                 color: darkblue,
                 fontWeight: FontWeight.bold,
               ),
@@ -1269,7 +1269,7 @@ class _UserEditPageState extends State<UserEditPage> {
                                   Provider.of<LanguageProvider>(context).isTamil
                                       ? "முதல் பெயர்"
                                       : 'First Name',
-                                  style: GoogleFonts.manrope(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: darkblue,
@@ -1291,7 +1291,7 @@ class _UserEditPageState extends State<UserEditPage> {
                                   Provider.of<LanguageProvider>(context).isTamil
                                       ? "கடைசி பெயர்"
                                       : 'Last Name',
-                                  style: GoogleFonts.manrope(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: darkblue,
@@ -1313,7 +1313,7 @@ class _UserEditPageState extends State<UserEditPage> {
                                   Provider.of<LanguageProvider>(context).isTamil
                                       ? "பயனர் பெயர்"
                                       : 'UserName',
-                                  style: GoogleFonts.manrope(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: darkblue,
@@ -1335,7 +1335,7 @@ class _UserEditPageState extends State<UserEditPage> {
                                   Provider.of<LanguageProvider>(context).isTamil
                                       ? "தொலைபேசி எண்"
                                       : 'Phone Number',
-                                  style: GoogleFonts.manrope(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: darkblue,
@@ -1357,7 +1357,7 @@ class _UserEditPageState extends State<UserEditPage> {
                                   Provider.of<LanguageProvider>(context).isTamil
                                       ? "பணியாளர் ஐடி"
                                       : 'Staff Id',
-                                  style: GoogleFonts.manrope(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: darkblue,
@@ -1671,8 +1671,7 @@ class _UserEditPageState extends State<UserEditPage> {
                                                                     ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
                                                                     : "Are you sure?",
                                                                 style:
-                                                                    GoogleFonts
-                                                                        .manrope(
+                                                                    TextStyle(
                                                                   color:
                                                                       darkblue,
                                                                   fontSize:
@@ -1813,7 +1812,7 @@ class _UserEditPageState extends State<UserEditPage> {
                                                           .isTamil
                                                       ? "புதுப்பிக்க"
                                                       : "Update",
-                                                  style: GoogleFonts.manrope(
+                                                  style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 17,
                                                   ),
@@ -2071,8 +2070,7 @@ class _UserEditPageState extends State<UserEditPage> {
                                                                       .isTamil
                                                                   ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
                                                                   : "Are you sure?",
-                                                              style: GoogleFonts
-                                                                  .manrope(
+                                                              style:TextStyle(
                                                                 color: Colors
                                                                     .black,
                                                                 fontSize: Provider.of<LanguageProvider>(
@@ -2206,7 +2204,7 @@ class _UserEditPageState extends State<UserEditPage> {
                                                         .isTamil
                                                     ? "நீக்க"
                                                     : "Delete",
-                                                style: GoogleFonts.manrope(
+                                                style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 17,
                                                 ),

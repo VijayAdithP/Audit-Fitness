@@ -345,7 +345,7 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
                                                   weeklyTasks[index]
                                                           .weeklyTaskId ??
                                                       'No Task ID',
-                                                  style: GoogleFonts.manrope(
+                                                  style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       fontSize: 25,
@@ -358,7 +358,7 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
                                                       weeklyTasks[index]
                                                           .weekNumber!,
                                                       weeklyTasks[index].year!),
-                                                  style: GoogleFonts.manrope(
+                                                  style: TextStyle(
                                                     fontWeight: FontWeight.w500,
                                                     fontSize: 15,
                                                     color:

@@ -45,7 +45,7 @@ class UserAuditCards extends StatelessWidget {
             children: [
               Text(
                 cardtitle!,
-                style: GoogleFonts.manrope(
+                style: TextStyle(
                   fontSize:
                       Provider.of<LanguageProvider>(context).isTamil ? 23 : 25,
                   fontWeight: FontWeight.bold,
@@ -54,7 +54,7 @@ class UserAuditCards extends StatelessWidget {
               ),
               Text(
                 bottomtext!,
-                style: GoogleFonts.manrope(
+                style: TextStyle(
                   fontSize:
                       Provider.of<LanguageProvider>(context).isTamil ? 13 : 15,
                   fontWeight: FontWeight.bold,

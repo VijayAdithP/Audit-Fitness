@@ -437,7 +437,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   Provider.of<LanguageProvider>(context).isTamil
                                       ? "ஆடிட்டர்"
                                       : "Auditor",
-                                  style: GoogleFonts.manrope(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: greyblue,
@@ -448,7 +448,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   color: Colors.white,
                                   inside: Text(
                                     username,
-                                    style: GoogleFonts.manrope(
+                                    style: TextStyle(
                                       fontSize: 20,
                                     ),
                                   ),
@@ -458,7 +458,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   Provider.of<LanguageProvider>(context).isTamil
                                       ? "தொலைபேசி எண்"
                                       : "PhoneNumber",
-                                  style: GoogleFonts.manrope(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: greyblue,
@@ -469,7 +469,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   color: Colors.white,
                                   inside: Text(
                                     userDataNumber.toString(),
-                                    style: GoogleFonts.manrope(
+                                    style: TextStyle(
                                       fontSize: 20,
                                       color: greyblue,
                                     ),
@@ -480,7 +480,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   Provider.of<LanguageProvider>(context).isTamil
                                       ? "வேலை ஐடி"
                                       : "Audit Id",
-                                  style: GoogleFonts.manrope(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: greyblue,
@@ -491,7 +491,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   color: Colors.white,
                                   inside: Text(
                                     widget.auditId!,
-                                    style: GoogleFonts.manrope(
+                                    style: TextStyle(
                                       fontSize: 20,
                                       color: greyblue,
                                     ),
@@ -502,7 +502,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   Provider.of<LanguageProvider>(context).isTamil
                                       ? "தேதி"
                                       : "Date",
-                                  style: GoogleFonts.manrope(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: greyblue,
@@ -513,7 +513,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   color: Colors.white,
                                   inside: Text(
                                     widget.auditAuditRange!,
-                                    style: GoogleFonts.manrope(
+                                    style: TextStyle(
                                       fontSize: 20,
                                       color: greyblue,
                                     ),
@@ -524,7 +524,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   Provider.of<LanguageProvider>(context).isTamil
                                       ? "முக்கிய பகுதி பெயர்"
                                       : "Main Area Name",
-                                  style: GoogleFonts.manrope(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: greyblue,
@@ -535,7 +535,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   color: Colors.white,
                                   inside: Text(
                                     MainAreaVar,
-                                    style: GoogleFonts.manrope(
+                                    style: TextStyle(
                                       fontSize: 20,
                                       color: greyblue,
                                     ),
@@ -546,7 +546,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   Provider.of<LanguageProvider>(context).isTamil
                                       ? "பகுதி பெயர்"
                                       : "Area Name",
-                                  style: GoogleFonts.manrope(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: greyblue,
@@ -557,7 +557,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   color: Colors.white,
                                   inside: Text(
                                     widget.auditarea!,
-                                    style: GoogleFonts.manrope(
+                                    style: TextStyle(
                                       fontSize: 20,
                                       color: greyblue,
                                     ),
@@ -586,7 +586,7 @@ class _WeeklyUserAuditSubmmitPageState
                                                         .isTamil
                                                     ? question.questionTamil!
                                                     : question.question!,
-                                                style: GoogleFonts.manrope(
+                                                style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 20,
                                                   color: greyblue,
@@ -672,8 +672,7 @@ class _WeeklyUserAuditSubmmitPageState
                                                             .isTamil
                                                         ? "நிபந்தனையைக் குறிப்பிடவும்*"
                                                         : "Specify the condition *",
-                                                    hintStyle:
-                                                        GoogleFonts.manrope(
+                                                    hintStyle: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w500,
                                                       color: greyblue,
@@ -784,21 +783,35 @@ class _WeeklyUserAuditSubmmitPageState
                                                                             .devicePixelRatio
                                                                         : 0,
                                                                   ),
-                                                                  child: Text(
-                                                                    Provider.of<LanguageProvider>(context)
-                                                                            .isTamil
-                                                                        ? "எடுக்க*"
-                                                                        : "Take pic*",
-                                                                    style: GoogleFonts
-                                                                        .manrope(
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      color:
-                                                                          greyblue,
-                                                                    ),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Text(
+                                                                        Provider.of<LanguageProvider>(context).isTamil
+                                                                            ? "எடுக்க"
+                                                                            : "Take pic",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                          color:
+                                                                              greyblue,
+                                                                        ),
+                                                                      ),
+                                                                      Text(
+                                                                        '*',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              16,
+                                                                          color:
+                                                                              Colors.red,
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   ),
                                                                 ),
                                                               ],
@@ -877,21 +890,35 @@ class _WeeklyUserAuditSubmmitPageState
                                                                             .devicePixelRatio
                                                                         : 0,
                                                                   ),
-                                                                  child: Text(
-                                                                    Provider.of<LanguageProvider>(context)
-                                                                            .isTamil
-                                                                        ? "கேலரி*"
-                                                                        : "Add Image*",
-                                                                    style: GoogleFonts
-                                                                        .manrope(
-                                                                      fontSize:
-                                                                          16,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
-                                                                      color:
-                                                                          greyblue,
-                                                                    ),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Text(
+                                                                        Provider.of<LanguageProvider>(context).isTamil
+                                                                            ? "கேலரி"
+                                                                            : "Add Image",
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight:
+                                                                              FontWeight.w500,
+                                                                          color:
+                                                                              greyblue,
+                                                                        ),
+                                                                      ),
+                                                                      Text(
+                                                                        '*',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                          fontSize:
+                                                                              16,
+                                                                          color:
+                                                                              Colors.red,
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   ),
                                                                 ),
                                                               ],
@@ -989,7 +1016,7 @@ class _WeeklyUserAuditSubmmitPageState
                                   Provider.of<LanguageProvider>(context).isTamil
                                       ? "பகுதி பரிந்துரை"
                                       : "Any Suggestion?",
-                                  style: GoogleFonts.manrope(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
                                     color: greyblue,
@@ -1360,8 +1387,7 @@ class _WeeklyUserAuditSubmmitPageState
                                                                   .isTamil
                                                               ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
                                                               : "Are you sure?",
-                                                          style: GoogleFonts
-                                                              .manrope(
+                                                          style: TextStyle(
                                                             color: Colors.black,
                                                             fontSize: Provider.of<
                                                                             LanguageProvider>(

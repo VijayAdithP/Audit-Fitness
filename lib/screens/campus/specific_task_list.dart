@@ -316,7 +316,7 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
                                           Provider.of<LanguageProvider>(context)
                                                   .isTamil
                                               ? "பணி ஐடி"
-                                              : 'Search by task id',
+                                              : 'Search by taskId',
                                           style: TextStyle(
                                             fontSize:
                                                 Provider.of<LanguageProvider>(
@@ -429,8 +429,7 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
                                                         children: [
                                                           Text(
                                                             task.specificArea!,
-                                                            style: GoogleFonts
-                                                                .manrope(
+                                                            style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
@@ -441,8 +440,7 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
                                                           ),
                                                           Text(
                                                             task.actionTaken!,
-                                                            style: GoogleFonts
-                                                                .manrope(
+                                                            style: TextStyle(
                                                               fontWeight:
                                                                   FontWeight
                                                                       .w700,
@@ -801,14 +799,14 @@ class _CampusTaskSearchState extends State<CampusTaskSearch> {
                                       children: [
                                         Text(
                                           task.specificArea!,
-                                          style: GoogleFonts.manrope(
+                                          style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 25,
                                           ),
                                         ),
                                         Text(
                                           task.actionTaken!,
-                                          style: GoogleFonts.manrope(
+                                          style: TextStyle(
                                             fontWeight: FontWeight.w700,
                                             fontSize: 15,
                                             color: Colors.grey[700],

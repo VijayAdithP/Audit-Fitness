@@ -321,7 +321,7 @@ class _Drawer_State extends State<Drawer_> {
                               Provider.of<LanguageProvider>(context).isTamil
                                   ? "நிர்வாகி"
                                   : "Admin",
-                              style: GoogleFonts.manrope(
+                              style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.red,
@@ -420,7 +420,7 @@ class _Drawer_State extends State<Drawer_> {
                 Provider.of<LanguageProvider>(context).isTamil
                     ? "English"
                     : 'தமிழ்',
-                style: GoogleFonts.manrope(
+                style: TextStyle(
                   // fontWeight: FontWeight.w700,
                   color: darkblue,
                 ),
@@ -456,7 +456,7 @@ class _Drawer_State extends State<Drawer_> {
                 Provider.of<LanguageProvider>(context).isTamil
                     ? "வெளியேறு"
                     : 'Logout',
-                style: GoogleFonts.manrope(
+                style: TextStyle(
                   // fontWeight: FontWeight.w700,
                   color: darkblue,
                 ),
@@ -469,6 +469,7 @@ class _Drawer_State extends State<Drawer_> {
                     builder: (context) => const AuthScreen(),
                   ),
                 );
+                box.write("role", "out");
               },
             ),
           ),

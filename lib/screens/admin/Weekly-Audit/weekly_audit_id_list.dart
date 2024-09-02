@@ -112,7 +112,7 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
               Provider.of<LanguageProvider>(context).isTamil
                   ? "நிர்வாக வேலை"
                   : "Recent weekly audit id's",
-              style: GoogleFonts.manrope(
+              style: TextStyle(
                 color: darkblue,
                 fontWeight: FontWeight.bold,
                 fontSize:
@@ -507,7 +507,7 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                                                 .weeklyTaskId ??
                                                             'No Task ID',
                                                         style:
-                                                            GoogleFonts.manrope(
+                                                            TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 25,
@@ -523,7 +523,7 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                                             lastFiveTasks[index]
                                                                 .year!),
                                                         style:
-                                                            GoogleFonts.manrope(
+                                                            TextStyle(
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           fontSize: 15,
@@ -840,7 +840,7 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                                     Text(
                                       _filteredTasks[index].weeklyTaskId ??
                                           'No Task ID',
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 25,
                                         color: darkblue,
@@ -850,7 +850,7 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                                       getWeekDateRange(
                                           _filteredTasks[index].weekNumber!,
                                           _filteredTasks[index].year!),
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 15,
                                         color: darkblue,

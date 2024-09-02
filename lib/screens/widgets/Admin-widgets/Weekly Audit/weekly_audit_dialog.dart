@@ -177,7 +177,8 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
                   view: DateRangePickerView.month,
                   selectionMode: DateRangePickerSelectionMode.single,
                   initialSelectedDate: selectedDate,
-                  onSelectionChanged: (DateRangePickerSelectionChangedArgs args) {
+                  onSelectionChanged:
+                      (DateRangePickerSelectionChangedArgs args) {
                     Navigator.of(context).pop(args.value);
                   },
                   todayHighlightColor: greyblue,
@@ -275,15 +276,27 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   const SizedBox(height: 20),
-                  Text(
-                    Provider.of<LanguageProvider>(context).isTamil
-                        ? "வார பணி ஐடி"
-                        : "Weekly Task Id",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                      color: greyblue,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        Provider.of<LanguageProvider>(context).isTamil
+                            ? "வார பணி ஐடி"
+                            : "Weekly Task Id",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                          color: greyblue,
+                        ),
+                      ),
+                      Text(
+                        '*',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 5),
                   Badconditionields(
@@ -293,15 +306,27 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
                         : "Audit ID",
                   ),
                   const SizedBox(height: 20),
-                  Text(
-                    Provider.of<LanguageProvider>(context).isTamil
-                        ? "வார வேலை தேதி"
-                        : "Weekly Audit Date",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                      color: greyblue,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        Provider.of<LanguageProvider>(context).isTamil
+                            ? "வார வேலை தேதி"
+                            : "Weekly Audit Date",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                          color: greyblue,
+                        ),
+                      ),
+                      Text(
+                        '*',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 10),
                   GestureDetector(

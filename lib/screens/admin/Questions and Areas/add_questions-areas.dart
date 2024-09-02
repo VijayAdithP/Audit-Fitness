@@ -286,7 +286,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
               Provider.of<LanguageProvider>(context).isTamil
                   ? "பகுதிகளைச் சேர்க்கவும்"
                   : "ADD AREAS",
-              style: GoogleFonts.manrope(
+              style: TextStyle(
                 color: darkblue,
                 fontWeight: FontWeight.bold,
                 fontSize:
@@ -402,14 +402,14 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                               .isTamil
                                           ? "முக்கிய பகுதி"
                                           : "Main Area",
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontSize: 23,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
                                     Text(
                                       "*",
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontSize: 23,
                                         fontWeight: FontWeight.w700,
                                         color: Colors.red,
@@ -467,7 +467,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                                 .isTamil
                                             ? "முக்கிய பகுதி"
                                             : "Main Area",
-                                        hintStyle: GoogleFonts.manrope(
+                                        hintStyle: TextStyle(
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
@@ -496,14 +496,14 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                               .isTamil
                                           ? "பகுதி"
                                           : "Specific Area",
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontSize: 23,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
                                     Text(
                                       "*",
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontSize: 23,
                                         fontWeight: FontWeight.w700,
                                         color: Colors.red,
@@ -528,14 +528,14 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                               .isTamil
                                           ? "பகுதி தமிழில்"
                                           : "Tamil Specific Area",
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontSize: 23,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
                                     Text(
                                       "*",
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontSize: 23,
                                         fontWeight: FontWeight.w700,
                                         color: Colors.red,
@@ -575,7 +575,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                                   .isTamil
                                               ? "கேள்வி ${index + 1}"
                                               : "Question ${index + 1}",
-                                          style: GoogleFonts.manrope(
+                                          style: TextStyle(
                                             fontSize: 23,
                                             fontWeight: FontWeight.w700,
                                           ),
@@ -600,7 +600,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                                   const EdgeInsets.symmetric(
                                                       horizontal: 16),
                                               child: Text(question["question"]!,
-                                                  style: GoogleFonts.manrope(
+                                                  style: TextStyle(
                                                     fontSize: 16,
                                                     // fontWeight: FontWeight.bold,
                                                   )),
@@ -628,7 +628,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                                       horizontal: 16),
                                               child: Text(
                                                   question["question_tamil"]!,
-                                                  style: GoogleFonts.manrope(
+                                                  style: TextStyle(
                                                     fontSize: 16,
                                                     // fontWeight: FontWeight.bold,
                                                   )),
@@ -655,7 +655,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                                         .isTamil
                                                     ? "அகற்று"
                                                     : "Remove",
-                                                style: GoogleFonts.manrope(
+                                                style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 17,
                                                 ),
@@ -684,14 +684,14 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                               .isTamil
                                           ? "கேள்விகள்"
                                           : "Questions",
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontSize: 23,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
                                     Text(
                                       "*",
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontSize: 23,
                                         fontWeight: FontWeight.w700,
                                         color: Colors.red,
@@ -753,7 +753,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                                 .isTamil
                                             ? "கேள்விகள்"
                                             : "Questions",
-                                        hintStyle: GoogleFonts.manrope(
+                                        hintStyle: TextStyle(
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
@@ -828,7 +828,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                                 .isTamil
                                             ? "தமிழில் கேள்விகள்"
                                             : "Questions in Tamil",
-                                        hintStyle: GoogleFonts.manrope(
+                                        hintStyle: TextStyle(
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
@@ -912,7 +912,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                                 .isTamil
                                             ? "கேள்விகளைச் சேர்க்கவும்"
                                             : "Add Questions",
-                                        style: GoogleFonts.manrope(
+                                        style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 17,
                                         ),
@@ -1206,8 +1206,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                                                   .isTamil
                                                               ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
                                                               : "Are you sure?",
-                                                          style: GoogleFonts
-                                                              .manrope(
+                                                          style: TextStyle(
                                                             color: Colors.black,
                                                             fontSize: Provider.of<
                                                                             LanguageProvider>(
@@ -1329,7 +1328,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                                 .isTamil
                                             ? "வேலையை சமர்ப்பிக்கவும்"
                                             : "Submit Questions",
-                                        style: GoogleFonts.manrope(
+                                        style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 17,
                                         ),

@@ -137,14 +137,14 @@ class __Drawer_State extends State<_Drawer_> {
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.black,
+                                color: darkblue,
                               ),
                             ),
                             Text(
                               Provider.of<LanguageProvider>(context).isTamil
                                   ? "பயனர்"
                                   : "User",
-                              style: GoogleFonts.manrope(
+                              style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.red,
@@ -167,14 +167,14 @@ class __Drawer_State extends State<_Drawer_> {
                 child: Icon(
                   Icons.type_specimen_sharp,
                   size: 30,
-                  color: Colors.black,
+                  color: darkblue,
                 ),
               ),
               title: Text(
                 Provider.of<LanguageProvider>(context).isTamil
                     ? "English"
                     : 'தமிழ்',
-                style: GoogleFonts.manrope(
+                style: TextStyle(
                     // fontWeight: FontWeight.w700,
                     ),
               ),
@@ -195,16 +195,17 @@ class __Drawer_State extends State<_Drawer_> {
             child: ListTile(
               leading: CircleAvatar(
                 backgroundColor: Colors.white,
-                child: const Icon(
+                child: Icon(
                   Icons.logout_outlined,
                   size: 30,
+                  color: darkblue,
                 ),
               ),
               title: Text(
                 Provider.of<LanguageProvider>(context).isTamil
                     ? "வெளியேறு"
                     : 'Logout',
-                style: GoogleFonts.manrope(
+                style: TextStyle(
                     // fontWeight: FontWeight.w700,
                     ),
               ),
@@ -216,6 +217,7 @@ class __Drawer_State extends State<_Drawer_> {
                     builder: (context) => const AuthScreen(),
                   ),
                 );
+                box.write("role", "out");
               },
             ),
           ),

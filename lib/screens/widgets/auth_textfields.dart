@@ -33,7 +33,7 @@ class AuthTextfields extends StatelessWidget {
           obscureText: hidden,
           decoration: InputDecoration(
               hintText: hintText,
-              hintStyle: GoogleFonts.manrope(fontWeight: FontWeight.w500)),
+              hintStyle: TextStyle(fontWeight: FontWeight.w500)),
         ),
       ),
     );

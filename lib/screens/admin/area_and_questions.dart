@@ -53,7 +53,7 @@ class _AreaAndQuestionsPageState extends State<AreaAndQuestionsPage> {
                 Provider.of<LanguageProvider>(context).isTamil
                     ? "பகுதிகளை உருவாக்கவும்"
                     : "CREATE AREAS",
-                style: GoogleFonts.manrope(
+                style: TextStyle(
                   color: darkblue,
                   fontWeight: FontWeight.bold,
                   fontSize:

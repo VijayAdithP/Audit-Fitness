@@ -373,7 +373,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                             .isTamil
                                         ? "வார வேலை ஐடி"
                                         : 'Weekly Audit ID',
-                                    style: GoogleFonts.manrope(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
                                       color: darkblue,
@@ -386,7 +386,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                     color: Colors.white,
                                     inside: Text(
                                       widget.weeklyAuditId!,
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontSize: 17,
                                         // fontWeight: FontWeight.bold,
                                         color: darkblue,
@@ -399,7 +399,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                             .isTamil
                                         ? "வார வேலை தேதி"
                                         : 'Weekly Audit Date',
-                                    style: GoogleFonts.manrope(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
                                       color: darkblue,
@@ -412,7 +412,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                     color: Colors.white,
                                     inside: Text(
                                       widget.weeklyAuditRange!,
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontSize: 17,
                                         // fontWeight: FontWeight.bold,
                                         color: darkblue,
@@ -420,16 +420,28 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                     ),
                                   ),
                                   const SizedBox(height: 16.0),
-                                  Text(
-                                    Provider.of<LanguageProvider>(context)
-                                            .isTamil
-                                        ? "பயனர் பெயர்"
-                                        : 'User Name',
-                                    style: GoogleFonts.manrope(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: darkblue,
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        Provider.of<LanguageProvider>(context)
+                                                .isTamil
+                                            ? "பயனர் பெயர்"
+                                            : 'User Name',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: darkblue,
+                                        ),
+                                      ),
+                                      Text(
+                                        '*',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(
                                     height: 10,
@@ -488,7 +500,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                                       .isTamil
                                                   ? "முக்கிய பகுதி"
                                                   : "Enter username",
-                                          hintStyle: GoogleFonts.manrope(
+                                          hintStyle: TextStyle(
                                             fontWeight: FontWeight.w400,
                                             color: darkblue,
                                           ),
@@ -517,16 +529,28 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                     },
                                   ),
                                   const SizedBox(height: 16.0),
-                                  Text(
-                                    Provider.of<LanguageProvider>(context)
-                                            .isTamil
-                                        ? "குறிப்பிட்ட பகுதிகளைத் தேர்ந்தெடுக்கவும்"
-                                        : 'Select Specific Areas',
-                                    style: GoogleFonts.manrope(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: darkblue,
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        Provider.of<LanguageProvider>(context)
+                                                .isTamil
+                                            ? "குறிப்பிட்ட பகுதிகளைத் தேர்ந்தெடுக்கவும்"
+                                            : 'Select Specific Areas',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: darkblue,
+                                        ),
+                                      ),
+                                      Text(
+                                        '*',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.red,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(height: 10.0),
                                   Container(
@@ -590,10 +614,9 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                                                     : areaUser
                                                                         .areaSpecific!,
                                                                 style:
-                                                                    GoogleFonts
-                                                                        .manrope(
-                                                                  color: Colors
-                                                                      .black,
+                                                                   TextStyle(
+                                                                  color:
+                                                                      darkblue,
                                                                   fontSize: 17,
                                                                   fontWeight:
                                                                       FontWeight
@@ -701,10 +724,8 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                                                     .isTamil
                                                                 ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
                                                                 : "Are you sure?",
-                                                            style: GoogleFonts
-                                                                .manrope(
-                                                              color:
-                                                                  Colors.black,
+                                                            style: TextStyle(
+                                                              color: darkblue,
                                                               fontSize: Provider.of<
                                                                               LanguageProvider>(
                                                                           context)
@@ -827,7 +848,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                                   .isTamil
                                               ? "சமர்ப்பிக்க"
                                               : "Submit",
-                                          style: GoogleFonts.manrope(
+                                          style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 17,
                                           ),

@@ -158,17 +158,17 @@ class _Drawer_State extends State<Drawer_> {
                           children: [
                             Text(
                               username,
-                              style: GoogleFonts.manrope(
+                              style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w600,
-                                color: Colors.black,
+                                color: darkblue,
                               ),
                             ),
                             Text(
                               Provider.of<LanguageProvider>(context).isTamil
                                   ? "வளாகம்"
                                   : "Campus",
-                              style: GoogleFonts.manrope(
+                              style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.red,
@@ -186,16 +186,16 @@ class _Drawer_State extends State<Drawer_> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
-              leading: const Icon(
+              leading:   Icon(
                 Icons.type_specimen_sharp,
                 size: 30,
-                color: Colors.black,
+                color: darkblue,
               ),
               title: Text(
                 Provider.of<LanguageProvider>(context).isTamil
                     ? "English"
                     : 'தமிழ்',
-                style: GoogleFonts.manrope(
+                style: TextStyle(
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -222,7 +222,7 @@ class _Drawer_State extends State<Drawer_> {
                 Provider.of<LanguageProvider>(context).isTamil
                     ? "வெளியேறு"
                     : 'Logout',
-                style: GoogleFonts.manrope(
+                style: TextStyle(
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -234,7 +234,8 @@ class _Drawer_State extends State<Drawer_> {
                   MaterialPageRoute(
                     builder: (context) => const AuthScreen(),
                   ),
-                );
+                );                box.write("role", "out");
+
               },
             ),
           ),

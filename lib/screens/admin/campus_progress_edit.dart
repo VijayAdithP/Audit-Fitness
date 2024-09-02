@@ -263,7 +263,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
             Provider.of<LanguageProvider>(context).isTamil
                 ? "வேலைகளை உருவாக்க"
                 : "CREATE TASK",
-            style: GoogleFonts.manrope(
+            style: TextStyle(
               color: darkblue,
               fontWeight: FontWeight.bold,
               fontSize:
@@ -387,7 +387,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                                       .isTamil
                                                   ? "பணி ஐடி"
                                                   : 'Task Id',
-                                              style: GoogleFonts.manrope(
+                                              style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 20,
                                                 color: greyblue,
@@ -400,7 +400,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                               color: Colors.white,
                                               inside: Text(
                                                 widget.taskid,
-                                                style: GoogleFonts.manrope(
+                                                style: TextStyle(
                                                   fontWeight: FontWeight.w700,
                                                   fontSize: 17,
                                                 ),
@@ -423,7 +423,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                                       .isTamil
                                                   ? "தேதி"
                                                   : 'Audit Date',
-                                              style: GoogleFonts.manrope(
+                                              style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 20,
                                                 color: greyblue,
@@ -436,7 +436,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                               color: Colors.white,
                                               inside: Text(
                                                 formattedDate,
-                                                style: GoogleFonts.manrope(
+                                                style: TextStyle(
                                                   fontWeight: FontWeight.w700,
                                                   fontSize: 17,
                                                 ),
@@ -456,7 +456,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                             .isTamil
                                         ? "முக்கிய பகுதி"
                                         : 'Main Area',
-                                    style: GoogleFonts.manrope(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
                                       color: greyblue,
@@ -472,7 +472,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                               .isTamil
                                           ? "முக்கிய பகுதி"
                                           : widget.mainArea,
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 17,
                                       ),
@@ -486,7 +486,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                             .isTamil
                                         ? "பகுதி"
                                         : 'Specific Area',
-                                    style: GoogleFonts.manrope(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
                                       color: greyblue,
@@ -502,7 +502,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                               .isTamil
                                           ? "பகுதி"
                                           : widget.specificArea,
-                                      style: GoogleFonts.manrope(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.w700,
                                         fontSize: 17,
                                       ),
@@ -518,7 +518,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                                 .isTamil
                                             ? "பணி ஐடி"
                                             : 'Specific Task Id',
-                                        style: GoogleFonts.manrope(
+                                        style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,
                                           color: greyblue,
@@ -526,7 +526,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                       ),
                                       Text(
                                         " *",
-                                        style: GoogleFonts.manrope(
+                                        style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,
                                           color: Colors.red,
@@ -555,7 +555,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                                 .isTamil
                                             ? "நடவடிக்கை எடுக்க வேண்டும்"
                                             : 'Action to be Taken',
-                                        style: GoogleFonts.manrope(
+                                        style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,
                                           color: greyblue,
@@ -563,7 +563,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                       ),
                                       Text(
                                         " *",
-                                        style: GoogleFonts.manrope(
+                                        style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,
                                           color: Colors.red,
@@ -871,8 +871,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                                                       .isTamil
                                                                   ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
                                                                   : "Are you sure?",
-                                                              style: GoogleFonts
-                                                                  .manrope(
+                                                              style: TextStyle(
                                                                 color: Colors
                                                                     .black,
                                                                 fontSize: Provider.of<LanguageProvider>(
@@ -1002,7 +1001,7 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                                     .isTamil
                                                 ? "பணியை உருவாக்க"
                                                 : "Create Task",
-                                            style: GoogleFonts.manrope(
+                                            style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 17,
                                             ),

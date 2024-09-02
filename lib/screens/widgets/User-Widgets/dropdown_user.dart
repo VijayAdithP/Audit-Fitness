@@ -69,7 +69,7 @@ class _DropdownUserState extends State<DropdownUser> {
               Provider.of<LanguageProvider>(context).isTamil
                   ? "நிலை"
                   : "Condition",
-              style: GoogleFonts.manrope(
+              style: GoogleFonts.poppins(
                 fontWeight: FontWeight.w500,
                 fontSize: 18,
               ),
@@ -81,7 +81,7 @@ class _DropdownUserState extends State<DropdownUser> {
             Radius.circular(10),
           ),
           dropdownColor: Colors.white,
-          style: GoogleFonts.manrope(
+          style: TextStyle(
             fontSize: 20,
             color: Colors.grey[800],
             fontWeight: FontWeight.bold,
@@ -108,7 +108,7 @@ class _DropdownUserState extends State<DropdownUser> {
                   Provider.of<LanguageProvider>(context).isTamil
                       ? "நல்ல நிலை"
                       : 'Good condition',
-                  style: GoogleFonts.manrope(
+                  style: GoogleFonts.poppins(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                     // color: fontColor,
@@ -128,7 +128,7 @@ class _DropdownUserState extends State<DropdownUser> {
                   Provider.of<LanguageProvider>(context).isTamil
                       ? "மோசமான நிலை"
                       : 'Bad Condition',
-                  style: GoogleFonts.manrope(
+                  style: GoogleFonts.poppins(
                     fontWeight: FontWeight.bold,
                     fontSize: 18,
                     // color: fontColor,
