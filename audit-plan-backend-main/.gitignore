@@ -1,2 +1,2 @@
-audit-plan-backend-main\node_modules
-audit-plan-backend-main\.env
+node_modules
+.env
