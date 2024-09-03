@@ -16,8 +16,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -141,35 +139,37 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
 
       if (response.statusCode == 200) {
         try {
-          if (mounted) {
-            setState(() {
-              useractiondis = true;
-              DelightToastBar(
-                position: DelightSnackbarPosition.top,
-                autoDismiss: true,
-                animationDuration: const Duration(milliseconds: 100),
-                snackbarDuration: const Duration(milliseconds: 800),
-                builder: (context) => ToastCard(
-                  color: alertgreen,
-                  leading: const Icon(
-                    Icons.done,
-                    size: 28,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    _languageProvider.isTamil
-                        ? "வேலை வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
-                        : "Audit successfully assigned",
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 14,
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              setState(() {
+                useractiondis = true;
+                DelightToastBar(
+                  position: DelightSnackbarPosition.top,
+                  autoDismiss: true,
+                  animationDuration: const Duration(milliseconds: 100),
+                  snackbarDuration: const Duration(milliseconds: 800),
+                  builder: (context) => ToastCard(
+                    color: alertgreen,
+                    leading: const Icon(
+                      Icons.done,
+                      size: 28,
                       color: Colors.white,
                     ),
+                    title: Text(
+                      _languageProvider.isTamil
+                          ? "வேலை வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
+                          : "Audit successfully assigned",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
-                ),
-              ).show(context);
-            });
-          }
+                ).show(context);
+              });
+            }
+          });
 
           Get.offAll(const AdminNavPage());
         } catch (e) {
@@ -420,10 +420,11 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                     ),
                                   ),
                                   const SizedBox(height: 16.0),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        Provider.of<LanguageProvider>(context)
+                                  Text.rich(
+                                    TextSpan(children: [
+                                      TextSpan(
+                                        text: Provider.of<LanguageProvider>(
+                                                    context)
                                                 .isTamil
                                             ? "பயனர் பெயர்"
                                             : 'User Name',
@@ -433,16 +434,39 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                           color: darkblue,
                                         ),
                                       ),
-                                      Text(
-                                        '*',
+                                      TextSpan(
+                                        text: "*",
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,
                                           color: Colors.red,
                                         ),
-                                      ),
-                                    ],
+                                      )
+                                    ]),
                                   ),
+                                  // Row(
+                                  //   children: [
+                                  //     Text(
+                                  // Provider.of<LanguageProvider>(context)
+                                  //         .isTamil
+                                  //     ? "பயனர் பெயர்"
+                                  //     : 'User Name',
+                                  // style: TextStyle(
+                                  //   fontWeight: FontWeight.bold,
+                                  //   fontSize: 20,
+                                  //   color: darkblue,
+                                  // ),
+                                  //     ),
+                                  //     Text(
+                                  //       '*',
+                                  //       style: TextStyle(
+                                  //         fontWeight: FontWeight.bold,
+                                  //         fontSize: 20,
+                                  //         color: Colors.red,
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
                                   const SizedBox(
                                     height: 10,
                                   ),
@@ -469,6 +493,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                     constraints: BoxConstraints(maxHeight: 500),
                                     builder: (context, controller, focusNode) {
                                       return TextField(
+                                        maxLines: null,
                                         textInputAction: TextInputAction.done,
                                         controller: controller,
                                         focusNode: focusNode,
@@ -529,10 +554,11 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                     },
                                   ),
                                   const SizedBox(height: 16.0),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        Provider.of<LanguageProvider>(context)
+                                  Text.rich(
+                                    TextSpan(children: [
+                                      TextSpan(
+                                        text: Provider.of<LanguageProvider>(
+                                                    context)
                                                 .isTamil
                                             ? "குறிப்பிட்ட பகுதிகளைத் தேர்ந்தெடுக்கவும்"
                                             : 'Select Specific Areas',
@@ -542,16 +568,41 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                           color: darkblue,
                                         ),
                                       ),
-                                      Text(
-                                        '*',
+                                      TextSpan(
+                                        text: '*',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,
                                           color: Colors.red,
                                         ),
                                       ),
-                                    ],
+                                    ]),
                                   ),
+                                  // Row(
+                                  //   children: [
+                                  //     Expanded(
+                                  //       child: Text(
+                                  // Provider.of<LanguageProvider>(context)
+                                  //         .isTamil
+                                  //     ? "குறிப்பிட்ட பகுதிகளைத் தேர்ந்தெடுக்கவும்"
+                                  //     : 'Select Specific Areas',
+                                  // style: TextStyle(
+                                  //   fontWeight: FontWeight.bold,
+                                  //   fontSize: 20,
+                                  //   color: darkblue,
+                                  // ),
+                                  //       ),
+                                  //     ),
+                                  //     Text(
+                                  //       '*',
+                                  //       style: TextStyle(
+                                  //         fontWeight: FontWeight.bold,
+                                  //         fontSize: 20,
+                                  //         color: Colors.red,
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
                                   const SizedBox(height: 10.0),
                                   Container(
                                     // height: MediaQuery.of(context).size.height / 2,
@@ -614,7 +665,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                                                     : areaUser
                                                                         .areaSpecific!,
                                                                 style:
-                                                                   TextStyle(
+                                                                    TextStyle(
                                                                   color:
                                                                       darkblue,
                                                                   fontSize: 17,

@@ -92,7 +92,6 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
 
       if (response.statusCode == 200) {
         // final SharedPreferences? prefs = await _prefs;
-        String weeklyauditId = _weeklyauditIdController.text;
         // await prefs?.setString('weeklyauditId', weeklyauditId);
         DelightToastBar(
           position: DelightSnackbarPosition.top,
@@ -276,27 +275,49 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Text(
-                        Provider.of<LanguageProvider>(context).isTamil
+                  // Row(
+                  //   children: [
+                  //     Text(
+                  //       Provider.of<LanguageProvider>(context).isTamil
+                  //           ? "வார பணி ஐடி"
+                  //           : "Weekly Task Id",
+                  //       style: TextStyle(
+                  //         fontWeight: FontWeight.bold,
+                  //         fontSize: 17,
+                  //         color: greyblue,
+                  //       ),
+                  //     ),
+                  //     Text(
+                  //       '*',
+                  //       style: TextStyle(
+                  //         fontWeight: FontWeight.bold,
+                  //         fontSize: 20,
+                  //         color: Colors.red,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  Text.rich(
+                    TextSpan(children: [
+                      TextSpan(
+                        text: Provider.of<LanguageProvider>(context).isTamil
                             ? "வார பணி ஐடி"
                             : "Weekly Task Id",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 17,
+                          fontSize: 19,
                           color: greyblue,
                         ),
                       ),
-                      Text(
-                        '*',
+                      TextSpan(
+                        text: "*",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.red,
+                          fontSize: 19,
+                          color: needred,
                         ),
                       ),
-                    ],
+                    ]),
                   ),
                   const SizedBox(height: 5),
                   Badconditionields(
@@ -306,27 +327,49 @@ class WeeklyAuditDialogState extends State<WeeklyAuditDialog> {
                         : "Audit ID",
                   ),
                   const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Text(
-                        Provider.of<LanguageProvider>(context).isTamil
+                  // Row(
+                  //   children: [
+                  //     Text(
+                  //       Provider.of<LanguageProvider>(context).isTamil
+                  //           ? "வார வேலை தேதி"
+                  //           : "Weekly Audit Date",
+                  //       style: TextStyle(
+                  //         fontWeight: FontWeight.bold,
+                  //         fontSize: 17,
+                  //         color: greyblue,
+                  //       ),
+                  //     ),
+                  //     Text(
+                  //       '*',
+                  //       style: TextStyle(
+                  //         fontWeight: FontWeight.bold,
+                  //         fontSize: 20,
+                  //         color: Colors.red,
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  Text.rich(
+                    TextSpan(children: [
+                      TextSpan(
+                        text: Provider.of<LanguageProvider>(context).isTamil
                             ? "வார வேலை தேதி"
                             : "Weekly Audit Date",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 17,
+                          fontSize: 19,
                           color: greyblue,
                         ),
                       ),
-                      Text(
-                        '*',
+                      TextSpan(
+                        text: "*",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.red,
+                          fontSize: 19,
+                          color: needred,
                         ),
                       ),
-                    ],
+                    ]),
                   ),
                   const SizedBox(height: 10),
                   GestureDetector(

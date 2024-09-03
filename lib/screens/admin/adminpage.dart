@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
@@ -18,7 +17,6 @@ import 'package:auditfitnesstest/screens/widgets/Admin-widgets/audit-id-cards.da
 import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -749,8 +747,15 @@ class _AdminPageState extends State<AdminPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _languageProvider = Provider.of<LanguageProvider>(context);
+  }
+
+  late LanguageProvider _languageProvider;
+
+  @override
   Widget build(BuildContext context) {
-    String username = box.read('username');
     return Container(
       color: HexColor("#FFFFFF"),
       child: SafeArea(
@@ -761,7 +766,10 @@ class _AdminPageState extends State<AdminPage> {
             ),
             dismissDirection: DismissDirection.startToEnd,
             shape: StadiumBorder(),
-            content: Text("Tap again to exit the app"),
+            backgroundColor: HexColor("#383838"),
+            content: Text(_languageProvider.isTamil
+                ? "பயன்பாட்டிலிருந்து வெளியேற மீண்டும் அழுத்தவும்"
+                : "Tap again to exit the app"),
             behavior: SnackBarBehavior.floating,
           ),
           child: Scaffold(

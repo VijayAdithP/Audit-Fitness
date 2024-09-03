@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:auditfitnesstest/screens/admin/viewing%20pages/view_all_users.dart';
-import 'package:auditfitnesstest/screens/auth_screen.dart';
 import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

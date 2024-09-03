@@ -4,8 +4,6 @@ import 'package:auditfitnesstest/screens/admin/Questions%20and%20Areas/add_quest
 import 'package:auditfitnesstest/screens/widgets/Admin-widgets/audit-id-cards.dart';
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:provider/provider.dart';
 
@@ -19,8 +17,6 @@ class AreaAndQuestionsPage extends StatefulWidget {
 class _AreaAndQuestionsPageState extends State<AreaAndQuestionsPage> {
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
-    String FCMtoken = box.read('FCMtoken');
     return Container(
       color: HexColor("#FFFFFF"),
       child: SafeArea(

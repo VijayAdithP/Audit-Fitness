@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
 import 'package:auditfitnesstest/screens/widgets/Admin-widgets/audit-id-cards.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 // class CampusNavPage extends StatefulWidget {
@@ -186,7 +185,7 @@ class _Drawer_State extends State<Drawer_> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ListTile(
-              leading:   Icon(
+              leading: Icon(
                 Icons.type_specimen_sharp,
                 size: 30,
                 color: darkblue,
@@ -234,8 +233,8 @@ class _Drawer_State extends State<Drawer_> {
                   MaterialPageRoute(
                     builder: (context) => const AuthScreen(),
                   ),
-                );                box.write("role", "out");
-
+                );
+                box.write("role", "out");
               },
             ),
           ),
@@ -279,7 +278,6 @@ class _CampusPageState extends State<CampusPage> {
 
   @override
   Widget build(BuildContext context) {
-    final String username = box.read('username');
     return Container(
       color: Colors.white,
       child: SafeArea(

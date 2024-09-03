@@ -7,7 +7,6 @@ import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 // import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -506,8 +505,7 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                                         lastFiveTasks[index]
                                                                 .weeklyTaskId ??
                                                             'No Task ID',
-                                                        style:
-                                                            TextStyle(
+                                                        style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 25,
@@ -522,8 +520,7 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                                                 .weekNumber!,
                                                             lastFiveTasks[index]
                                                                 .year!),
-                                                        style:
-                                                            TextStyle(
+                                                        style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           fontSize: 15,

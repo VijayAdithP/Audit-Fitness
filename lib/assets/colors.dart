@@ -12,3 +12,4 @@ final Color black = HexColor("#000000");
 final Color typicalblue = HexColor("#448EE4");
 final Color alertgreen = HexColor("#9cc069");
 final Color alertred = Color.fromARGB(255, 255, 99, 88);
+final Color needred = Colors.red;

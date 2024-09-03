@@ -1,6 +1,4 @@
-import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Badconditionields extends StatelessWidget {
   const Badconditionields({
@@ -25,7 +23,7 @@ class Badconditionields extends StatelessWidget {
       decoration: InputDecoration(
         filled: true,
         fillColor: Colors.white,
-        enabledBorder: OutlineInputBorder(  
+        enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(10),
           ),

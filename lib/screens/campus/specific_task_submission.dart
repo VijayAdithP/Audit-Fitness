@@ -14,7 +14,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -42,7 +42,6 @@ class SpecificTaskSubmission extends StatefulWidget {
 class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
   final box = GetStorage();
   String? selectedCondition;
-  int _selectedIndex = 1;
   List<ReportbySpecificArea> report = [];
   bool _useractblock = false;
 
@@ -104,35 +103,37 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
       // });
       if (response.statusCode == 200) {
         // print(response.body);
-        if (mounted) {
-          setState(() {
-            DelightToastBar(
-              position: DelightSnackbarPosition.top,
-              autoDismiss: true,
-              animationDuration: const Duration(milliseconds: 100),
-              snackbarDuration: const Duration(milliseconds: 800),
-              builder: (context) => ToastCard(
-                color: alertgreen,
-                leading: const Icon(
-                  Icons.done,
-                  size: 28,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  _languageProvider.isTamil
-                      ? "முன்னேற்றம் வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
-                      : "Progress successfully submited",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 14,
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            setState(() {
+              DelightToastBar(
+                position: DelightSnackbarPosition.top,
+                autoDismiss: true,
+                animationDuration: const Duration(milliseconds: 100),
+                snackbarDuration: const Duration(milliseconds: 800),
+                builder: (context) => ToastCard(
+                  color: alertgreen,
+                  leading: const Icon(
+                    Icons.done,
+                    size: 28,
                     color: Colors.white,
                   ),
+                  title: Text(
+                    _languageProvider.isTamil
+                        ? "முன்னேற்றம் வெற்றிகரமாக சமர்ப்பிக்கப்பட்டது"
+                        : "Progress successfully submited",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
-              ),
-            ).show(context);
-            _useractblock = true;
-          });
-        }
+              ).show(context);
+              _useractblock = true;
+            });
+          }
+        });
         Get.offAll(const CampusMainPage());
         // Navigator.of(context).pop();
         // Navigator.of(context).pop();
@@ -215,7 +216,7 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
           children: [
             Divider(
               thickness: 3,
-              color: greyblue,
+              color: Colors.grey.withOpacity(0.5),
               height: 20,
             ),
             Text(
@@ -610,7 +611,7 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
                                       _buildAuditData(context, item.auditData),
                                       Divider(
                                         thickness: 3,
-                                        color: greyblue,
+                                        color: Colors.grey.withOpacity(0.5),
                                         height: 20,
                                       ),
                                       const SizedBox(height: 10.0),
@@ -737,6 +738,9 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10),
                                           ),
+                                          border: Border.all(
+                                            color: Colors.grey[400]!,
+                                          ),
                                         ),
                                         child: RadioListTile<String>(
                                           activeColor: greyblue,
@@ -766,6 +770,9 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
                                           color: Colors.white,
                                           borderRadius: BorderRadius.all(
                                             Radius.circular(10),
+                                          ),
+                                          border: Border.all(
+                                            color: Colors.grey[400]!,
                                           ),
                                         ),
                                         child: RadioListTile<String>(

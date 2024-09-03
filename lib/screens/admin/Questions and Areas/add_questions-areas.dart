@@ -16,7 +16,6 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -395,27 +394,51 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      Provider.of<LanguageProvider>(context)
-                                              .isTamil
-                                          ? "முக்கிய பகுதி"
-                                          : "Main Area",
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                //       Provider.of<LanguageProvider>(context)
+                                //               .isTamil
+                                //           ? "முக்கிய பகுதி"
+                                //           : "Main Area",
+                                //       style: TextStyle(
+                                //         fontSize: 23,
+                                //         fontWeight: FontWeight.w700,
+                                //       ),
+                                //     ),
+                                //     Text(
+                                //       "*",
+                                //       style: TextStyle(
+                                //         fontSize: 23,
+                                //         fontWeight: FontWeight.w700,
+                                //         color: Colors.red,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                Text.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text:
+                                          Provider.of<LanguageProvider>(context)
+                                                  .isTamil
+                                              ? "முக்கிய பகுதி"
+                                              : "Main Area",
                                       style: TextStyle(
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 23,
-                                        fontWeight: FontWeight.w700,
+                                        color: greyblue,
                                       ),
                                     ),
-                                    Text(
-                                      "*",
+                                    TextSpan(
+                                      text: "*",
                                       style: TextStyle(
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 23,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.red,
+                                        color: needred,
                                       ),
                                     ),
-                                  ],
+                                  ]),
                                 ),
                                 const SizedBox(height: 10),
                                 TypeAheadField(
@@ -439,6 +462,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                   constraints: BoxConstraints(maxHeight: 120),
                                   builder: (context, controller, focusNode) {
                                     return TextField(
+                                      maxLines: null,
                                       textInputAction: TextInputAction.done,
                                       controller: controller,
                                       focusNode: focusNode,
@@ -489,27 +513,51 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                   },
                                 ),
                                 const SizedBox(height: 16.0),
-                                Row(
-                                  children: [
-                                    Text(
-                                      Provider.of<LanguageProvider>(context)
-                                              .isTamil
-                                          ? "பகுதி"
-                                          : "Specific Area",
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                //       Provider.of<LanguageProvider>(context)
+                                //               .isTamil
+                                //           ? "பகுதி"
+                                //           : "Specific Area",
+                                //       style: TextStyle(
+                                //         fontSize: 23,
+                                //         fontWeight: FontWeight.w700,
+                                //       ),
+                                //     ),
+                                //     Text(
+                                //       "*",
+                                //       style: TextStyle(
+                                //         fontSize: 23,
+                                //         fontWeight: FontWeight.w700,
+                                //         color: Colors.red,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                Text.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text:
+                                          Provider.of<LanguageProvider>(context)
+                                                  .isTamil
+                                              ? "பகுதி"
+                                              : "Specific Area",
                                       style: TextStyle(
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 23,
-                                        fontWeight: FontWeight.w700,
+                                        color: greyblue,
                                       ),
                                     ),
-                                    Text(
-                                      "*",
+                                    TextSpan(
+                                      text: "*",
                                       style: TextStyle(
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 23,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.red,
+                                        color: needred,
                                       ),
                                     ),
-                                  ],
+                                  ]),
                                 ),
                                 const SizedBox(height: 10),
                                 softtextfield(
@@ -517,31 +565,55 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                   hintText:
                                       Provider.of<LanguageProvider>(context)
                                               .isTamil
-                                          ? "குறிப்பிட்ட பகுதி"
+                                          ? "பகுதி"
                                           : "Specific Area",
                                 ),
                                 const SizedBox(height: 16.0),
-                                Row(
-                                  children: [
-                                    Text(
-                                      Provider.of<LanguageProvider>(context)
-                                              .isTamil
-                                          ? "பகுதி தமிழில்"
-                                          : "Tamil Specific Area",
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                //       Provider.of<LanguageProvider>(context)
+                                //               .isTamil
+                                //           ? "பகுதி தமிழில்"
+                                //           : "Tamil Specific Area",
+                                //       style: TextStyle(
+                                //         fontSize: 23,
+                                //         fontWeight: FontWeight.w700,
+                                //       ),
+                                //     ),
+                                //     Text(
+                                //       "*",
+                                //       style: TextStyle(
+                                //         fontSize: 23,
+                                //         fontWeight: FontWeight.w700,
+                                //         color: Colors.red,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                Text.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text:
+                                          Provider.of<LanguageProvider>(context)
+                                                  .isTamil
+                                              ? "பகுதி தமிழில்"
+                                              : "Tamil Specific Area",
                                       style: TextStyle(
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 23,
-                                        fontWeight: FontWeight.w700,
+                                        color: greyblue,
                                       ),
                                     ),
-                                    Text(
-                                      "*",
+                                    TextSpan(
+                                      text: "*",
                                       style: TextStyle(
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 23,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.red,
+                                        color: needred,
                                       ),
                                     ),
-                                  ],
+                                  ]),
                                 ),
                                 const SizedBox(height: 10),
                                 softtextfield(
@@ -549,7 +621,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                   hintText:
                                       Provider.of<LanguageProvider>(context)
                                               .isTamil
-                                          ? "தமிழ் குறிப்பிட்ட பகுதி"
+                                          ? "பகுதி தமிழில்"
                                           : "Tamil Specific Area",
                                 ),
                                 // const SizedBox(height: 16.0),
@@ -677,27 +749,51 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                 const SizedBox(
                                   height: 16,
                                 ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      Provider.of<LanguageProvider>(context)
-                                              .isTamil
-                                          ? "கேள்விகள்"
-                                          : "Questions",
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                //       Provider.of<LanguageProvider>(context)
+                                //               .isTamil
+                                //           ? "கேள்விகள்"
+                                //           : "Questions",
+                                //       style: TextStyle(
+                                //         fontSize: 23,
+                                //         fontWeight: FontWeight.w700,
+                                //       ),
+                                //     ),
+                                //     Text(
+                                //       "*",
+                                //       style: TextStyle(
+                                //         fontSize: 23,
+                                //         fontWeight: FontWeight.w700,
+                                //         color: Colors.red,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                Text.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text:
+                                          Provider.of<LanguageProvider>(context)
+                                                  .isTamil
+                                              ? "கேள்விகள்"
+                                              : "Questions",
                                       style: TextStyle(
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 23,
-                                        fontWeight: FontWeight.w700,
+                                        color: greyblue,
                                       ),
                                     ),
-                                    Text(
-                                      "*",
+                                    TextSpan(
+                                      text: "*",
                                       style: TextStyle(
+                                        fontWeight: FontWeight.bold,
                                         fontSize: 23,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.red,
+                                        color: needred,
                                       ),
                                     ),
-                                  ],
+                                  ]),
                                 ),
                                 const SizedBox(height: 10),
                                 TypeAheadField(
@@ -903,7 +999,7 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                     decoration: BoxDecoration(
                                       color: lightblue,
                                       borderRadius: BorderRadius.all(
-                                        Radius.circular(20),
+                                        Radius.circular(15),
                                       ),
                                     ),
                                     child: Center(
@@ -1319,15 +1415,15 @@ class _AddQuestionAndAreasState extends State<AddQuestionAndAreas> {
                                     decoration: BoxDecoration(
                                       color: greyblue,
                                       borderRadius: BorderRadius.all(
-                                        Radius.circular(20),
+                                        Radius.circular(15),
                                       ),
                                     ),
                                     child: Center(
                                       child: Text(
                                         Provider.of<LanguageProvider>(context)
                                                 .isTamil
-                                            ? "வேலையை சமர்ப்பிக்கவும்"
-                                            : "Submit Questions",
+                                            ? "சமர்ப்பிக்க"
+                                            : "Submit",
                                         style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 17,

@@ -6,7 +6,6 @@ import 'package:auditfitnesstest/screens/campus/specific_task_submission.dart';
 import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,7 +19,6 @@ class SpecificTaskList extends StatefulWidget {
 class _SpecificTaskListState extends State<SpecificTaskList> {
   List<SpecificTask> tasks = [];
   bool isLoading = false;
-  int _currIndex = 0;
 
   @override
   void initState() {

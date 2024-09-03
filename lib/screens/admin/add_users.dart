@@ -11,7 +11,6 @@ import 'package:delightful_toast/toast/components/toast_card.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class AddUsers extends StatefulWidget {
@@ -239,28 +238,52 @@ class _AddUsersState extends State<AddUsers> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      Provider.of<LanguageProvider>(context)
-                                              .isTamil
-                                          ? "முதல் பெயர்"
-                                          : 'First Name',
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                // Provider.of<LanguageProvider>(context)
+                                //         .isTamil
+                                //     ? "முதல் பெயர்"
+                                //     : 'First Name',
+                                // style: TextStyle(
+                                //   fontWeight: FontWeight.bold,
+                                //   fontSize: 20,
+                                //   color: greyblue,
+                                // ),
+                                //     ),
+                                //     Text(
+                                //       '*',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         color: Colors.red,
+                                //         fontSize: 20,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                Text.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text:
+                                          Provider.of<LanguageProvider>(context)
+                                                  .isTamil
+                                              ? "முதல் பெயர்"
+                                              : 'First Name',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                         color: greyblue,
                                       ),
                                     ),
-                                    Text(
-                                      '*',
+                                    TextSpan(
+                                      text: "*",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.red,
                                         fontSize: 20,
+                                        color: needred,
                                       ),
                                     ),
-                                  ],
+                                  ]),
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -274,28 +297,52 @@ class _AddUsersState extends State<AddUsers> {
                                           : 'First Name',
                                 ),
                                 const SizedBox(height: 16.0),
-                                Row(
-                                  children: [
-                                    Text(
-                                      Provider.of<LanguageProvider>(context)
-                                              .isTamil
-                                          ? "கடைசி பெயர்"
-                                          : 'Last Name',
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                //       Provider.of<LanguageProvider>(context)
+                                //               .isTamil
+                                //           ? "கடைசி பெயர்"
+                                //           : 'Last Name',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         fontSize: 20,
+                                //         color: greyblue,
+                                //       ),
+                                //     ),
+                                //     Text(
+                                //       '*',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         color: Colors.red,
+                                //         fontSize: 20,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                Text.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text:
+                                          Provider.of<LanguageProvider>(context)
+                                                  .isTamil
+                                              ? "கடைசி பெயர்"
+                                              : 'Last Name',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                         color: greyblue,
                                       ),
                                     ),
-                                    Text(
-                                      '*',
+                                    TextSpan(
+                                      text: "*",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.red,
                                         fontSize: 20,
+                                        color: needred,
                                       ),
                                     ),
-                                  ],
+                                  ]),
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -309,28 +356,52 @@ class _AddUsersState extends State<AddUsers> {
                                           : 'Last Name',
                                 ),
                                 const SizedBox(height: 16.0),
-                                Row(
-                                  children: [
-                                    Text(
-                                      Provider.of<LanguageProvider>(context)
-                                              .isTamil
-                                          ? "பயனர் பெயர்"
-                                          : 'UserName',
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                //       Provider.of<LanguageProvider>(context)
+                                //               .isTamil
+                                //           ? "பயனர் பெயர்"
+                                //           : 'UserName',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         fontSize: 20,
+                                //         color: greyblue,
+                                //       ),
+                                //     ),
+                                //     Text(
+                                //       '*',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         color: Colors.red,
+                                //         fontSize: 20,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                Text.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text:
+                                          Provider.of<LanguageProvider>(context)
+                                                  .isTamil
+                                              ? "பயனர் பெயர்"
+                                              : 'UserName',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                         color: greyblue,
                                       ),
                                     ),
-                                    Text(
-                                      '*',
+                                    TextSpan(
+                                      text: "*",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.red,
                                         fontSize: 20,
+                                        color: needred,
                                       ),
                                     ),
-                                  ],
+                                  ]),
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -344,28 +415,52 @@ class _AddUsersState extends State<AddUsers> {
                                           : 'Username',
                                 ),
                                 const SizedBox(height: 16.0),
-                                Row(
-                                  children: [
-                                    Text(
-                                      Provider.of<LanguageProvider>(context)
-                                              .isTamil
-                                          ? "தொலைபேசி எண்"
-                                          : 'Phone Number',
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                //       Provider.of<LanguageProvider>(context)
+                                //               .isTamil
+                                //           ? "தொலைபேசி எண்"
+                                //           : 'Phone Number',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         fontSize: 20,
+                                //         color: greyblue,
+                                //       ),
+                                //     ),
+                                //     Text(
+                                //       '*',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         color: Colors.red,
+                                //         fontSize: 20,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                Text.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text:
+                                          Provider.of<LanguageProvider>(context)
+                                                  .isTamil
+                                              ? "தொலைபேசி எண்"
+                                              : 'Phone Number',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                         color: greyblue,
                                       ),
                                     ),
-                                    Text(
-                                      '*',
+                                    TextSpan(
+                                      text: "*",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.red,
                                         fontSize: 20,
+                                        color: needred,
                                       ),
                                     ),
-                                  ],
+                                  ]),
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -419,28 +514,52 @@ class _AddUsersState extends State<AddUsers> {
                                 // ),
 
                                 const SizedBox(height: 16.0),
-                                Row(
-                                  children: [
-                                    Text(
-                                      Provider.of<LanguageProvider>(context)
-                                              .isTamil
-                                          ? "பணியாளர் ஐடி"
-                                          : 'Staff Id',
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                //       Provider.of<LanguageProvider>(context)
+                                //               .isTamil
+                                //           ? "பணியாளர் ஐடி"
+                                //           : 'Staff Id',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         fontSize: 20,
+                                //         color: greyblue,
+                                //       ),
+                                //     ),
+                                //     Text(
+                                //       '*',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         color: Colors.red,
+                                //         fontSize: 20,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                Text.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text:
+                                          Provider.of<LanguageProvider>(context)
+                                                  .isTamil
+                                              ? "பணியாளர் ஐடி"
+                                              : 'Staff Id',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                         color: greyblue,
                                       ),
                                     ),
-                                    Text(
-                                      '*',
+                                    TextSpan(
+                                      text: "*",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.red,
                                         fontSize: 20,
+                                        color: needred,
                                       ),
                                     ),
-                                  ],
+                                  ]),
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -454,28 +573,52 @@ class _AddUsersState extends State<AddUsers> {
                                           : 'Staff Id*',
                                 ),
                                 const SizedBox(height: 16.0),
-                                Row(
-                                  children: [
-                                    Text(
-                                      Provider.of<LanguageProvider>(context)
-                                              .isTamil
-                                          ? "கடவுச்சொல்"
-                                          : 'Password',
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                //       Provider.of<LanguageProvider>(context)
+                                //               .isTamil
+                                //           ? "கடவுச்சொல்"
+                                //           : 'Password',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         fontSize: 20,
+                                //         color: greyblue,
+                                //       ),
+                                //     ),
+                                //     Text(
+                                //       '*',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         color: Colors.red,
+                                //         fontSize: 20,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                Text.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text:
+                                          Provider.of<LanguageProvider>(context)
+                                                  .isTamil
+                                              ? "கடவுச்சொல்"
+                                              : 'Password',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                         color: greyblue,
                                       ),
                                     ),
-                                    Text(
-                                      '*',
+                                    TextSpan(
+                                      text: "*",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.red,
                                         fontSize: 20,
+                                        color: needred,
                                       ),
                                     ),
-                                  ],
+                                  ]),
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -491,28 +634,52 @@ class _AddUsersState extends State<AddUsers> {
                                 const SizedBox(
                                   height: 16,
                                 ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      Provider.of<LanguageProvider>(context)
-                                              .isTamil
-                                          ? "பாத்திரங்கள்"
-                                          : 'Role',
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                //       Provider.of<LanguageProvider>(context)
+                                //               .isTamil
+                                //           ? "பாத்திரங்கள்"
+                                //           : 'Role',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         fontSize: 20,
+                                //         color: greyblue,
+                                //       ),
+                                //     ),
+                                //     Text(
+                                //       '*',
+                                //       style: TextStyle(
+                                //         fontWeight: FontWeight.bold,
+                                //         color: Colors.red,
+                                //         fontSize: 20,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                Text.rich(
+                                  TextSpan(children: [
+                                    TextSpan(
+                                      text:
+                                          Provider.of<LanguageProvider>(context)
+                                                  .isTamil
+                                              ? "பாத்திரங்கள்"
+                                              : 'Role',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
                                         color: greyblue,
                                       ),
                                     ),
-                                    Text(
-                                      '*',
+                                    TextSpan(
+                                      text: "*",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.red,
                                         fontSize: 20,
+                                        color: needred,
                                       ),
                                     ),
-                                  ],
+                                  ]),
                                 ),
                                 const SizedBox(
                                   height: 10,
@@ -865,8 +1032,8 @@ class _AddUsersState extends State<AddUsers> {
                                                                   padding:
                                                                       const EdgeInsets
                                                                           .only(
-                                                                    top: 10,
-                                                                    bottom: 10,
+                                                                    // top: 10,
+                                                                    // bottom: 10,
                                                                     left: 10,
                                                                     right: 10,
                                                                   ),
@@ -909,8 +1076,8 @@ class _AddUsersState extends State<AddUsers> {
                                                                   padding:
                                                                       const EdgeInsets
                                                                           .only(
-                                                                    top: 10,
-                                                                    bottom: 10,
+                                                                    // top: 10,
+                                                                    // bottom: 10,
                                                                     left: 10,
                                                                     right: 10,
                                                                   ),
@@ -976,10 +1143,10 @@ class _AddUsersState extends State<AddUsers> {
                                   child: Container(
                                     height: 50,
                                     width: double.maxFinite,
-                                    decoration:   BoxDecoration(
+                                    decoration: BoxDecoration(
                                       color: darkblue,
                                       borderRadius: const BorderRadius.all(
-                                        Radius.circular(20),
+                                        Radius.circular(15),
                                       ),
                                     ),
                                     child: Center(

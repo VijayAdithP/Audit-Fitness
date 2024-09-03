@@ -10,7 +10,6 @@ import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/components/toast_card.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 

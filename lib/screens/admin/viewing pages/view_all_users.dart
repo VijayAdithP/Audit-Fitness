@@ -8,9 +8,7 @@ import 'package:delightful_toast/delight_toast.dart';
 import 'package:delightful_toast/toast/components/toast_card.dart';
 import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:get/state_manager.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -2070,7 +2068,7 @@ class _UserEditPageState extends State<UserEditPage> {
                                                                       .isTamil
                                                                   ? "நீங்கள் உறுதியாக இருக்கிறீர்களா?"
                                                                   : "Are you sure?",
-                                                              style:TextStyle(
+                                                              style: TextStyle(
                                                                 color: Colors
                                                                     .black,
                                                                 fontSize: Provider.of<LanguageProvider>(

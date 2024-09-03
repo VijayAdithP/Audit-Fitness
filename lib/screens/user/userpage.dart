@@ -10,7 +10,6 @@ import 'package:auditfitnesstest/screens/widgets/User-Widgets/user_audit_cards.d
 import 'package:auditfitnesstest/utils/apiendpoints.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
 
@@ -258,7 +257,6 @@ class _UserHomePageState extends State<UserHomePage> {
   Widget build(BuildContext context) {
     final weeklyTasksCount =
         Provider.of<WeeklyTasksProvider>(context).weeklyTasksCount;
-    final String username = box.read('username');
     return Container(
       color: Colors.white,
       child: SafeArea(

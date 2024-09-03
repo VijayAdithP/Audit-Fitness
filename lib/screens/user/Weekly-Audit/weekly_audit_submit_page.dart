@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
@@ -16,8 +15,6 @@ import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -564,9 +561,10 @@ class _WeeklyUserAuditSubmmitPageState
                                   ),
                                 ),
                                 const SizedBox(height: 16),
+
                                 Divider(
                                   thickness: 3,
-                                  color: greyblue,
+                                  color: Colors.grey.withOpacity(0.5),
                                   height: 20,
                                 ),
                                 ...questions.map(
@@ -619,13 +617,13 @@ class _WeeklyUserAuditSubmmitPageState
                                         if (answers[question.id] == null)
                                           Divider(
                                             thickness: 3,
-                                            color: greyblue,
+                                            color: Colors.grey.withOpacity(0.5),
                                             height: 20,
                                           ),
                                         if (answers[question.id] == 'good')
                                           Divider(
                                             thickness: 3,
-                                            color: greyblue,
+                                            color: Colors.grey.withOpacity(0.5),
                                             height: 20,
                                           ),
                                         if (answers[question.id] == 'bad')
@@ -783,35 +781,62 @@ class _WeeklyUserAuditSubmmitPageState
                                                                             .devicePixelRatio
                                                                         : 0,
                                                                   ),
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Text(
-                                                                        Provider.of<LanguageProvider>(context).isTamil
-                                                                            ? "எடுக்க"
-                                                                            : "Take pic",
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                          color:
-                                                                              greyblue,
-                                                                        ),
-                                                                      ),
-                                                                      Text(
-                                                                        '*',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                          fontSize:
-                                                                              16,
-                                                                          color:
-                                                                              Colors.red,
-                                                                        ),
-                                                                      ),
-                                                                    ],
+                                                                  child:
+                                                                      // Row(
+                                                                      //   children: [
+                                                                      //     Text(
+                                                                      //       Provider.of<LanguageProvider>(context).isTamil
+                                                                      //           ? "எடுக்க"
+                                                                      //           : "Take pic",
+                                                                      //       style:
+                                                                      //           TextStyle(
+                                                                      //         fontSize:
+                                                                      //             16,
+                                                                      //         fontWeight:
+                                                                      //             FontWeight.w500,
+                                                                      //         color:
+                                                                      //             greyblue,
+                                                                      //       ),
+                                                                      //     ),
+                                                                      //     Text(
+                                                                      //       '*',
+                                                                      //       style:
+                                                                      //           TextStyle(
+                                                                      //         fontWeight:
+                                                                      //             FontWeight.bold,
+                                                                      //         fontSize:
+                                                                      //             16,
+                                                                      //         color:
+                                                                      //             Colors.red,
+                                                                      //       ),
+                                                                      //     ),
+                                                                      //   ],
+                                                                      // ),
+                                                                      Text.rich(
+                                                                    TextSpan(
+                                                                        children: [
+                                                                          TextSpan(
+                                                                            text: Provider.of<LanguageProvider>(context).isTamil
+                                                                                ? "எடுக்க"
+                                                                                : "Take pic",
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontWeight: FontWeight.w500,
+                                                                              fontSize: 16,
+                                                                              color: greyblue,
+                                                                            ),
+                                                                          ),
+                                                                          TextSpan(
+                                                                            text:
+                                                                                "*",
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: 16,
+                                                                              color: needred,
+                                                                            ),
+                                                                          ),
+                                                                        ]),
                                                                   ),
                                                                 ),
                                                               ],
@@ -821,7 +846,8 @@ class _WeeklyUserAuditSubmmitPageState
                                                       ),
                                                     ),
                                                     VerticalDivider(
-                                                      color: greyblue,
+                                                      color: Colors.grey
+                                                          .withOpacity(0.5),
                                                       thickness: 2,
                                                     ),
                                                     Expanded(
@@ -890,35 +916,63 @@ class _WeeklyUserAuditSubmmitPageState
                                                                             .devicePixelRatio
                                                                         : 0,
                                                                   ),
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Text(
-                                                                        Provider.of<LanguageProvider>(context).isTamil
-                                                                            ? "கேலரி"
-                                                                            : "Add Image",
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontSize:
-                                                                              16,
-                                                                          fontWeight:
-                                                                              FontWeight.w500,
-                                                                          color:
-                                                                              greyblue,
-                                                                        ),
-                                                                      ),
-                                                                      Text(
-                                                                        '*',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                          fontSize:
-                                                                              16,
-                                                                          color:
-                                                                              Colors.red,
-                                                                        ),
-                                                                      ),
-                                                                    ],
+                                                                  child:
+
+                                                                      // Row(
+                                                                      //   children: [
+                                                                      //     Text(
+                                                                      //       Provider.of<LanguageProvider>(context).isTamil
+                                                                      //           ? "கேலரி"
+                                                                      //           : "Add Image",
+                                                                      //       style:
+                                                                      //           TextStyle(
+                                                                      //         fontSize:
+                                                                      //             16,
+                                                                      //         fontWeight:
+                                                                      //             FontWeight.w500,
+                                                                      //         color:
+                                                                      //             greyblue,
+                                                                      //       ),
+                                                                      //     ),
+                                                                      //     Text(
+                                                                      //       '*',
+                                                                      //       style:
+                                                                      //           TextStyle(
+                                                                      //         fontWeight:
+                                                                      //             FontWeight.bold,
+                                                                      //         fontSize:
+                                                                      //             16,
+                                                                      //         color:
+                                                                      //             Colors.red,
+                                                                      //       ),
+                                                                      //     ),
+                                                                      //   ],
+                                                                      // ),
+                                                                      Text.rich(
+                                                                    TextSpan(
+                                                                        children: [
+                                                                          TextSpan(
+                                                                            text: Provider.of<LanguageProvider>(context).isTamil
+                                                                                ? "கேலரி"
+                                                                                : "Add Image",
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontWeight: FontWeight.w500,
+                                                                              fontSize: 16,
+                                                                              color: greyblue,
+                                                                            ),
+                                                                          ),
+                                                                          TextSpan(
+                                                                            text:
+                                                                                "*",
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: 16,
+                                                                              color: needred,
+                                                                            ),
+                                                                          ),
+                                                                        ]),
                                                                   ),
                                                                 ),
                                                               ],
@@ -951,7 +1005,7 @@ class _WeeklyUserAuditSubmmitPageState
                                                                   const BorderRadius
                                                                       .all(
                                                                       Radius.circular(
-                                                                          15)),
+                                                                          10)),
                                                               // border: Border.all(
                                                               //     color: Colors.black,
                                                               //     width: 2),
@@ -999,9 +1053,15 @@ class _WeeklyUserAuditSubmmitPageState
                                               ),
                                               Divider(
                                                 thickness: 3,
-                                                color: greyblue,
+                                                color: Colors.grey
+                                                    .withOpacity(0.5),
                                                 height: 20,
                                               ),
+                                              // VerticalDivider(
+                                              //   color: Colors.grey
+                                              //       .withOpacity(0.5),
+                                              //   thickness: 1,
+                                              // ),
                                             ],
                                           ),
                                       ],
