@@ -1,0 +1,43 @@
+exports.get_report_by_week = async (req, res) => {
+    const { weekNumber, month, year } = req.params;
+
+    const query = `
+        SELECT 
+            wa.audit_date,
+            wa.week_number,
+            wa.month,
+            wa.year,
+            wa.task_id,
+            wa.main_area AS audit_area,
+            wa.specific_area,
+            GROUP_CONCAT(wad.question SEPARATOR ', ') AS report_observation,
+            GROUP_CONCAT(wad.remark SEPARATOR ', ') AS remarks,
+            GROUP_CONCAT(wad.image_path SEPARATOR ', ') AS images
+        FROM 
+            weekly_audits wa
+        JOIN 
+            weekly_audit_details wad
+        ON 
+            wa.id = wad.audit_id
+        WHERE 
+            wa.week_number = ? 
+            AND wa.month = ? 
+            AND wa.year = ?
+        GROUP BY 
+            wa.audit_date, 
+            wa.week_number, 
+            wa.month, 
+            wa.year, 
+            wa.task_id, 
+            wa.main_area, 
+            wa.specific_area;
+    `;
+
+    try {
+        const [results] = await pool.query(query, [ weekNumber, month, year]);
+        res.send(results);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Database error in getting audit data by specific area and week' });
+    }
+};
