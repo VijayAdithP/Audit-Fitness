@@ -26,10 +26,10 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
   void initState() {
     super.initState();
     futureweeklyTasks = fetchDailyTasks();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<WeeklyTasksProvider>(context, listen: false)
-          .fetchWeeklyTasks();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   Provider.of<WeeklyTasksProvider>(context, listen: false)
+    //       .fetchWeeklyTasks();
+    // });
   }
 
   Future<List<UserWeeklyTasksModel>> fetchDailyTasks() async {
@@ -57,6 +57,7 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
 
   Future<void> _refreshTasks() async {
     try {
+      await Future.delayed(const Duration(seconds: 1));
       // Call the fetchDailyTasks method
       await fetchDailyTasks();
     } catch (error) {

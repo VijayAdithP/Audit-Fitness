@@ -29,12 +29,67 @@ class LanguageProvider with ChangeNotifier {
   }
 }
 
+// class WeeklyTasksProvider with ChangeNotifier {
+//   final box = GetStorage();
+//   int _weeklyTasksCount = 0;
+//   Timer? _timer;
+
+//   int get weeklyTasksCount => _weeklyTasksCount;
+
+//   WeeklyTasksProvider() {
+//     fetchWeeklyTasks();
+//     _startFetching();
+//   }
+
+//   void _startFetching() {
+//     _timer = Timer.periodic(const Duration(minutes: 5), (timer) {
+//       fetchWeeklyTasks();
+//     });
+//   }
+
+//   Future<void> fetchWeeklyTasks() async {
+//     final String? username = box.read('username');
+//     try {
+//       if (username == null) {
+//         _weeklyTasksCount = 0;
+//         notifyListeners();
+//         return;
+//       }
+
+//       final response = await http.get(Uri.parse(
+//           '${ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.getweeklytaskper}/$username'));
+
+//       if (response.statusCode == 200) {
+//         List<dynamic> jsonData = json.decode(response.body);
+//         List<UserWeeklyTasksModel> weeklyTasks = jsonData
+//             .map((item) => UserWeeklyTasksModel.fromJson(item))
+//             .toList();
+
+//         weeklyTasks.sort((a, b) => b.assignedAt!.compareTo(a.assignedAt!));
+
+//         _weeklyTasksCount = weeklyTasks.length;
+//         notifyListeners();
+//       }
+//     } catch (e) {
+//       print(e);
+//     }
+//   }
+
+//   @override
+//   void dispose() {
+//     _timer?.cancel();
+//     super.dispose();
+//   }
+// }
+
 class WeeklyTasksProvider with ChangeNotifier {
   final box = GetStorage();
   int _weeklyTasksCount = 0;
   Timer? _timer;
+  bool _isFetching = true;
 
   int get weeklyTasksCount => _weeklyTasksCount;
+  bool get isFetching => _isFetching;
 
   WeeklyTasksProvider() {
     fetchWeeklyTasks();
@@ -42,22 +97,35 @@ class WeeklyTasksProvider with ChangeNotifier {
   }
 
   void _startFetching() {
-    _timer = Timer.periodic(const Duration(minutes: 1), (timer) {
+    _timer = Timer.periodic(const Duration(minutes: 5), (timer) {
+      print("in");
       fetchWeeklyTasks();
     });
   }
 
+  void _stopFetching() {
+    _timer?.cancel();
+  }
+
+  void toggleFetching() {
+    if (_isFetching) {
+      _stopFetching();
+    } else {
+      _startFetching();
+    }
+    _isFetching = !_isFetching;
+    notifyListeners();
+  }
+
   Future<void> fetchWeeklyTasks() async {
     final String? username = box.read('username');
-    try {
-      if (username == null) {
-        _weeklyTasksCount = 0;
-        notifyListeners();
-        return;
-      }
+    if (!_isFetching) return;
 
-      final response = await http.get(Uri.parse(
-          '${ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.getweeklytaskper}/$username'));
+    try {
+      final response = await http.get(
+        Uri.parse(
+            '${ApiEndPoints.baseUrl + ApiEndPoints.authEndpoints.getweeklytaskper}/$username'),
+      );
 
       if (response.statusCode == 200) {
         List<dynamic> jsonData = json.decode(response.body);
@@ -69,9 +137,11 @@ class WeeklyTasksProvider with ChangeNotifier {
 
         _weeklyTasksCount = weeklyTasks.length;
         notifyListeners();
+      } else {
+        print('Failed to load tasks: ${response.statusCode}');
       }
     } catch (e) {
-      print(e);
+      print('Error fetching weekly tasks: $e');
     }
   }
 

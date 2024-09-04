@@ -32,6 +32,7 @@ import 'package:auditfitnesstest/firebase_options.dart';
 import 'package:auditfitnesstest/screens/auth_screen.dart';
 import 'package:auditfitnesstest/screens/main_page.dart';
 import 'package:auditfitnesstest/service/notification/firebase_api.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -58,28 +59,35 @@ Future<void> main() async {
   ]);
 
   await FirebaseApi().initNotifications();
+
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => LanguageProvider()),
-        ChangeNotifierProvider(create: (_) => WeeklyTasksProvider()),
-      ],
-      child: GetMaterialApp(
-        theme: ThemeData(
-          textTheme: GoogleFonts.interTextTheme(),
-        ),
-        debugShowCheckedModeBanner: false,
-        home: token1 != null ? const Mainpage() : const AuthScreen(),
-        builder: (context, child) {
-          final mediaQueryData = MediaQuery.of(context);
-          final scale = mediaQueryData.textScaleFactor.clamp(0.8, 0.9);
-          return MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: scale),
-              child: child!);
-        },
+      // DevicePreview(
+      //   builder: (context) {
+      //     return
+
+      MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => LanguageProvider()),
+      // ChangeNotifierProvider(create: (_) => WeeklyTasksProvider()),
+    ],
+    child: GetMaterialApp(
+      theme: ThemeData(
+        textTheme: GoogleFonts.interTextTheme(),
       ),
+      debugShowCheckedModeBanner: false,
+      home: token1 != null ? const Mainpage() : const AuthScreen(),
+      builder: (context, child) {
+        final mediaQueryData = MediaQuery.of(context);
+        final scale = mediaQueryData.textScaleFactor.clamp(0.8, 0.9);
+        return MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaleFactor: scale),
+            child: child!);
+      },
     ),
-  );
+  )
+      //   },
+      // ),
+      );
 }
 
 Future<void> requestNotificationPermission() async {

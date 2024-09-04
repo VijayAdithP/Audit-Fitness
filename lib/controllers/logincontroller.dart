@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:auditfitnesstest/screens/main_page.dart';
+import 'package:provider/provider.dart';
 
 class LoginController extends GetxController {
   final TextEditingController usernameController = TextEditingController();
@@ -39,6 +40,7 @@ class LoginController extends GetxController {
 
         passwordController.clear();
         usernameController.clear();
+
         Get.off(() => const Mainpage());
       } else {
         throw jsonDecode(response.body)["Message"] ?? "Invalid Login";

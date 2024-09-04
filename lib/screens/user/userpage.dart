@@ -210,6 +210,8 @@ class __Drawer_State extends State<_Drawer_> {
               ),
               onTap: () {
                 fcmtokendelete();
+                final provider = context.read<WeeklyTasksProvider>();
+                provider.toggleFetching();
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -247,6 +249,7 @@ class _UserHomePageState extends State<UserHomePage> {
   }
 
   Future<void> _refreshTasks() async {
+    await Future.delayed(const Duration(seconds: 1));
     // Trigger the fetch operation using the provider
     await Provider.of<WeeklyTasksProvider>(context, listen: false)
         .fetchWeeklyTasks();

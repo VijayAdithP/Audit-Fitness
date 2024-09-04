@@ -56,87 +56,90 @@ class _DropdownUserState extends State<DropdownUser> {
         ),
       ),
       child: Center(
-        child: DropdownButton<String>(
-          // alignment: Alignment.bottomCenter,
-          hint: Padding(
-            padding: const EdgeInsets.only(
-              left: 20.0,
-              top: 10,
-              bottom: 10,
-              right: 20,
-            ),
-            child: Text(
-              Provider.of<LanguageProvider>(context).isTamil
-                  ? "நிலை"
-                  : "Condition",
-              style: GoogleFonts.poppins(
-                fontWeight: FontWeight.w500,
-                fontSize: 18,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: DropdownButton<String>(
+            // alignment: Alignment.bottomCenter,
+            hint: Padding(
+              padding: const EdgeInsets.only(
+                left: 10.0,
+                // top: 10,
+                // bottom: 10,
+                right: 10,
+              ),
+              child: Text(
+                Provider.of<LanguageProvider>(context).isTamil
+                    ? "நிலை"
+                    : "Condition",
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 18,
+                ),
               ),
             ),
-          ),
 
-          underline: const SizedBox(),
-          borderRadius: const BorderRadius.all(
-            Radius.circular(10),
-          ),
-          dropdownColor: Colors.white,
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.grey[800],
-            fontWeight: FontWeight.bold,
-          ),
-          isExpanded: true,
-          value: selectedCondition,
-          elevation: 1,
-          onChanged: (String? newValue) {
-            setState(() {
-              selectedCondition = newValue;
-            });
-            widget.onChanged?.call(newValue);
-          },
-          items: <DropdownMenuItem<String>>[
-            DropdownMenuItem<String>(
-              value: 'good',
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 10.0,
-                  top: 10,
-                  bottom: 10,
-                ),
-                child: Text(
-                  Provider.of<LanguageProvider>(context).isTamil
-                      ? "நல்ல நிலை"
-                      : 'Good condition',
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    // color: fontColor,
+            underline: const SizedBox(),
+            borderRadius: const BorderRadius.all(
+              Radius.circular(10),
+            ),
+            dropdownColor: Colors.white,
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.grey[800],
+              fontWeight: FontWeight.bold,
+            ),
+            isExpanded: true,
+            value: selectedCondition,
+            elevation: 1,
+            onChanged: (String? newValue) {
+              setState(() {
+                selectedCondition = newValue;
+              });
+              widget.onChanged?.call(newValue);
+            },
+            items: <DropdownMenuItem<String>>[
+              DropdownMenuItem<String>(
+                value: 'good',
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 10.0,
+                    top: 10,
+                    bottom: 10,
+                  ),
+                  child: Text(
+                    Provider.of<LanguageProvider>(context).isTamil
+                        ? "நல்ல நிலை"
+                        : 'Good condition',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      // color: fontColor,
+                    ),
                   ),
                 ),
               ),
-            ),
-            DropdownMenuItem<String>(
-              value: 'bad',
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 10.0,
-                  top: 10,
-                  bottom: 10,
-                ),
-                child: Text(
-                  Provider.of<LanguageProvider>(context).isTamil
-                      ? "மோசமான நிலை"
-                      : 'Bad Condition',
-                  style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    // color: fontColor,
+              DropdownMenuItem<String>(
+                value: 'bad',
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 10.0,
+                    top: 10,
+                    bottom: 10,
+                  ),
+                  child: Text(
+                    Provider.of<LanguageProvider>(context).isTamil
+                        ? "மோசமான நிலை"
+                        : 'Bad Condition',
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      // color: fontColor,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

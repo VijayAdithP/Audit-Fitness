@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -73,6 +74,39 @@ class _AdminNavPageState extends State<AdminNavPage> {
       _selectedIndex = index;
     });
   }
+
+  // StreamSubscription? _internetconnectionStreamSubscription;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _internetconnectionStreamSubscription =
+  //       InternetConnection().onStatusChange.listen((event) {
+  //         print()
+  //     switch (event) {
+  //       case InternetStatus.connected:
+  //         isConnectedToInternet = true;
+  //         break;
+
+  //       case InternetStatus.disconnected:
+  //         isConnectedToInternet = false;
+  //         break;
+
+  //       default:
+  //         setState(() {
+  //           isConnectedToInternet = false;
+  //         });
+  //     }
+  //   });
+  // }
+
+  // @override
+  // void dispose() {
+  //   _internetconnectionStreamSubscription?.cancel();
+  //   super.dispose();
+  // }
+
+  // bool isConnectedToInternet = false;
 
   @override
   Widget build(BuildContext context) {

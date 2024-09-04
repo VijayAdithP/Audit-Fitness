@@ -151,8 +151,8 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                 ),
                 title: Text(
                   _languageProvider.isTamil
-                      ? "பயனர் வெற்றிகரமாக உருவாக்கப்பட்டது"
-                      : "User successfully created",
+                      ? "பணி ஐடி வெற்றிகரமாக உருவாக்கப்பட்டது"
+                      : "Campus-Id successfully created",
                   style: const TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 14,
