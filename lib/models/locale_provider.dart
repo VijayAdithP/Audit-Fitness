@@ -134,6 +134,7 @@ class WeeklyTasksProvider with ChangeNotifier {
             .toList();
 
         weeklyTasks.sort((a, b) => b.assignedAt!.compareTo(a.assignedAt!));
+        print(weeklyTasks);
 
         _weeklyTasksCount = weeklyTasks.length;
         notifyListeners();

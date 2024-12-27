@@ -564,7 +564,7 @@ class _WeeklyUserAuditSubmmitPageState
 
                                 Divider(
                                   thickness: 3,
-                                  color: Colors.grey.withOpacity(0.5),
+                                  color: Colors.grey.withValues(alpha: 0.5),
                                   height: 20,
                                 ),
                                 ...questions.map(
@@ -617,13 +617,15 @@ class _WeeklyUserAuditSubmmitPageState
                                         if (answers[question.id] == null)
                                           Divider(
                                             thickness: 3,
-                                            color: Colors.grey.withOpacity(0.5),
+                                            color: Colors.grey
+                                                .withValues(alpha: 0.5),
                                             height: 20,
                                           ),
                                         if (answers[question.id] == 'good')
                                           Divider(
                                             thickness: 3,
-                                            color: Colors.grey.withOpacity(0.5),
+                                            color: Colors.grey
+                                                .withValues(alpha: 0.5),
                                             height: 20,
                                           ),
                                         if (answers[question.id] == 'bad')
@@ -847,7 +849,8 @@ class _WeeklyUserAuditSubmmitPageState
                                                     ),
                                                     VerticalDivider(
                                                       color: Colors.grey
-                                                          .withOpacity(0.5),
+                                                          .withValues(
+                                                              alpha: 0.5),
                                                       thickness: 2,
                                                     ),
                                                     Expanded(
@@ -1054,14 +1057,9 @@ class _WeeklyUserAuditSubmmitPageState
                                               Divider(
                                                 thickness: 3,
                                                 color: Colors.grey
-                                                    .withOpacity(0.5),
+                                                    .withValues(alpha: 0.5),
                                                 height: 20,
                                               ),
-                                              // VerticalDivider(
-                                              //   color: Colors.grey
-                                              //       .withOpacity(0.5),
-                                              //   thickness: 1,
-                                              // ),
                                             ],
                                           ),
                                       ],
@@ -1501,8 +1499,9 @@ class _WeeklyUserAuditSubmmitPageState
                                                               VerticalDivider(
                                                                 color: Colors
                                                                     .grey
-                                                                    .withOpacity(
-                                                                        0.5),
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            0.5),
                                                                 thickness: 1,
                                                               ),
                                                               GestureDetector(

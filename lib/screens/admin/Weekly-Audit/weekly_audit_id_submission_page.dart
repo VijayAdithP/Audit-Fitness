@@ -477,7 +477,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                       decoration: BoxDecoration(
                                         color: CupertinoTheme.of(context)
                                             .barBackgroundColor
-                                            .withOpacity(1),
+                                            .withValues(alpha: 1),
                                         border: Border.all(
                                           color: CupertinoDynamicColor.resolve(
                                             CupertinoColors.systemGrey4,
@@ -830,8 +830,9 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                                                 VerticalDivider(
                                                                   color: Colors
                                                                       .grey
-                                                                      .withOpacity(
-                                                                          0.5),
+                                                                      .withValues(
+                                                                          alpha:
+                                                                              .5),
                                                                   thickness: 1,
                                                                 ),
                                                                 GestureDetector(

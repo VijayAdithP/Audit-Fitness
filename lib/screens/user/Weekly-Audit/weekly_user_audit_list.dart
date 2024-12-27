@@ -49,6 +49,7 @@ class _WeeklyUserAuditListPageState extends State<WeeklyUserAuditListPage> {
       }
 
       weeklyTasks.sort((a, b) => b.assignedAt!.compareTo(a.assignedAt!));
+      print(weeklyTasks);
       return weeklyTasks;
     } else {
       throw Exception('Failed to load daily tasks');

@@ -380,7 +380,8 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                             Icon(
                                               Icons.search,
                                               size: 25,
-                                              color: darkblue.withOpacity(0.6),
+                                              color: darkblue.withValues(
+                                                  alpha: 0.6),
                                             ),
                                             const SizedBox(
                                               width: 10,
@@ -399,8 +400,8 @@ class _WeeklyAuditListPageState extends State<WeeklyAuditListPage> {
                                                             .isTamil
                                                         ? 16
                                                         : 18,
-                                                color:
-                                                    darkblue.withOpacity(0.6),
+                                                color: darkblue.withValues(
+                                                    alpha: 0.6),
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -717,7 +718,7 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                                   child: Icon(
                                     Icons.arrow_back,
                                     size: 25,
-                                    color: darkblue.withOpacity(0.6),
+                                    color: darkblue.withValues(alpha: 0.6),
                                   ),
                                 ),
                               ),
@@ -747,7 +748,7 @@ class _SearchAllWeeklyTaksState extends State<SearchAllWeeklyTaks> {
                                     : "Search by taskId",
                             hintStyle: TextStyle(
                               fontSize: 18,
-                              color: darkblue.withOpacity(0.6),
+                              color: darkblue.withValues(alpha: 0.6),
                               fontWeight: FontWeight.bold,
                             ),
                           ),

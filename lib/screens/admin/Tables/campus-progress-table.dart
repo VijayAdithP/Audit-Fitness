@@ -433,8 +433,6 @@ class _CampusprogresstableState extends State<Campusprogresstable> {
   Widget sfgridwidget() {
     return SfDataGridTheme(
       data: SfDataGridThemeData(
-        // gridLineColor: Colors.black.withOpacity(0.3),
-        // headerHoverColor: Colors.white.withOpacity(0.3),
         headerColor: greyblue,
       ),
       child: SfDataGrid(

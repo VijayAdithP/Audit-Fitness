@@ -342,7 +342,8 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
                                             Icon(
                                               Icons.search,
                                               size: 25,
-                                              color: darkblue.withOpacity(0.6),
+                                              color: darkblue.withValues(
+                                                  alpha: 0.6),
                                             ),
                                             const SizedBox(
                                               width: 10,
@@ -361,8 +362,8 @@ class _ViewAllUsersState extends State<ViewAllUsers> {
                                                             .isTamil
                                                         ? 16
                                                         : 18,
-                                                color:
-                                                    darkblue.withOpacity(0.6),
+                                                color: darkblue.withValues(
+                                                    alpha: 0.6),
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -789,7 +790,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
                                 child: Icon(
                                   Icons.arrow_back,
                                   size: 25,
-                                  color: darkblue.withOpacity(0.6),
+                                  color: darkblue.withValues(alpha: 0.6),
                                 ),
                               ),
                             ),
@@ -818,7 +819,7 @@ class _UserSearchPageState extends State<UserSearchPage> {
                                     : "Search by username",
                             hintStyle: TextStyle(
                               fontSize: 18,
-                              color: darkblue.withOpacity(0.6),
+                              color: darkblue.withValues(alpha: 0.6),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -1740,8 +1741,8 @@ class _UserEditPageState extends State<UserEditPage> {
                                                                     VerticalDivider(
                                                                       color: Colors
                                                                           .grey
-                                                                          .withOpacity(
-                                                                              0.5),
+                                                                          .withValues(
+                                                                              alpha: 0.5),
                                                                       thickness:
                                                                           1,
                                                                     ),
@@ -2140,8 +2141,9 @@ class _UserEditPageState extends State<UserEditPage> {
                                                                   VerticalDivider(
                                                                     color: Colors
                                                                         .grey
-                                                                        .withOpacity(
-                                                                            0.5),
+                                                                        .withValues(
+                                                                            alpha:
+                                                                                0.5),
                                                                     thickness:
                                                                         1,
                                                                   ),

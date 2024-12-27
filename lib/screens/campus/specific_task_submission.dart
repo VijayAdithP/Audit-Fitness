@@ -216,7 +216,7 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
           children: [
             Divider(
               thickness: 3,
-              color: Colors.grey.withOpacity(0.5),
+              color: Colors.grey.withValues(alpha: 0.5),
               height: 20,
             ),
             Text(
@@ -611,7 +611,8 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
                                       _buildAuditData(context, item.auditData),
                                       Divider(
                                         thickness: 3,
-                                        color: Colors.grey.withOpacity(0.5),
+                                        color:
+                                            Colors.grey.withValues(alpha: 0.5),
                                         height: 20,
                                       ),
                                       const SizedBox(height: 10.0),
@@ -1094,8 +1095,9 @@ class _SpecificTaskSubmissionState extends State<SpecificTaskSubmission> {
                                                                   VerticalDivider(
                                                                     color: Colors
                                                                         .grey
-                                                                        .withOpacity(
-                                                                            0.5),
+                                                                        .withValues(
+                                                                            alpha:
+                                                                                0.5),
                                                                     thickness:
                                                                         1,
                                                                   ),

@@ -1057,8 +1057,9 @@ class _AddUsersState extends State<AddUsers> {
                                                               VerticalDivider(
                                                                 color: Colors
                                                                     .grey
-                                                                    .withOpacity(
-                                                                        0.5),
+                                                                    .withValues(
+                                                                        alpha:
+                                                                            .5),
                                                                 thickness: 1,
                                                               ),
                                                               GestureDetector(

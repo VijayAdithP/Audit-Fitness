@@ -30,38 +30,6 @@ class AdminNavPage extends StatefulWidget {
 }
 
 class _AdminNavPageState extends State<AdminNavPage> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addObserver(this); // Add this class as an observer
-  // }
-
-  // @override
-  // void dispose() {
-  //   WidgetsBinding.instance
-  //       .removeObserver(this); // Remove this class as an observer
-  //   super.dispose();
-  // }
-
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   if (state == AppLifecycleState.detached ||
-  //       state == AppLifecycleState.inactive) {
-  //     _clearCache(); // Clear cache when app is going to be closed
-  //   }
-  // }
-
-  // Future<void> _clearCache() async {
-  //   try {
-  //     final cacheDir = await getTemporaryDirectory();
-  //     if (cacheDir.existsSync()) {
-  //       cacheDir.deleteSync(recursive: true);
-  //     }
-  //   } catch (e) {
-  //     print('Error clearing cache: $e');
-  //   }
-  // }
-
   final screens = [
     const AdminPage(),
     const AreaAndQuestionsPage(),
@@ -74,39 +42,6 @@ class _AdminNavPageState extends State<AdminNavPage> {
       _selectedIndex = index;
     });
   }
-
-  // StreamSubscription? _internetconnectionStreamSubscription;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _internetconnectionStreamSubscription =
-  //       InternetConnection().onStatusChange.listen((event) {
-  //         print()
-  //     switch (event) {
-  //       case InternetStatus.connected:
-  //         isConnectedToInternet = true;
-  //         break;
-
-  //       case InternetStatus.disconnected:
-  //         isConnectedToInternet = false;
-  //         break;
-
-  //       default:
-  //         setState(() {
-  //           isConnectedToInternet = false;
-  //         });
-  //     }
-  //   });
-  // }
-
-  // @override
-  // void dispose() {
-  //   _internetconnectionStreamSubscription?.cancel();
-  //   super.dispose();
-  // }
-
-  // bool isConnectedToInternet = false;
 
   @override
   Widget build(BuildContext context) {
@@ -172,39 +107,6 @@ class _AdminNavPageState extends State<AdminNavPage> {
                     : "Users"),
           ],
         ),
-        // BottomNavigationBar(
-        //   backgroundColor: HexColor("#FFFFFF"),
-        //   elevation: 0,
-        //   currentIndex: _selectedIndex,
-        //   onTap: _onItemTapped,
-        //   selectedItemColor: HexColor("#034b93"),
-        //   unselectedItemColor: Colors.black,
-        //   // showSelectedLabels: false,
-        //   showUnselectedLabels: false,
-        //   items: const [
-        //     BottomNavigationBarItem(
-        //       icon: Icon(
-        //         Icons.home,
-        //         size: 30,
-        //       ),
-        //       label: 'Home',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(
-        //         Icons.add,
-        //         size: 30,
-        //       ),
-        //       label: 'Questions',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(
-        //         Icons.person,
-        //         size: 30,
-        //       ),
-        //       label: 'Users',
-        //     ),
-        //   ],
-        // ),
       ),
       body: screens[_selectedIndex],
     );
@@ -259,19 +161,6 @@ class _Drawer_State extends State<Drawer_> {
         children: [
           Container(
             height: 200,
-            // decoration: BoxDecoration(
-            //   boxShadow: [
-            //     BoxShadow(
-            //       color: skyblue,
-            //       spreadRadius: -40,
-            //       blurRadius: 50,
-            //       offset: const Offset(0, 4),
-            //     ),
-            //   ],
-            //   borderRadius: const BorderRadius.all(
-            //     Radius.circular(15),
-            //   ),
-            // ),
             child: Theme(
               data: Theme.of(context).copyWith(
                 dividerTheme: const DividerThemeData(color: Colors.transparent),

@@ -322,7 +322,8 @@ class _SpecificTaskListState extends State<SpecificTaskList> {
                                                         .isTamil
                                                     ? 16
                                                     : 18,
-                                            color: darkblue.withOpacity(0.6),
+                                            color:
+                                                darkblue.withValues(alpha: 0.6),
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -679,7 +680,7 @@ class _CampusTaskSearchState extends State<CampusTaskSearch> {
                                 child: Icon(
                                   Icons.arrow_back,
                                   size: 25,
-                                  color: darkblue.withOpacity(0.6),
+                                  color: darkblue.withValues(alpha: 0.6),
                                 ),
                               ),
                             ),
@@ -721,7 +722,7 @@ class _CampusTaskSearchState extends State<CampusTaskSearch> {
                                     : "Search by taskId",
                             hintStyle: TextStyle(
                               fontSize: 18,
-                              color: darkblue.withOpacity(0.6),
+                              color: darkblue.withValues(alpha: 0.6),
                               fontWeight: FontWeight.bold,
                             ),
                           ),

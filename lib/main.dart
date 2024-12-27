@@ -43,6 +43,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
+import 'dart:ui';
 
 Future<void> main() async {
   final box = GetStorage();
@@ -78,9 +79,11 @@ Future<void> main() async {
       home: token1 != null ? const Mainpage() : const AuthScreen(),
       builder: (context, child) {
         final mediaQueryData = MediaQuery.of(context);
-        final scale = mediaQueryData.textScaleFactor.clamp(0.8, 0.9);
+        final scale = mediaQueryData.textScaler
+            .clamp(minScaleFactor: 0.8, maxScaleFactor: 0.9);
+
         return MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaleFactor: scale),
+            data: MediaQuery.of(context).copyWith(textScaler: scale),
             child: child!);
       },
     ),

@@ -686,31 +686,32 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
       appBar: AppBar(
         actions: [
           PopupMenuButton<String>(
-              elevation: 0,
-              iconColor: greyblue,
-              color: Colors.white,
-              onSelected: choiceAction,
-              itemBuilder: (BuildContext context) {
-                return MenuItems.choices.map((String choice) {
-                  return PopupMenuItem<String>(
-                    value: choice,
-                    child: ListTile(
-                      title: Text(
-                        choice,
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: greyblue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      leading: Icon(
-                        MenuItems.choiceIcons[choice],
+            elevation: 0,
+            iconColor: greyblue,
+            color: Colors.white,
+            onSelected: choiceAction,
+            itemBuilder: (BuildContext context) {
+              return MenuItems.choices.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: ListTile(
+                    title: Text(
+                      choice,
+                      style: TextStyle(
+                        fontSize: 16,
                         color: greyblue,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  );
-                }).toList();
-              })
+                    leading: Icon(
+                      MenuItems.choiceIcons[choice],
+                      color: greyblue,
+                    ),
+                  ),
+                );
+              }).toList();
+            },
+          ),
         ],
         iconTheme: IconThemeData(
           color: darkblue,

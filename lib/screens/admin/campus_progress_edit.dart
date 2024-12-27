@@ -927,8 +927,9 @@ class _CampusProgressEditState extends State<CampusProgressEdit> {
                                                                   VerticalDivider(
                                                                     color: Colors
                                                                         .grey
-                                                                        .withOpacity(
-                                                                            0.5),
+                                                                        .withValues(
+                                                                            alpha:
+                                                                                0.5),
                                                                     thickness:
                                                                         1,
                                                                   ),
