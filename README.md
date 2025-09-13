@@ -15,11 +15,11 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference. -->
 
-# 🍔Audit-Fitness [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+# Audit-Fitness [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 **A Flutter-based mobile application for managing weekly audits efficiently with real-time notifications and multi-language support.**
 
-## 📖 Description
+## Description
 
 Audit-Fitness is a Flutter application designed to streamline weekly audit management. The admin assigns audits to users who inspect specific areas and submit responses marked as **“Good”** or **“Bad”**, along with images for reported issues. The admin can review submitted responses and assign tasks to the campus for resolution. This process continues iteratively until all issues are resolved.
 
@@ -29,7 +29,7 @@ Key highlights include:
 
 ---
 
-## 🚀 Features
+## Features
 
 - **Audit Assignment**: Admin assigns weekly audits to users.
 - **Area Inspection**: Users submit “Good” or “Bad” responses with image attachments.
@@ -44,11 +44,11 @@ Key highlights include:
 
 | 1 | 2|
 |------|-------|
-|<img src="ss/img1.png" width="400">|<img src="ss/img3.png" width="400">|
+|<img src="ss/img1.jpeg" width="400">|<img src="ss/img3.jpeg" width="400">|
 
 | 3 | 4|
 |------|-------|
-|<img src="ss/img4.png" width="400">|<img src="ss/img5.png" width="400">|
+|<img src="ss/img4.jpeg" width="400">|<img src="ss/img5.jpeg" width="400">|
 
 
 ### Installation
@@ -78,6 +78,7 @@ Key highlights include:
 
 #### Set up the frontend
     ```bash
+    # Install dependencies
     flutter pub get
     ```
 
