@@ -44,11 +44,11 @@ Key highlights include:
 
 | 1 | 2|
 |------|-------|
-|<img src="ss/img1.jpeg" width="400">|<img src="ss/img3.jpeg" width="400">|
+|<img src="ss/img1.jpeg" width="400">|<img src="ss/img2.jpeg" width="400">|
 
 | 3 | 4|
 |------|-------|
-|<img src="ss/img4.jpeg" width="400">|<img src="ss/img5.jpeg" width="400">|
+|<img src="ss/img3.jpeg" width="400">|<img src="ss/img7.jpeg" width="400">|
 
 
 ### Installation
