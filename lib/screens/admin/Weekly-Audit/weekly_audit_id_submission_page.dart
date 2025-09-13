@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:auditfitnesstest/assets/colors.dart';
 import 'package:auditfitnesstest/models/user%20data/all_areas.dart';
 import 'package:auditfitnesstest/models/locale_provider.dart';
@@ -90,6 +91,7 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
   }
 
   late LanguageProvider _languageProvider;
+
   Future<void> submitweeklyaudittouser() async {
     var headers = {'Content-Type': 'application/json'};
     try {
@@ -838,6 +840,13 @@ class _WeeklyAuditAssignmentpageState extends State<WeeklyAuditAssignmentpage> {
                                                                 GestureDetector(
                                                                   onTap: () {
                                                                     submitweeklyaudittouser();
+                                                                    // log(_usernameController.text);
+                                                                    // log(  widget.weeklyAuditweeknumber.toString());
+                                                                    // log(_selectedAreas[0]);
+                                                                    // log(widget.weeklyAuditId.toString());
+                                                                    // log(widget.weeklyAudityear.toString());
+                                                                    // log(widget.weeklyAuditmonth.toString());
+
                                                                     Navigator.of(
                                                                             context)
                                                                         .pop();

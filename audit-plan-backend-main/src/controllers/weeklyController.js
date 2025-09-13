@@ -121,7 +121,7 @@ exports.weekly_assign = async (req, res) => {
         const tokens = userRows.map(row => row.fcmtoken);
 
         if (tokens.length > 0) {
-            const message = `பணி ஐடி: ${weekly_taskId} இந்த வாரத்திற்கு ஒதுக்கப்பட்டுள்ளது. பணிகளை விரைவாக நிறைவு செய்யவும்.`;
+            const message = "பணி ஐடி: ${weekly_taskId} இந்த வாரத்திற்கு ஒதுக்கப்பட்டுள்ளது. பணிகளை விரைவாக நிறைவு செய்யவும்.";
             await sendNotification(tokens, message);
             // console.log(tokens)
             // console.log(message)

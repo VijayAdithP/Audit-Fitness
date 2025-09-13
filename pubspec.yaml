@@ -40,18 +40,18 @@ dependencies:
   http: ^1.2.1
   get: ^4.6.6
   google_fonts: ^6.2.1
-  intl: ^0.19.0
+  intl: ^0.20.2
   image_picker: ^1.1.2
   provider: ^6.1.2
-  syncfusion_flutter_datepicker: ^26.1.42
+  syncfusion_flutter_datepicker: ^31.1.18
   get_storage: ^2.1.1
   flutter_background_service: ^5.0.6
-  permission_handler: ^11.3.1
+  permission_handler: ^12.0.1
   flutter_typeahead: ^5.2.0
-  syncfusion_flutter_charts: ^26.2.8
-  syncfusion_flutter_datagrid: ^26.2.10
+  syncfusion_flutter_charts: ^31.1.18
+  syncfusion_flutter_datagrid: ^31.1.18
   path_provider: ^2.1.4
-  dio: ^4.0.6
+  dio: ^5.9.0
   delightful_toast: ^1.1.0
   open_file: ^3.3.2
   flutter_spinkit: ^5.2.1
@@ -61,9 +61,9 @@ dependencies:
   flutter_svg: ^2.0.10+1
   flutter_screenutil: ^5.9.3
   smooth_page_indicator: ^1.2.0+3
-  syncfusion_flutter_core: ^26.2.10
-  firebase_analytics: ^10.8.0
-  flutter_local_notifications: ^17.2.2
+  syncfusion_flutter_core: ^31.1.18
+  firebase_analytics: ^12.0.1
+  flutter_local_notifications: ^19.4.1
   flutter_launcher_icons: ^0.13.1
   hexcolor: ^3.0.1
   connectivity_plus: ^6.0.5
@@ -106,9 +106,10 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - lib\assets\images\Questions-bro.png
-    - lib\assets\images\Questions-bro (1).png
-    - lib\assets\icons\icons8-home.svg
+    # - lib\assets\images\Questions-bro.png
+    - lib/assets/images/Questions-bro (1).png
+    - lib/assets/icons/icons8-home.svg
+    - lib/assets/images/Questions-bro.png
     # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

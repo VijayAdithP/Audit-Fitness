@@ -296,7 +296,7 @@ class _WeeklyReportPageState extends State<WeeklyReportPage> {
       var response = await http.post(url, headers: headers, body: body);
 
       if (response.statusCode == 200) {
-        final fileName = "$month(week $weekOfMonth).pdf";
+        final fileName = "$month(week $weekOfMonth ${DateTime.now()}).pdf";
         final filePath = await _savePDF(response.bodyBytes, fileName);
         DelightToastBar(
           position: DelightSnackbarPosition.top,
