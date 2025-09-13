@@ -77,10 +77,10 @@ Key highlights include:
    ```
 
 #### Set up the frontend
-    ```bash
-    # Install dependencies
-    flutter pub get
-    ```
+   ```bash
+   # Install dependencies
+   flutter pub get
+   ```
 
 #### Launch the app on an android device
    ```bash
